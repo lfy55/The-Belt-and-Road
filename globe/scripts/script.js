@@ -217,7 +217,7 @@ window.onload = function () {
                 color: 0x55ded0,
                 linewidth: 2,
                 blending: THREE.AdditiveBlending,
-                transparent: tue,
+                transparent: true,
                 opacity: 0.5
             });
             sphereShapeIDs = temp[1];
@@ -2319,11 +2319,10 @@ window.onload = function () {
                     targetNode(products[values[1][1]]);
                     break;
             }
-
-
         }
-        // 开始时间线的自动变化
-        startTimeline();
+        
+        // 初始化时间轴
+        initTimeline();
     });
     $("#storyPrompt").on("click", "#beginStory", function () {
         cameraControls.loaded();
