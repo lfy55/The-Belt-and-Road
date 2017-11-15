@@ -14,7 +14,7 @@ window.onload = function () {
                 'varying vec3 vNormal;',
                 'void main() {',
                 'float intensity = pow( 0.8 - dot( vNormal, vec3( 0, 0, 1.0 ) ), 12.0 );',
-                'gl_FragColor = vec4( 0.3, 0.5, 1.0, 0.5 ) * intensity;',
+                'gl_FragColor = vec4( 0.3, 0.8, 0.7, 0.5 ) * intensity;',
                 '}'
             ].join('\n')
         }
@@ -214,10 +214,10 @@ window.onload = function () {
             overlaySphere.rotation.y = -Math.PI / 2;
             globe.add(overlaySphere);
             temp = drawThreeGeo(json, globeSize * 1.43, 'sphere', scene, {
-                color: 0x11eeee,
+                color: 0x55ded0,
                 linewidth: 2,
                 blending: THREE.AdditiveBlending,
-                transparent: true,
+                transparent: tue,
                 opacity: 0.5
             });
             sphereShapeIDs = temp[1];
