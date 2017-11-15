@@ -1,0 +1,48 @@
+#beginExplore {
+  margin: 0 auto;
+}
+
+#atlasBox {
+  display: none;
+}
+
+#sideBar {
+  display: none;
+}
+
+#timeline {
+  position: fixed;
+  width: 80%;
+  height: 50px;
+  bottom: 10px;
+  left: 10%;
+}
+
+#timeline .timeline-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-shadow: 0 0 10px #23ffe3;
+  color: #23ffe3;
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  cursor: pointer;
+}
+
+#timeline-line {
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  box-shadow: 0 0 15px #23ffe3;
+  border-radius: 10px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #23ffe3);
+}
+
+#timeline-point {
+  position: absolute;
+  width: 40px;
+  height: 100%;
+  left: 0px;
+  background: rgb(35, 255, 227);
+}
