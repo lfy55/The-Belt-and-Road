@@ -1,6 +1,7 @@
 function initTimeline() {
+  // 初始化折线图
   lineChart.initChart();
-
+  // 初始化南丁格尔图
   nightingaleChart.initChart();
 
   barChart.initChart({
