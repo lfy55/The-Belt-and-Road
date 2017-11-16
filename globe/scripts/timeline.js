@@ -1,4 +1,9 @@
 function initTimeline() {
+  barChart.initChart({
+    xAxis: ['美国', '中国', '日本', '德国', '英国'],
+    series: [18.56, 11.21, 4.93, 3.46, 2.62],
+  })
+
   var slider = $("#timeline-point"),
     labels = $("#timeline .timeline-label>div"),
     totalNumDom = $("#total-margin .total-num")[0],
@@ -60,25 +65,28 @@ function initTimeline() {
 
   function changeYear(year) {
     console.log(year)
-    countUp(totalNumDom, ~~randomNum(600, 900), parseFloat(totalNumDom.innerText), 3000, 0)
-  }
-}
+    // 更新统计数字
+    function animate() {
+      if (TWEEN.update()) {
+        requestAnimationFrame(animate)
+      }
+    }
+    new TWEEN.Tween({ tweeningNumber: +totalNumDom.innerText })
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .to({ tweeningNumber: ~~randomNum(600, 800) }, 1500)
+      .onUpdate(function () {
+        totalNumDom.innerText = this.tweeningNumber.toFixed(0)
+      })
+      .start()
 
-function countUp(elem, endVal, startVal, duration, decimal) {
-  //传入参数依次为 数字要变化的元素，最终显示数字，数字变化开始值，变化持续时间，小数点位数
-  var startTime = 0;
-  var dec = Math.pow(10, decimal);
-  var progress, value;
-  function startCount(timestamp) {
-    if (!startTime) startTime = timestamp;
-    progress = timestamp - startTime;
-    value = startVal + (endVal - startVal) * (progress / duration);
-    value = (value > endVal) ? endVal : value;
-    value = Math.floor(value * dec) / dec;
-    elem.innerHTML = value.toFixed(decimal);
-    progress < duration && requestAnimationFrame(startCount)
+    animate()
+
+    // 更新柱状图
+    barChart.upDateChart({
+      xAxis: ['美国', '中国', '日本', '德国', '英国'],
+      series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
+    })
   }
-  requestAnimationFrame(startCount)
 }
 
 /**
@@ -90,4 +98,17 @@ function countUp(elem, endVal, startVal, duration, decimal) {
  */
 function randomNum(min, max) {
   return Math.floor(min + Math.random() * (max - min));
+}
+
+/**
+ * 
+ * @description 生成指定位数的小数
+ * @param {Number} min 
+ * @param {Number} max 
+ * @param {Number} fix 
+ * @return {Number}
+ */
+function randomFolat(min, max, fix) {
+  fix = fix || 2
+  return Number(min + Math.random() * (max - min)).toFixed(fix)
 }
