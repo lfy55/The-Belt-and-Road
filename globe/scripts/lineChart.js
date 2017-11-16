@@ -18,7 +18,7 @@ let lineChart = {
                 }
             },
             xAxis: {
-                show: true,
+                show: false,
                 type: 'category',
                 boundaryGap: false,
                 data: ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012']
@@ -26,7 +26,7 @@ let lineChart = {
             yAxis: {
                 show: false,
                 type: 'value',
-                boundaryGap: [0, '100%']
+                // boundaryGap: [0, '100%']
             },
             grid: {
                 top:0,
@@ -58,7 +58,7 @@ let lineChart = {
                             offset: 0,
                             color: '#22f5da'
                         },  {
-                            offset: 1,
+                            offset: 0.8,
                             color: 'rgba(255,255,255,0)'
                         }])
                     }

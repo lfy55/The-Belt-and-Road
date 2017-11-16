@@ -127,12 +127,25 @@
 #line-chart {
   position: fixed;
   width: 80%;
-  height: 300px;
+  height: 200px;
   bottom: 70px;
   left: 10%;
 }
 
 #line-chart-content {
+  width: 100%;
+  height: 100%;
+}
+
+#nightingale-chart {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  top: 280px;
+  right: 40px;
+}
+
+#nightingale-chart-content {
   width: 100%;
   height: 100%;
 }
@@ -173,4 +186,32 @@
   top: -12.5px;
   left: 0px;
   background: url("./images/timeline/slibar.png") center center;
+}
+
+.timeline-flag {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: -20px;
+  background: red;
+}
+
+#thing-content {
+  width: auto;
+  height: auto;
+  position: absolute;
+  bottom: 70px;
+}
+
+#thing-content .thing-line {
+  width: 2px;
+  height: 200px;
+  background: #23ffe3;
+  margin-left: 10px;
+}
+
+#thing-content-content {
+  width: 300px;
+  /* height: 150px; */
+  background: #fff;
 }
