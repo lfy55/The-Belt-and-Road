@@ -1,151 +1,168 @@
 @font-face {
-  font-family: 'liHeiTi';
-  src: url("./font/zzgflht.otf");
+	font-family: 'liHeiTi';
+	src: url("./font/zzgflht.otf");
 }
 
 #beginExplore {
-  margin: 0 auto;
+	margin: 0 auto;
 }
 
 #atlasBox {
-  display: none;
+	display: none;
 }
 
 #sideBar {
-  display: none;
+	display: none;
 }
 
 #title {
-  position: fixed;
-  top: 20px;
-  left: 25px;
-  color: #23ffe3;
-  font-family: 'liHeiTi';
-  font-size: 36px;
-  padding-left: 50px;
-  background: url("./images/title-logo.png") left center no-repeat;
-  background-size: 36px;
-  text-shadow: none;
+	position: fixed;
+	top: 20px;
+	left: 25px;
+	color: #23ffe3;
+	font-family: 'liHeiTi';
+	font-size: 36px;
+	padding-left: 50px;
+	background: url("./images/title-logo.png") left center no-repeat;
+	background-size: 36px;
+	text-shadow: none;
 }
 
 #left-subtitle {
-  position: fixed;
-  top: 120px;
-  left: 160px;
-  color: #23ffe3;
-  font-family: 'liHeiTi';
-  font-size: 24px;
-  border: 10px solid transparent;
-  border-image: url(./images/subtitle-border.png) 21/14px repeat;
+	position: fixed;
+	top: 120px;
+	left: 160px;
+	color: #23ffe3;
+	font-family: 'liHeiTi';
+	font-size: 24px;
+	border: 10px solid transparent;
+	border-image: url(./images/subtitle-border.png) 21/14px repeat;
 }
 
 #total-margin {
-  width: 278px;
-  height: 278px;
-  background: url("./images/total-bg.png") center center no-repeat;
-  position: fixed;
-  left: 100px;
-  top: 243px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "SimHei";
-  color: rgb(221, 213, 213);
+	width: 278px;
+	height: 278px;
+	background: url("./images/total-bg.png") center center no-repeat;
+	position: fixed;
+	left: 100px;
+	top: 243px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: "SimHei";
+	color: rgb(221, 213, 213);
 }
 
 #total-margin .total-title,
 #total-margin .total-unit {
-  font-size: 16px;
+	font-size: 16px;
 }
 
 #total-margin .total-title {
-  margin-top: 93px;
+	margin-top: 93px;
 }
 
 #total-margin .total-num {
-  font-size: 50px;
-  color: rgb(34, 246, 218);
-  text-shadow: 0 0 15px rgb(34, 246, 218);
-  line-height: 1;
-  font-weight: 900;
-  margin: 14px 0 7px;
+	font-size: 50px;
+	color: rgb(34, 246, 218);
+	text-shadow: 0 0 15px rgb(34, 246, 218);
+	line-height: 1;
+	font-weight: 900;
+	margin: 14px 0 7px;
 }
 
 #total-margin .total-country {
-  box-sizing: border-box;
-  margin-top: 22px;
-  border: 2px solid rgb(37, 37, 37);
-  width: 80px;
-  height: 30px;
-  border-radius: 15px;
-  line-height: 26px;
-  text-align: center;
+	box-sizing: border-box;
+	margin-top: 22px;
+	border: 2px solid rgb(37, 37, 37);
+	width: 80px;
+	height: 30px;
+	border-radius: 15px;
+	line-height: 26px;
+	text-align: center;
 }
 
 #bar-chart {
-  width: 400px;
-  height: 250px;
-  position: fixed;
-  left: 39px;
-  top: 556px;
+	width: 400px;
+	height: 250px;
+	position: fixed;
+	left: 39px;
+	top: 556px;
 }
+
 #chart-content {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
+
 #right-subtitle {
-  position: fixed;
-  top: 120px;
-  right: 160px;
-  color: #23ffe3;
-  font-family: 'liHeiTi';
-  font-size: 24px;
-  border: 10px solid transparent;
-  border-image: url(./images/subtitle-border.png) 21/14px repeat;
+	position: fixed;
+	top: 120px;
+	right: 160px;
+	color: #23ffe3;
+	font-family: 'liHeiTi';
+	font-size: 24px;
+	border: 10px solid transparent;
+	border-image: url(./images/subtitle-border.png) 21/14px repeat;
 }
 
 #start-timeline {
-  position: fixed;
-  bottom: 60px;
-  left: 80px;
-  width: 60px;
-  cursor: pointer;
+	position: fixed;
+	bottom: 60px;
+	left: 80px;
+	width: 60px;
+	cursor: pointer;
+}
+
+#line-chart {
+	position: fixed;
+	width: 80%;
+	height: 150px;
+	bottom: 70px;
+	left: 10%;
+	border: 1px solid red;
+}
+
+#line-chart-content {
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 #timeline {
-  position: fixed;
-  width: 80%;
-  height: 50px;
-  bottom: 10px;
-  left: 10%;
+	position: fixed;
+	width: 80%;
+	height: 50px;
+	bottom: 10px;
+	left: 10%;
 }
 
 #timeline .timeline-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-shadow: 0 0 10px #23ffe3;
-  color: #23ffe3;
-  position: absolute;
-  top: 25px;
-  width: 100%;
-  cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-shadow: 0 0 10px #23ffe3;
+	color: #23ffe3;
+	position: absolute;
+	top: 25px;
+	width: 100%;
+	cursor: pointer;
 }
 
 #timeline-line {
-  position: absolute;
-  width: 100%;
-  height: 15px;
-  box-shadow: 0 0 15px #23ffe3;
-  border-radius: 10px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #23ffe3);
+	position: absolute;
+	width: 100%;
+	height: 15px;
+	box-shadow: 0 0 15px #23ffe3;
+	border-radius: 10px;
+	background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #23ffe3);
 }
 
 #timeline-point {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  top: -12.5px;
-  left: 0px;
-  background: url("./images/timeline/slibar.png") center center;
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	top: -12.5px;
+	left: 0px;
+	background: url("./images/timeline/slibar.png") center center;
 }
