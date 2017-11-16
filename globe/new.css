@@ -90,6 +90,16 @@
   top: 556px;
 }
 
+#bar-icon {
+  position: absolute;
+  width: 20px;
+  height: 6px;
+  border-radius: 5px;
+  background: #23ffe3;
+  left: 24px;
+  bottom: 26px;
+}
+
 #chart-content {
   width: 100%;
   height: 100%;
@@ -119,7 +129,8 @@
   width: 80%;
   height: 300px;
   bottom: 70px;
-  left: 10%;}
+  left: 10%;
+}
 
 #line-chart-content {
   width: 100%;
