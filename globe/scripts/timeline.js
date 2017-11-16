@@ -1,5 +1,6 @@
 function initTimeline() {
   lineChart.initChart();
+  nightingaleChart.initChart();
   
   barChart.initChart({
     xAxis: ['美国', '中国', '日本', '德国', '英国'],

@@ -126,6 +126,19 @@
   height: 100%;
 }
 
+#nightingale-chart {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  top: 280px;
+  right: 40px;
+}
+
+#nightingale-chart-content {
+  width: 100%;
+  height: 100%;
+}
+
 #timeline {
   position: fixed;
   width: 80%;
