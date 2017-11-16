@@ -1,6 +1,6 @@
 function initTimeline() {
   lineChart.initChart();
-  
+
   barChart.initChart({
     xAxis: ['美国', '中国', '日本', '德国', '英国'],
     series: [18.56, 11.21, 4.93, 3.46, 2.62],
@@ -10,8 +10,10 @@ function initTimeline() {
     labels = $("#timeline .timeline-label>div"),
     totalNumDom = $("#total-margin .total-num")[0],
     labelsValue = [],
+    thingsValue = [],
     sliderWidth = slider.width(),
     labelLength = labelsValue.length,
+    thingLength = thingsValue.length,
     nowYear = "2002",
     maxLeft = $("#timeline-line").width() - sliderWidth,
     animateCount = null
@@ -22,10 +24,36 @@ function initTimeline() {
       year: value.innerText
     })
   })
-  labelsValue.sort((a, b) => {
-    return b.left - a.left
-  })
+  thingsValue = [
+    {
+      left: labelsValue[5].left,
+      imgUrl: '',
+      context: '2007年2月13日美国新世纪金融公司（New Century Finance）发出2006年第四季度盈利预警。'
+    },
+    {
+      left: ~~((labelsValue[5].left + labelsValue[6].left) / 2),
+      imgUrl: '',
+      context: '汶川大地震，也称2008年四川大地震或5·12大地震，发生于北京时间（UTC+8）2008年5月12日（星期一）14时28分04秒，震中位于中国四川省阿坝藏族羌族自治州汶川县映秀镇附近、四川省省会成都市西北偏西方向79千米处。'
+    },
+    {
+      left: labelsValue[2].left,
+      imgUrl: '',
+      context: '2004年美国总统选举于2004年11月2日举行，时任总统乔治·沃克·布希成功连任，这次他成功同时赢得普选票及选举人票。2005年1月6日选举人投票结束，确定总统人选，他于2005年1月20日宣誓就职。'
+    },
+    {
+      left: labelsValue[4].left,
+      imgUrl: '',
+      context: '中国解除人民币与美金的联系汇率，人民币升值进程开始。'
+    }
+  ]
+  labelsValue.sort((a, b) => b.left - a.left)
+  thingsValue.sort((a, b) => b.left - a.left)
   labelLength = labelsValue.length
+  thingLength = thingsValue.length
+
+  for (var i = 0; i < thingLength, i++) {
+
+  }
 
   function startTimeline() {
     function moveSlider() {
