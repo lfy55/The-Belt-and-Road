@@ -1,4 +1,6 @@
 function initTimeline() {
+  lineChart.initChart();
+  
   barChart.initChart({
     xAxis: ['美国', '中国', '日本', '德国', '英国'],
     series: [18.56, 11.21, 4.93, 3.46, 2.62],
