@@ -162,7 +162,7 @@
         <br/> This project was built with WebGL and needs it to run properly, your current web browser is not compatible.
       </div>
     </div>
-
+    <!-- 左侧内容 -->
     <div id="left-subtitle">全球经济总值</div>
     <div id="total-margin">
       <span class="total-title">经济总值</span>
@@ -170,7 +170,13 @@
       <span class="total-unit">$ 万亿</span>
       <div class="total-country">全球</div>
     </div>
+    <div id="bar-chart">
+      <div id="chart-content"></div>
+    </div>
+
+    <!-- 右侧内容 -->
     <div id="right-subtitle">经济产品分类</div>
+
     <img src="./images/start-icon.png" alt="" id="start-timeline">
     <!-- 时间轴 -->
     <div id="timeline">
@@ -291,6 +297,8 @@
 			}
 
     </script>
+  <script src="./lib/tween.js"></script>
+  <script src="./lib/echarts.min.js"></script>
   <script src="scripts/noWebGL.js"></script>
   <script src="scripts/spin.js"></script>
   <script src="data/anchors.js"></script>
@@ -303,6 +311,7 @@
   <script src='scripts/ParticleLinks.js'></script>
   <script src="scripts/URLparser.js"></script>
   <script src="scripts/timeline.js"></script>
+  <script src="scripts/barChart.js"></script>
   <script src="scripts/script.js"></script>
 
   <script src='scripts/THREEx.KeyboardState.js'></script>
