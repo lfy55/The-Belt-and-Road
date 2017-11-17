@@ -1,6 +1,6 @@
 function initTimeline() {
-  // 初始化折线图
-  lineChart.initChart();
+
+
   // 初始化南丁格尔图
   nightingaleChart.initChart();
 
@@ -71,6 +71,12 @@ function initTimeline() {
   }
 
   function startTimeline() {
+    // 初始化折线图
+    lineChart.initChart({
+      duration: 5000,
+      dataY: ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
+    });
+
     function moveSlider() {
       var left = parseFloat(slider[0].style.left.slice(0, -2)) + 1
       left = isNaN(left) ? 1 : left
@@ -130,6 +136,15 @@ function initTimeline() {
     barChart.upDateChart({
       xAxis: ['美国', '中国', '日本', '德国', '英国'],
       series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
+    })
+
+    let lineChartDataLength = year - 2002 + 1;
+    let lineChartData = ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
+    let lineChartDataShow = lineChartData.splice(0,lineChartDataLength)
+
+    //更新折线图
+    lineChart.upDateChart({
+      dataY: lineChartDataShow
     })
   }
 }

@@ -2,12 +2,9 @@
 let lineChart = {
     __dom: null,
     __chart: null,
-    __colors: ['#20efd5', '#20dac4', '#1bbba7', '#1ba998', '#15887a'],
     __option: {},
-    __duration: 5000,
-    __dataX: [],
-    __dataY: [],
-    initChart: function () {
+    __dataX: ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+    initChart: function (data) {
         this.__dom = document.getElementById('line-chart-content');
         this.__chart = echarts.init(this.__dom);
         this.__option = {
@@ -21,18 +18,17 @@ let lineChart = {
                 show: false,
                 type: 'category',
                 boundaryGap: false,
-                data: ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012']
+                data: this.__dataX
             },
             yAxis: {
                 show: false,
-                type: 'value',
-                // boundaryGap: [0, '100%']
+                type: 'value'
             },
             grid: {
-                top:0,
-                bottom:0,
-                left:0,
-                right:0
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0
             },
             series: [{
                 name: '模拟数据',
@@ -57,17 +53,26 @@ let lineChart = {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
                             color: '#22f5da'
-                        },  {
+                        }, {
                             offset: 0.8,
                             color: 'rgba(255,255,255,0)'
                         }])
                     }
                 },
-                data: ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400'],
+                data: data.dataY,
                 animation: true,
-                animationDuration: this.__duration
+                animationDuration: data.duration
             }]
         };
         this.__chart.setOption(this.__option);
     },
+    upDateChart(data) {    
+        this.__chart.setOption({
+          series: [
+            {
+              data: data.dataY
+            }
+          ]
+        })
+      }
 }
