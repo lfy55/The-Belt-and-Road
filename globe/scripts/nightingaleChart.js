@@ -10,7 +10,12 @@ let nightingaleChart = {
         this.__option = {
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a} <br/>{b} : {c}亿元 ({d}%)",
+                extraCssText: 'box-shadow: 0 0 40px rgba(35,255,227,0.6);',
+                textStyle: {
+                    color: 'rgb(34, 246, 218)',
+                    fontSize: 18
+                }
             },
             grid: {
                 top: 0,
