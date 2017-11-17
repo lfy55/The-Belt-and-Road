@@ -156,6 +156,7 @@
   height: 50px;
   bottom: 10px;
   left: 10%;
+  z-index: 5;
 }
 
 #timeline .timeline-label {
@@ -192,15 +193,18 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  top: -20px;
-  background: red;
+  top: -2px;
+  background: url("./images/timeline/thing-point.png") center center no-repeat;
+  background-size: 100%;
+  cursor: pointer;
 }
 
 #thing-content {
   width: auto;
   height: auto;
   position: absolute;
-  bottom: 70px;
+  bottom: 50px;
+  z-index: 999999;
 }
 
 #thing-content .thing-line {
@@ -212,6 +216,19 @@
 
 #thing-content-content {
   width: 300px;
-  /* height: 150px; */
-  background: #fff;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.2;
+  font-family: 'liHeiTi';
+  border: 24px solid transparent;
+  border-image: url(./images/timeline/thing-border.png) 24/24px repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#thing-content-content>img {
+  float: left;
+  max-width: 280px;
 }

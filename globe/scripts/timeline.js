@@ -13,14 +13,18 @@ function initTimeline() {
     labels = $("#timeline .timeline-label>div"),
     timelineFlags = $("#timeline-flag"),
     totalNumDom = $("#total-margin .total-num")[0],
+    thingContent = $("#thing-content"),
     labelsValue = [],
     thingsValue = [],
     sliderWidth = slider.width(),
     labelLength = labelsValue.length,
     thingLength = thingsValue.length,
     nowYear = "2002",
+    nowThing = null,
     maxLeft = $("#timeline-line").width() - sliderWidth,
     animateCount = null
+
+  thingContent.hide()
 
   labels.each((index, value) => {
     labelsValue.push({
@@ -63,9 +67,13 @@ function initTimeline() {
     var flagDom = document.createElement('div')
     flagDom.className = "timeline-flag"
     flagDom.id = "flag" + thingsValue[i].id
-    flagDom.style.left = thingsValue[i].left + 'px'
-    flagDom.onmouseover = function () { }
-    flagDom.onmouseleave = function () { }
+    flagDom.style.left = thingsValue[i].left + 10 + 'px'
+    flagDom.onmouseover = function (e) {
+      showThing(~~e.currentTarget.id.slice(4))
+    }
+    flagDom.onmouseleave = function () {
+      hideThing(0)
+    }
 
     timelineFlags.append(flagDom)
   }
@@ -80,10 +88,20 @@ function initTimeline() {
       }
       left = left < 0 ? 0 : left
       for (let i = 0; i < labelLength; i++) {
-        if (left + sliderWidth > labelsValue[i].left) {
+        if (left > labelsValue[i].left) {
           if (nowYear !== labelsValue[i].year) {
             nowYear = labelsValue[i].year
             changeYear(nowYear)
+          }
+          break
+        }
+      }
+      for (let i = 0; i < thingLength; i++) {
+        if (left > thingsValue[i].left) {
+          if (nowThing !== thingsValue[i].id) {
+            nowThing = thingsValue[i].id
+            showThing(nowThing)
+            hideThing(3)
           }
           break
         }
@@ -131,6 +149,22 @@ function initTimeline() {
       xAxis: ['美国', '中国', '日本', '德国', '英国'],
       series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
     })
+  }
+
+  function showThing(id) {
+    $('#thing-content-content').empty()
+    var nowThing = thingsValue.find(item => item.id === id)
+    thingContent[0].style.left = nowThing.left + 10 + 'px'
+    $('#thing-content-content').append(`<img src="http://iph.href.lu/300x200" alt="占位"><div class="text">${nowThing.context}</div>`)
+    thingContent.fadeIn()
+  }
+
+  var hideThingTime = null
+  function hideThing(delay) {
+    clearTimeout(hideThingTime)
+    hideThingTime = setTimeout(() => {
+      thingContent.fadeOut()
+    }, delay * 1000)
   }
 }
 
