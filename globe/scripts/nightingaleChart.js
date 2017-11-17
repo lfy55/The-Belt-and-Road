@@ -10,7 +10,7 @@ let nightingaleChart = {
         this.__option = {
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c}亿元 ({d}%)",
+                formatter: "{b} :<br/> {c}亿元 ({d}%)",
                 extraCssText: 'box-shadow: 0 0 40px rgba(35,255,227,0.6);',
                 textStyle: {
                     color: 'rgb(34, 246, 218)',
@@ -26,7 +26,7 @@ let nightingaleChart = {
             calculable: true,
             series: [
                 {
-                    name: '经济产品',
+                    // name: '经济产品',
                     type: 'pie',
                     radius: [50, 180],
                     roseType: 'radius',
