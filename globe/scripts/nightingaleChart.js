@@ -42,44 +42,44 @@ let nightingaleChart = {
                         }
                     },
                     itemStyle: {
-                        normal:{
-                            borderWidth:8,
-                            borderColor:'rgba(0,0,0,1)'
+                        normal: {
+                            borderWidth: 8,
+                            borderColor: 'rgba(0,0,0,1)'
                         }
                     },
                     data: [
                         {
                             value: 10, name: '农业', itemStyle: {
                                 normal: {
-                                    color: '#20dac4'
+                                    color: this.__colors[1]
                                 }
                             }
                         },
                         {
                             value: 5, name: '运输邮电业', itemStyle: {
                                 normal: {
-                                    color: '#20efd5'
+                                    color: this.__colors[0]
                                 }
                             }
                         },
                         {
                             value: 15, name: '建筑业', itemStyle: {
                                 normal: {
-                                    color: '#1bbba7'
+                                    color: this.__colors[2]
                                 }
                             }
                         },
                         {
                             value: 25, name: '工业', itemStyle: {
                                 normal: {
-                                    color: '#1ba998'
+                                    color: this.__colors[3]
                                 }
                             }
                         },
                         {
                             value: 20, name: '商业', itemStyle: {
                                 normal: {
-                                    color: '#15887a'
+                                    color: this.__colors[4]
                                 }
                             }
                         }
@@ -90,4 +90,49 @@ let nightingaleChart = {
         };
         this.__chart.setOption(this.__option);
     },
+    upDateChart(data) {
+        this.__chart.setOption({
+            series: [
+                {
+                    data: [
+                        {
+                            value: 10, name: '农业', itemStyle: {
+                                normal: {
+                                    color: this.__colors[1]
+                                }
+                            }
+                        },
+                        {
+                            value: 15, name: '运输邮电业', itemStyle: {
+                                normal: {
+                                    color: this.__colors[0]
+                                }
+                            }
+                        },
+                        {
+                            value: 5, name: '建筑业', itemStyle: {
+                                normal: {
+                                    color: this.__colors[2]
+                                }
+                            }
+                        },
+                        {
+                            value: 20, name: '工业', itemStyle: {
+                                normal: {
+                                    color: this.__colors[3]
+                                }
+                            }
+                        },
+                        {
+                            value: 25, name: '商业', itemStyle: {
+                                normal: {
+                                    color: this.__colors[4]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        })
+    }
 }

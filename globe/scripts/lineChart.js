@@ -66,13 +66,13 @@ let lineChart = {
         };
         this.__chart.setOption(this.__option);
     },
-    upDateChart(data) {    
+    upDateChart(data) {
         this.__chart.setOption({
-          series: [
-            {
-              data: data.dataY
-            }
-          ]
+            series: [
+                {
+                    data: data.dataY
+                }
+            ]
         })
-      }
+    }
 }

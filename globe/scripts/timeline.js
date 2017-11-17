@@ -165,6 +165,10 @@ function initTimeline() {
       series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
     })
 
+    //更新南丁格尔图
+    nightingaleChart.upDateChart({
+      //更新数据，name,value,color
+    })
 
   }
 
