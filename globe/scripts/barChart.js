@@ -74,6 +74,7 @@ var barChart = {
               position: 'top',
               formatter: '{c}亿元',
               fontSize: 14,
+              distance: 15,
               fontFamily: 'liHeiTi',
             },
           },
