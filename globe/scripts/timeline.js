@@ -81,7 +81,7 @@ function initTimeline() {
   function startTimeline() {
     // 初始化折线图
     lineChart.initChart({
-      duration: 5000,
+      duration: 1000*45,
       dataY: ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
     });
 
@@ -128,7 +128,15 @@ function initTimeline() {
     cancelAnimationFrame(animateCount)
     if (nowYear !== e.currentTarget.innerText) {
       nowYear = e.currentTarget.innerText
-      changeYear(nowYear)
+      changeYear(nowYear);
+      let lineChartDataLength = nowYear - 2002 + 1;
+      let lineChartData = ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
+      let lineChartDataShow = lineChartData.splice(0, lineChartDataLength)
+
+      //更新折线图
+      lineChart.upDateChart({
+        dataY: lineChartDataShow
+      })
     }
   })
 
@@ -156,14 +164,7 @@ function initTimeline() {
       series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
     })
 
-    let lineChartDataLength = year - 2002 + 1;
-    let lineChartData = ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
-    let lineChartDataShow = lineChartData.splice(0,lineChartDataLength)
 
-    //更新折线图
-    lineChart.upDateChart({
-      dataY: lineChartDataShow
-    })
   }
 
   function showThing(id) {
