@@ -21,7 +21,7 @@ let nightingaleChart = {
             calculable: true,
             series: [
                 {
-                    name: '半径模式',
+                    name: '经济产品',
                     type: 'pie',
                     radius: [50, 180],
                     roseType: 'radius',
@@ -49,35 +49,35 @@ let nightingaleChart = {
                     },
                     data: [
                         {
-                            value: 10, name: 'rose1', itemStyle: {
+                            value: 10, name: '农业', itemStyle: {
                                 normal: {
                                     color: '#20dac4'
                                 }
                             }
                         },
                         {
-                            value: 5, name: 'rose2', itemStyle: {
+                            value: 5, name: '运输邮电业', itemStyle: {
                                 normal: {
                                     color: '#20efd5'
                                 }
                             }
                         },
                         {
-                            value: 15, name: 'rose3', itemStyle: {
+                            value: 15, name: '建筑业', itemStyle: {
                                 normal: {
                                     color: '#1bbba7'
                                 }
                             }
                         },
                         {
-                            value: 25, name: 'rose4', itemStyle: {
+                            value: 25, name: '工业', itemStyle: {
                                 normal: {
                                     color: '#1ba998'
                                 }
                             }
                         },
                         {
-                            value: 20, name: 'rose5', itemStyle: {
+                            value: 20, name: '商业', itemStyle: {
                                 normal: {
                                     color: '#15887a'
                                 }
