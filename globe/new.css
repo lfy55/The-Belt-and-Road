@@ -216,19 +216,23 @@
 
 #thing-content-content {
   width: 300px;
+  background: rgba(9, 94, 82, 0.85);
   color: #fff;
   font-size: 16px;
   line-height: 1.2;
-  font-family: 'liHeiTi';
   border: 24px solid transparent;
   border-image: url(./images/timeline/thing-border.png) 24/24px repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  text-indent: 40px;
 }
 
 #thing-content-content>img {
   float: left;
   max-width: 280px;
+  margin-bottom: 15px;
 }
