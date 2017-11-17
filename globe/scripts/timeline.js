@@ -81,12 +81,14 @@ function initTimeline() {
   function startTimeline() {
     // 初始化折线图
     lineChart.initChart({
-      duration: 1000*45,
+      duration: 1000 * 45,
       dataY: ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
     });
-
-    function moveSlider() {
-      var left = parseFloat(slider[0].style.left.slice(0, -2)) + 1
+    var startAnimationTimer = performance.now()
+    function moveSlider(timer) {
+      var t = timer - startAnimationTimer
+      // startAnimationTimer = timer
+      var left = t * (maxLeft / 45000)
       left = isNaN(left) ? 1 : left
       if (left >= maxLeft) {
         left = maxLeft
@@ -134,7 +136,7 @@ function initTimeline() {
       let lineChartDataLength = nowYear - 2002 + 1;
       let lineChartData = ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
       let lineChartDataShow = lineChartData.splice(0, lineChartDataLength)
-      
+
       lineChart.upDateChart({
         dataY: lineChartDataShow
       })
