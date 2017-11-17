@@ -4,7 +4,6 @@ let nightingaleChart = {
     __chart: null,
     __colors: ['#20efd5', '#20dac4', '#1bbba7', '#1ba998', '#15887a'],
     __option: {},
-    __duration: 5000,
     initChart: function () {
         this.__dom = document.getElementById('nightingale-chart-content');
         this.__chart = echarts.init(this.__dom);
@@ -14,10 +13,10 @@ let nightingaleChart = {
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
             },
             grid: {
-                top:0,
-                bottom:0,
-                left:0,
-                right:0
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0
             },
             calculable: true,
             series: [
@@ -31,7 +30,7 @@ let nightingaleChart = {
                             show: false
                         },
                         emphasis: {
-                            show: true
+                            show: false
                         }
                     },
                     lableLine: {
@@ -39,18 +38,51 @@ let nightingaleChart = {
                             show: false
                         },
                         emphasis: {
-                            show: true
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        normal:{
+                            borderWidth:8,
+                            borderColor:'rgba(0,0,0,1)'
                         }
                     },
                     data: [
-                        { value: 10, name: 'rose1' },
-                        { value: 5, name: 'rose2' },
-                        { value: 15, name: 'rose3' },
-                        { value: 25, name: 'rose4' },
-                        { value: 20, name: 'rose5' },
-                        { value: 35, name: 'rose6' },
-                        { value: 30, name: 'rose7' },
-                        { value: 40, name: 'rose8' }
+                        {
+                            value: 10, name: 'rose1', itemStyle: {
+                                normal: {
+                                    color: '#20dac4'
+                                }
+                            }
+                        },
+                        {
+                            value: 5, name: 'rose2', itemStyle: {
+                                normal: {
+                                    color: '#20efd5'
+                                }
+                            }
+                        },
+                        {
+                            value: 15, name: 'rose3', itemStyle: {
+                                normal: {
+                                    color: '#1bbba7'
+                                }
+                            }
+                        },
+                        {
+                            value: 25, name: 'rose4', itemStyle: {
+                                normal: {
+                                    color: '#1ba998'
+                                }
+                            }
+                        },
+                        {
+                            value: 20, name: 'rose5', itemStyle: {
+                                normal: {
+                                    color: '#15887a'
+                                }
+                            }
+                        }
                     ]
                 }
             ]

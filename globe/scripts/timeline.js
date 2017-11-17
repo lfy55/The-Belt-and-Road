@@ -129,11 +129,12 @@ function initTimeline() {
     if (nowYear !== e.currentTarget.innerText) {
       nowYear = e.currentTarget.innerText
       changeYear(nowYear);
+
+      //更新折线图
       let lineChartDataLength = nowYear - 2002 + 1;
       let lineChartData = ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
       let lineChartDataShow = lineChartData.splice(0, lineChartDataLength)
-
-      //更新折线图
+      
       lineChart.upDateChart({
         dataY: lineChartDataShow
       })
