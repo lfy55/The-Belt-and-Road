@@ -1,0 +1,73 @@
+@font-face {
+  font-family: 'liHeiTi';
+  src: url("../font/zzgflht.otf");
+}
+
+#title {
+  position: fixed;
+  top: 20px;
+  left: 25px;
+  color: #23ffe3;
+  font-family: 'liHeiTi';
+  font-size: 36px;
+  padding-left: 50px;
+  background: url("../images/title-logo.png") left center no-repeat;
+  background-size: 36px;
+  text-shadow: none;
+  z-index: 1;
+}
+
+#mapContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url("../images/mapbk.png") center no-repeat;
+}
+
+#timeline {
+  position: fixed;
+  width: 80%;
+  height: 50px;
+  bottom: 10px;
+  left: 10%;
+}
+
+#timeline .timeline-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-shadow: 0 0 10px #23ffe3;
+  color: #23ffe3;
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  cursor: pointer;
+}
+
+#timeline-line {
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  box-shadow: 0 0 15px #23ffe3;
+  border-radius: 10px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #23ffe3);
+}
+
+.timeline-point {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: -12.5px;
+  cursor: pointer;
+  background: url("../images/timeline/slibar.png") center center;
+}
+
+.map-point {
+  position: absolute;
+  width: 68px;
+  height: 28px;
+  top: -12.5px;
+  background: url("../images/mapoint.png") center center;
+}
