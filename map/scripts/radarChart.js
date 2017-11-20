@@ -62,7 +62,7 @@ let radarChart = {
                     type: 'radar',
                     itemStyle: {
                         normal: {
-                            color: 'rgba(1,145,134,1)',
+                            color: 'rgba(1,145,134,0.8)',
                             shadowColor: 'rgba(0, 255, 0, 0.8)',
                             shadowBlur: 20
                         },
@@ -79,7 +79,7 @@ let radarChart = {
                             name: '进口量',
                             areaStyle: {
                                 normal: {
-                                    color: 'rgba(1,145,134, 0.7)'
+                                    color: 'rgba(1,180,220, 0.6)'
                                 }
                             }
                         },
@@ -88,7 +88,7 @@ let radarChart = {
                             name: '出口量',
                             areaStyle: {
                                 normal: {
-                                    color: 'rgba(2,58,57,0.7)'
+                                    color: 'rgba(2,58,57,0.5)'
                                 }
                             }
                         }
@@ -97,13 +97,5 @@ let radarChart = {
             ]
         };
         this.__chart.setOption(this.__option);
-    },
-    clearChart(data) {
-        this.__chart.setOption({
-            series: [
-                {
-                }
-            ]
-        })
     }
 }
