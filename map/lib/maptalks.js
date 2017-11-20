@@ -12625,6 +12625,7 @@
         };
 
         CubicBezierCurve.prototype._paintOn = function _paintOn(ctx, points, lineOpacity) {
+            if(!points[0])retutn;
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
             this._bezierCurve(ctx, points, lineOpacity);
@@ -12660,6 +12661,7 @@
         };
 
         QuadBezierCurve.prototype._paintOn = function _paintOn(ctx, points, lineOpacity) {
+            if(!points[0])return;
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
             this._quadraticCurve(ctx, points, lineOpacity);
