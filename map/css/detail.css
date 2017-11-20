@@ -1,0 +1,54 @@
+body {
+  background: url("../images/mapbk.png") center no-repeat;
+}
+
+#gdp_line {
+  position: fixed;
+  width: 80%;
+  height: 100px;
+  bottom: 60px;
+  left: 10%;
+}
+
+#gdp_line_content {
+  width: 100%;
+  height: 100%;
+}
+
+#menu_wrap {
+  position: fixed;
+  top: 95px;
+  left: 680px;
+}
+
+#menu_wrap .menu_item {
+  float: left;
+  margin-left: 60px;
+  width: 160px;
+  height: 40px;
+  background: url("../images/detail/menu_bg.png") center no-repeat;
+  cursor: pointer;
+  text-align: center;
+  line-height: 40px;
+  font-size: 18px;
+  color: #fff;
+}
+
+#menu_wrap .menu_item.selected {
+  background-image: url("../images/detail/menu_bg-select.png");
+}
+
+#chart_wrap {
+  position: fixed;
+  width: 843px;
+  height: 637px;
+  left: 933px;
+  top: 231px;
+  background: url("../images/detail/chart_wrap_bg.png") center no-repeat;
+}
+#chart_wrap #chart_content {
+  width: 780px;
+  height: 597px;
+  margin-left: 37px;
+  margin-top: 31px;
+}
