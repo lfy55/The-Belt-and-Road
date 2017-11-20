@@ -25,7 +25,7 @@ $("#menu_wrap").on("click", '.menu_item', function (e) {
       })
       break
     case "item_2":
-      pieChart.initChart()
+      codeChart.initChart()
       break
     default:
       console.log($_click.attr("id"))
