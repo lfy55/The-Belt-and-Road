@@ -1,0 +1,117 @@
+body {
+  background: url("../images/mapbk.png") center no-repeat;
+}
+
+#gdp_line {
+  position: fixed;
+  width: 80%;
+  height: 100px;
+  bottom: 60px;
+  left: 10%;
+}
+
+#gdp_line_content {
+  width: 100%;
+  height: 100%;
+}
+
+#menu_wrap {
+  position: fixed;
+  top: 95px;
+  left: 680px;
+}
+
+#menu_wrap .menu_item {
+  float: left;
+  margin-left: 60px;
+  width: 160px;
+  height: 40px;
+  background: url("../images/detail/menu_bg.png") center no-repeat;
+  cursor: pointer;
+  text-align: center;
+  line-height: 40px;
+  font-size: 18px;
+  color: #fff;
+}
+
+#menu_wrap .menu_item.selected {
+  background-image: url("../images/detail/menu_bg-select.png");
+}
+
+#chart_wrap {
+  position: fixed;
+  width: 843px;
+  height: 637px;
+  left: 933px;
+  top: 231px;
+  background: url("../images/detail/chart_wrap_bg.png") center no-repeat;
+}
+
+#chart_wrap #chart_content {
+  width: 780px;
+  height: 597px;
+  margin-left: 37px;
+  margin-top: 31px;
+}
+
+#map {
+  position: fixed;
+}
+
+#detail_wrap {
+  position: fixed;
+  top: 474px;
+  left: 160px;
+}
+
+#detail_wrap .subtile {
+  color: #31e0e1;
+  font-size: 36px;
+  font-family: "SimHei";
+  text-shadow: 0 0 80px #00ffe3;
+}
+
+#detail_wrap .detail_content {
+  width: 740px;
+  height: 340px;
+  margin-top: 20px;
+  font-family: "SimHei";
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: #999999;
+  font-size: 20px;
+  text-indent: 1.2em;
+  padding: 0 10px 0 0;
+  /* white-space: pre-line; */
+}
+
+
+/* 设置滚动条的样式 */
+
+#detail_wrap .detail_content::-webkit-scrollbar {
+  width: 6px;
+}
+
+
+/* 滚动槽 */
+
+#detail_wrap .detail_content::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 10px;
+}
+
+
+/* 滚动条滑块 */
+
+#detail_wrap .detail_content::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #31e0e1;
+}
+
+#detail_wrap .detail_content p {
+  margin: 10px 0;
+}
+
+#detail_wrap .detail_content p:first-of-type {
+  margin-top: 0;
+}

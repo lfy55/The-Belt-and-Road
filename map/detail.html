@@ -1,0 +1,90 @@
+<html>
+
+<head>
+  <title>The map of economic complexity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+  <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+  <meta charset="utf-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/new.css" rel="stylesheet" type="text/css">
+  <link href="css/detail.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script>
+</head>
+
+<body>
+
+  <!-- 标题 -->
+  <div id="title">一带一路 · 大事件可视化系统</div>
+  <!-- 左侧地图 -->
+  <div id="map"></div>
+  <!-- 国家详情 -->
+  <div id="detail_wrap">
+    <div class="subtile">
+      <span id="country_name">哈萨克斯坦</span>·国家概述
+    </div>
+    <div class="detail_content">
+      <p>【国名】哈萨克斯坦共和国，简称哈萨克斯坦</p>
+      <p>【地理位置】位于亚洲中部。北邻俄罗斯，南与乌兹别克斯坦、土库曼斯坦、吉尔吉斯斯坦接壤，西濒里海，东接中国。</p>
+      <p>【面积】272.49万平方公里</p>
+      <p>【人口】1760.8万（截至2015年10月）</p>
+      <p>【宗教】50%以上居民信奉伊斯兰教（逊尼派）。此外，还有东正教、天主教和佛教等。</p>
+      <p>【民族】140个，其中哈萨克族占65.5%，俄罗斯族占21.4%。</p>
+      <p>【官方语言】哈萨克语为国语，官方语言为哈萨克语和俄语。</p>
+      <p>【重大节日】新年（1月1日），纳乌鲁斯节（波斯语和突厥语国家的春节，3月22日），祖国保卫者日（5月7日），宪法日（8月30日），独立日（12月16日）。此外还有肉孜节、古尔邦节等宗教节日。</p>
+      <p>【首都】阿斯塔纳</p>
+      <p>【货币】坚戈（1美元约合360坚戈）</p>
+      <p>【行政区划】全国设14个州、2个直辖市（首都阿斯塔纳和原首都阿拉木图）</p>
+      <p>【政治】哈政局稳定。2012年1月，哈举行议会下院选举，纳扎尔巴耶夫总统领导的“祖国之光”党获议会下院绝对多数席位，“光明道路”党、共产主义人民党等进入议会。2015年4月，哈举行总统大选，纳扎尔巴耶夫总统以绝对优势胜选连任。</p>
+      <p>【经济】哈经济以石油、采矿、煤炭和农牧业为主。2014年哈国内生产总值1784亿美元，同比增长4.3%，2015年哈经济增速1.2%。人均GDP达1万多美元。GDP总量居独联体第二，仅次于俄罗斯。</p>
+    </div>
+  </div>
+  <!-- 右侧菜单 -->
+  <div id="menu_wrap">
+    <div class="menu_item selected" id="item_1">矿物资源</div>
+    <div class="menu_item" id="item_2">交通运输</div>
+    <div class="menu_item" id="item_3">人力资源</div>
+    <div class="menu_item" id="item_4">组织概况</div>
+    <div class="menu_item" id="item_5">矿物资源</div>
+  </div>
+  <!-- 右侧图表 -->
+  <div id="chart_wrap">
+    <div id="chart_content"></div>
+  </div>
+  <!-- 下侧折线图 -->
+  <div id="gdp_line">
+    <div id="gdp_line_content"></div>
+  </div>
+
+  <!-- GDP -->
+  <div id="timeline">
+    <div id="timeline-line">
+    </div>
+    <div class="timeline-label">
+      <div id="label1">2002</div>
+      <div id="label2">2003</div>
+      <div id="label3">2004</div>
+      <div id="label4">2005</div>
+      <div id="label5">2006</div>
+      <div id="label6">2007</div>
+      <div id="label7">2008</div>
+      <div id="label8">2009</div>
+      <div id="label9">2010</div>
+      <div id="label10">2011</div>
+      <div id="label11">2012</div>
+      <div id="label11">2013</div>
+      <div id="label11">2014</div>
+      <div id="label11">2015</div>
+      <div id="label11">2016</div>
+    </div>
+  </div>
+
+  <script src="./lib/echarts.min.js"></script>
+
+  <script src="./scripts/gdpLine.js"></script>
+  <script src="./scripts/radarChart.js"></script>
+  <script src="./scripts/detail.js"></script>
+  
+</body>
+
+</html>

@@ -150,6 +150,14 @@
   height: 100%;
 }
 
+#nightingale-chart-text {
+  color: #23ffe3;
+  font-family: 'liHeiTi';
+  font-size: 24px;
+  text-align: center;
+  margin-top: 30px;
+}
+
 #timeline {
   position: fixed;
   width: 80%;
