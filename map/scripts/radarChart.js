@@ -3,12 +3,16 @@ let radarChart = {
     __dom: null,
     __chart: null,
     __option: {},
-    initChart: function () {
+    initChart: function (data) {
         this.__dom = document.getElementById('chart_content');
         this.__chart = echarts.init(this.__dom);
         this.__option = {
-            title: {
-                text: '自定义雷达图'
+            tooltip: {
+                textStyle: {
+                    color: 'rgb(34, 246, 218)',
+                    fontSize: 18
+                },
+                extraCssText: 'box-shadow: 0 0 40px rgba(35,255,227,0.6);',
             },
             radar: [
                 {
@@ -33,8 +37,8 @@ let radarChart = {
                     },
                     splitArea: {
                         areaStyle: {
-                            color: ['rgba(34, 246, 218, 1)',
-                                'rgba(0,0,0, 1)', 'rgba(0,0,0, 1)',
+                            color: ['rgba(35,255,227,1)',
+                                'rgba(0,0,0,1)', 'rgba(0,0,0,1)',
                                 'rgba(0,0,0,1)', 'rgba(0,0,0,1)'],
                             shadowColor: 'rgba(0, 255, 0, 0.1)',
                             shadowBlur: 20
@@ -58,8 +62,8 @@ let radarChart = {
                     type: 'radar',
                     itemStyle: {
                         normal: {
-                            color: 'green',
-                            shadowColor: '',
+                            color: 'rgba(1,145,134,1)',
+                            shadowColor: 'rgba(0, 255, 0, 0.8)',
                             shadowBlur: 20
                         },
                         emphasis: {
@@ -71,20 +75,20 @@ let radarChart = {
                     },
                     data: [
                         {
-                            value: [100, 8, 0.40, -180, 2000],
-                            name: '图一',
+                            value: data.data1,
+                            name: '进口量',
                             areaStyle: {
                                 normal: {
-                                    color: 'rgba(34, 246, 218, 0.5)'
+                                    color: 'rgba(1,145,134, 0.7)'
                                 }
                             }
                         },
                         {
-                            value: [60, 5, 0.30, -100, 1500],
-                            name: '图二',
+                            value: data.data2,
+                            name: '出口量',
                             areaStyle: {
                                 normal: {
-                                    color: 'rgba(34, 246, 218, 0.7)'
+                                    color: 'rgba(2,58,57,0.7)'
                                 }
                             }
                         }
