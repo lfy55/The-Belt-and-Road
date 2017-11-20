@@ -3,3 +3,24 @@ lineChart.initChart({
 });
 
 radarChart.initChart();
+
+$("#menu_wrap").on("click", '.menu_item', function (e) {
+  var $_click = $(e.currentTarget)
+  if ($_click.hasClass('selected')) {
+    return
+  }
+  $("#menu_wrap .selected").removeClass("selected")
+  $_click.addClass('selected')
+
+  switch ($_click.attr("id")) {
+    case "item_1":
+      radarChart.initChart()
+      break
+    case "item_2":
+      radarChart.initChart()
+      break
+    default:
+      console.log($_click.attr("id"))
+      break
+  }
+})
