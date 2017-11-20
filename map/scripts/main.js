@@ -88,10 +88,12 @@
             geo._geometries.splice(53, 1);
             geo.setId(null);
             geo.config('antiMeridian', 'split');
+            geo.config('shadowBlur', 20);
+            geo.config('shadowColor', '#23ffe3');
             geo.setSymbol({
                 lineColor: '#23ffe3',
                 lineWidth: 2,
-                polygonFill: 'rgba(35,256,237,0.3)'
+                polygonFill: 'rgba(35,256,237,0.3)',
             });
             return geo;
         });
