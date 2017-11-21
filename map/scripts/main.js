@@ -212,15 +212,15 @@
                 }
                 if (ri == road1.length) {
                     new maptalks.Marker(
-                        [108.56, 40], {
+                        [108.56, 50], {
                             'properties': {
                                 'name': '丝绸之路经济带'
                             },
                             'symbol': {
-                                'textFaceName': 'liHeiTi',
+                                'textFaceName': 'LiSu',
                                 'textName': '{name}',
                                 'textSize': 22,
-                                'textFill': '#993333',
+                                'textFill': '#990000',
                             }
                         }
                     ).addTo(vectorlayer2);
@@ -286,15 +286,15 @@
                 }
                 if (rj == road2.length) {
                     new maptalks.Marker(
-                        [58.56, -3], {
+                        [58.56, -8], {
                             'properties': {
-                                'name': '丝绸之路海上经济带'
+                                'name': '海上丝绸之路'
                             },
                             'symbol': {
-                                'textFaceName': 'liHeiTi',
+                                'textFaceName': 'LiSu',
                                 'textName': '{name}', //value from name in geometry's properties
                                 'textSize': 22, //'bold', 'bolder'
-                                'textFill': '#993333',
+                                'textFill': '#990000',
                             }
                         }
                     ).addTo(vectorlayer2);
@@ -323,8 +323,8 @@
                 }, {
                     'textFaceName': 'liHeiTi',
                     'textName': '{name}', //value from name in geometry's properties
-                    'textSize': 16, //'bold', 'bolder'
-                    'textFill': '#993333',
+                    'textSize': 14,
+                    'textFill': '#00CC66',
                 }]
             }).addTo(vectorlayer2);
         }
