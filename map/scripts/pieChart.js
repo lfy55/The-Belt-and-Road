@@ -7,29 +7,12 @@ let pieChart = {
     this.__dom = document.getElementById('chart_content');
     this.__chart = echarts.init(this.__dom);
     this.__option = {
-      backgroundColor: '#2c343c',
-
       title: {
-        text: 'Customized Pie',
-        left: 'center',
-        top: 20,
-        textStyle: {
-          color: '#ccc'
-        }
+        show: false,
       },
-
       tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-
-      visualMap: {
-        show: false,
-        min: 80,
-        max: 600,
-        inRange: {
-          colorLightness: [0, 1]
-        }
       },
       series: [
         {
