@@ -2,7 +2,9 @@ function initTimeline() {
 
 
   // 初始化南丁格尔图
-  nightingaleChart.initChart();
+  nightingaleChart.initChart({
+    data: [20, 15, 25, 35, 5]
+  });
 
   barChart.initChart({
     xAxis: ['美国', '中国', '日本', '德国', '英国'],
@@ -82,7 +84,7 @@ function initTimeline() {
     // 初始化折线图
     lineChart.initChart({
       duration: 1000 * 45,
-      dataY: ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
+      dataY: ['120', '100', '150', '100', '250', '330', '150', '400', '300', '330', '250', '400']
     });
     var startAnimationTimer = performance.now()
     function moveSlider(timer) {
@@ -167,9 +169,16 @@ function initTimeline() {
       series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
     })
 
+    let data1 = randomNum(1, 100);
+    let data2 = randomNum(1, 100 - data1);
+    let data3 = randomNum(1, 100 - data1 - data2);
+    let data4 = randomNum(1, 100 - data1 - data2 - data3);
+    let data5 = 100 - data1 - data2 - data3 - data4;
+
     //更新南丁格尔图
     nightingaleChart.upDateChart({
       //更新数据，name,value,color
+      data: [data1, data2, data3, data4, data5]
     })
 
   }
