@@ -211,19 +211,37 @@
                     ri++;
                 }
                 if (ri == road1.length) {
-                    new maptalks.Marker(
+                    var text = new maptalks.Marker(
                         [108.56, 50], {
                             'properties': {
                                 'name': '丝绸之路经济带'
                             },
-                            'symbol': {
+                            'symbol': [{
+                                'markerType': 'rectangle',
+                                'markerFill': 'rgba(0,0,0,0.6)',
+                                'markerLineColor': '#fff',
+                                'markerLineWidth': '2',
+                                'markerHeight': 30,
+                                'markerWidth': 200,
+                                'markerDx': -100,
+                                'markerDy': -18
+                            }, {
                                 'textFaceName': 'LiSu',
-                                'textName': '{name}',
+                                'textName': '{name}', //value from name in geometry's properties
                                 'textSize': 22,
-                                'textFill': '#990000',
-                            }
+                                'textFill': '#00cc99',
+                            }]
                         }
                     ).addTo(vectorlayer2);
+                    text.setInfoWindow({
+                        'dx': 270,
+                        'dy': 100,
+                        'animation': 'scale',
+                        'single': false,
+                        'content': '丝绸之路经济带重点畅通中国经中亚、俄罗斯至欧洲（波罗的海），中国经中亚、西亚至波斯湾地中海，中国至东南亚、南亚、印度洋。'
+                    });
+
+                    text.openInfoWindow();
                 }
             });
         }, 650);
@@ -285,19 +303,38 @@
                     rj++;
                 }
                 if (rj == road2.length) {
-                    new maptalks.Marker(
-                        [58.56, -8], {
+                    var text2 = new maptalks.Marker(
+                        [60.56, -8], {
                             'properties': {
-                                'name': '海上丝绸之路'
+                                'name': '21世纪海上丝绸之路'
                             },
-                            'symbol': {
+                            'symbol': [{
+                                'markerType': 'rectangle',
+                                'markerFill': 'rgba(0,0,0,0.6)',
+                                'markerLineColor': '#fff',
+                                'markerLineWidth': '2',
+                                'markerHeight': 30,
+                                'markerWidth': 240,
+                                'markerDx': -120,
+                                'markerDy': -18
+                            }, {
                                 'textFaceName': 'LiSu',
                                 'textName': '{name}', //value from name in geometry's properties
-                                'textSize': 22, //'bold', 'bolder'
-                                'textFill': '#990000',
-                            }
+                                'textSize': 22,
+                                'textFill': '#00cc99',
+                            }]
                         }
                     ).addTo(vectorlayer2);
+                    // text2.animateShow();
+                    text2.setInfoWindow({
+                        'dx': 120,
+                        'dy': 180,
+                        'animation': 'scale',
+                        'single': false,
+                        'content': '21世纪海上丝绸之路重点方向是从中国沿海港口过南海到印度洋，延伸至欧洲，从中国沿海港口过南海到南太平洋。'
+                    });
+
+                    text2.openInfoWindow();
                 }
             });
         }, 650);
