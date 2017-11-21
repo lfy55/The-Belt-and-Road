@@ -56,6 +56,8 @@ body {
 
 #map {
   position: fixed;
+  left: 155px;
+  top: 123px;
 }
 
 #detail_wrap {
