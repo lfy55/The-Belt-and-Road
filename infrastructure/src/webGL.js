@@ -39,6 +39,7 @@ var minRot = 1.5882496193366493;
 var maxRot = 6.494548660368968;
 var hotspot_alt1 = new THREE.Object3D(),
 	hotspot_alt2 = new THREE.Object3D();
+var currentTime = 0.0;
 
 window.initWebGL = function () {
 	console.log("Start WebGL experience.");
@@ -3669,7 +3670,6 @@ window.initWebGL = function () {
 
 			//wangjue
 			//currentTime = audio.getCurrentTime("speech");
-			currentTime = 1.5;
 
 			// replace with call to audio.getDuration(s);
 			//wangjue
@@ -3677,7 +3677,7 @@ window.initWebGL = function () {
 			// 	pauseSpeech();
 			// }
 
-			//console.log("SPEECH TIME: " + currentTime);
+			// console.log("SPEECH TIME: " + currentTime);
 			var index = 0;
 			if (hotspot.event_data) {
 				index = hotspot.event_data.id;
@@ -3706,6 +3706,7 @@ window.initWebGL = function () {
 				}
 			}
 
+			if (playSpeed < 0.06) playSpeed = 0.06;
 
 		} else {
 			playSpeed = 0;
@@ -3767,11 +3768,13 @@ window.initWebGL = function () {
 				endRot = currentHotSpotRot;
 				startTime = prevHotSpotTime;
 				endTime = currentHotSpotTime;
+				currentTime = prevHotSpotTime;
 			} else {
 				startRot = currentHotSpotRot;
 				endRot = nextHotSpotRot;
 				startTime = currentHotSpotTime;
 				endTime = nextHotSpotTime;
+				currentTime = currentHotSpotTime;
 			}
 
 			totalDistance = Math.abs(endRot - startRot);
