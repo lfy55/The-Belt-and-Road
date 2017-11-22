@@ -131,3 +131,55 @@
   width: 100%;
   height: 100%;
 }
+
+#engineeringDetail_wrap {
+  position: fixed;
+  right: 30px;
+  top: 300px;
+  width: 320px;
+  height: 630px;
+  z-index: 300;
+}
+
+#engineeringDetail_wrap .leftSubTitle {
+  font-size: 24px;
+}
+
+#engineeringDetail_wrap #engineering_wrap {
+  position: absolute;
+  top: 62px;
+  bottom: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#engineeringDetail_wrap #engineering_wrap .hasBorder {
+  width: 100%;
+  height: 200px;
+  box-sizing: border-box;
+  border: 12px solid transparent;
+  border-image: url("../images/thing-border.png") 24/18px repeat;
+}
+
+/* 设置滚动条的样式 */
+
+#engineering_wrap::-webkit-scrollbar {
+  width: 6px;
+}
+
+
+/* 滚动槽 */
+
+#engineering_wrap::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 10px;
+}
+
+
+/* 滚动条滑块 */
+
+#engineering_wrap::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #31e0e1;
+}
