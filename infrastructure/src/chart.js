@@ -1,0 +1,2 @@
+barChart.initChart()
+lineChart.initChart()
