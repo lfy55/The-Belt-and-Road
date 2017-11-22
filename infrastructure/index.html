@@ -2,97 +2,172 @@
 <html>
 
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>War of 1996 | Independence Day: Resurgence</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>War of 1996 | Independence Day: Resurgence</title>
 
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/chart.css">
 
-	<!-- core libs -->
-	<script src="libs/jquery-1.11.3.min.js"></script>
-	<!-- <script src="libs/jquery.validate.min.js"></script> -->
-	<!-- <script src="libs/stats.min.js"></script> -->
-	<script src="libs/three.min.js"></script>
-	<script src="libs/Tween.js"></script>
-	<script src="src/webGL.js"></script>
-	<script src="src/noWebGL.js"></script>
-	<script src="src/audio.js"></script>
-	<script src="data/data.js"></script>
+  <!-- core libs -->
+  <script src="libs/jquery-1.11.3.min.js"></script>
+  <!-- <script src="libs/jquery.validate.min.js"></script> -->
+  <!-- <script src="libs/stats.min.js"></script> -->
+  <script src="libs/three.min.js"></script>
+  <script src="libs/Tween.js"></script>
+  <script src="src/webGL.js"></script>
+  <script src="src/noWebGL.js"></script>
+  <script src="src/audio.js"></script>
+  <script src="data/data.js"></script>
 
-	<!-- shaders -->
-	<script src="libs/shaders/IDRGBShiftShader.js"></script>
+  <!-- shaders -->
+  <script src="libs/shaders/IDRGBShiftShader.js"></script>
 
-	<script>
-		window.domain = 'http://www.warof1996.com';
-	</script>
+  <script>
+    window.domain = 'http://www.warof1996.com';
+  </script>
 </head>
 
 <body>
 
-	<div class="container">
-		<section id="webgl-content"></section>
-		<section id="no-webgl-content">
-			<div id="gallery">
-				<ul id="gallery-buttons">
-					<li id="gallery-back-button">
-						<span></span>
-					</li>
-					<li id="gallery-next-button">
-						<span></span>
-					</li>
-				</ul>
-				<div id="gallery-asset-container"></div>
-			</div>
-		</section>
-		<section id="right-content">
-			<div class="synopsis-title"></div>
-			<div class="synopsis"></div>
-			<div class="view-synopsis-container">
-				<div id="hide-synopsis"></div>
-			</div>
-		</section>
-		<section id="left-content">
-			<div class="event">
-				<div class="event-title detail-title"></div>
-				<div class="event-text detail"></div>
-			</div>
-			<div class="date">
-				<div class="date-title detail-title"></div>
-				<div class="date-text detail"></div>
-			</div>
-						<div class="view-synopsis-container">
-				<div id="view-synopsis"></div>
-			</div>
-			<div class="download-title detail-title" data-file=""></div>
-			<div class="video-title detail-title" data-file=""></div>
+  <div class="container">
+    <section id="webgl-content"></section>
+    <section id="no-webgl-content">
+      <div id="gallery">
+        <ul id="gallery-buttons">
+          <li id="gallery-back-button">
+            <span></span>
+          </li>
+          <li id="gallery-next-button">
+            <span></span>
+          </li>
+        </ul>
+        <div id="gallery-asset-container"></div>
+      </div>
+    </section>
+    <section id="right-content">
+      <div class="synopsis-title"></div>
+      <div class="synopsis"></div>
+      <div class="view-synopsis-container">
+        <div id="hide-synopsis"></div>
+      </div>
+    </section>
+    <section id="left-content">
+      <div class="event">
+        <div class="event-title detail-title"></div>
+        <div class="event-text detail"></div>
+      </div>
+      <div class="date">
+        <div class="date-title detail-title"></div>
+        <div class="date-text detail"></div>
+      </div>
+      <div class="view-synopsis-container">
+        <div id="view-synopsis"></div>
+      </div>
+      <div class="download-title detail-title" data-file=""></div>
+      <div class="video-title detail-title" data-file=""></div>
 
-		</section>
-		<ul id="date-content" class="noselect">
-			<li class="month number">01</li>
-			<li class="divider-x">x</li>
-			<li class="day number">01</li>
-			<li class="divider-x">x</li>
-			<li class="year number">96</li>
-		</ul>
-		<div id="buttons">
-			<div id="play-button" class="button">
-				<img class="desktop_backer" src="assets/images/play.png" />
-				<img class="mobile_backer" src="assets/images/mobile_button_backer_orange.png" />
-				<span></span>
-			</div>
-			<div id="explore-button" class="button">
-				<img class="desktop_backer" src="assets/images/pause.png" />
-				<img class="mobile_backer" src="assets/images/mobile_button_backer.png" />
-				<span></span>
-			</div>
-		</div>
-		<div id="preview">
-			<img id="preview-image" src="" />
-			<div class="preview-text"></div>
-			<div class="preview-detail"></div>
-		</div>
-	</div>
+    </section>
+    <ul id="date-content" class="noselect">
+      <li class="month number">01</li>
+      <li class="divider-x">x</li>
+      <li class="day number">01</li>
+      <li class="divider-x">x</li>
+      <li class="year number">96</li>
+    </ul>
+    <div id="buttons">
+      <!-- 标题 -->
+      <div id="title">一带一路 · 工程项目概览</div>
+      <div id="countryList_wrap">
+        <div class="leftSubTitle">援建国家项目列表</div>
+        <div id="countryList">
+          <div class="list_item">
+            <div class="top5"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5 notShow"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">中国</div>
+            <div class="value">1,583,246,478</div>
+          </div>
+        </div>
+      </div>
+      <div id="engineeringType_wrap">
+        <div class="leftSubTitle">工程项目类型</div>
+        <div id="barChart_wrap">
+          <div id="barChart"></div>
+        </div>
+      </div>
+      <div id="people_wrap">
+        <div class="leftSubTitle">援建人数增长</div>
+        <div id="lineChart_wrap">
+          <div id="lineChart"></div>
+        </div>
+      </div>
+    </div>
+    <div id="preview">
+      <img id="preview-image" src="" />
+      <div class="preview-text"></div>
+      <div class="preview-detail"></div>
+    </div>
+  </div>
 
-	<script src="src/main.js"></script>
+  <script src="libs/echarts.min.js"></script>
+
+  <script src="src/bar.js"></script>
+  <script src="src/line.js"></script>
+  <script src="src/chart.js"></script>
+  <script src="src/main.js"></script>
 
 </html>
