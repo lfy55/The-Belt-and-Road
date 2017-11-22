@@ -4033,6 +4033,9 @@
             }
             var style = this._getStyle();
             this._prepareContext(ctx);
+            if(isGradient(style['polygonFill'])){
+               style['polygonGradientExtent'] = this.getPainter().getContainerExtent();
+            }
             if (this.geometry.type === 'LineString') {
                 var paintParams = this._getPaintParams(style['lineDx'], style['lineDy']);
                 if (!paintParams) {
