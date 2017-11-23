@@ -120,8 +120,11 @@ var table = [
 ];
 
 var camera, scene, renderer;
-var controls;
+var controls, inControll = true;
+var lastHotpot = {};
+var currentObject;
 
+var position3ds = {};
 var objects = [];
 var targets = {
     table: [],
@@ -147,13 +150,27 @@ function init() {
     for (var i = 0; i < table.length; i += 5) {
 
         var element = document.createElement('div');
+        element.id = i;
         element.className = 'element';
         element.style.backgroundColor = 'rgba(0,127,127,' + (Math.random() * 0.5 + 0.25) + ')';
+
+        var board = document.createElement('div');
+        board.className = 'board';
+        element.appendChild(board);
+
+        var video = document.createElement('video');
+        video.className = 'video';
+        element.appendChild(video);
+        element.video = video;
+
+        var card = document.createElement('div');
+        card.className = 'card';
+        element.appendChild(card);
 
         var number = document.createElement('div');
         number.className = 'number';
         number.textContent = (i / 5) + 1;
-        element.appendChild(number);
+        card.appendChild(number);
 
         // var symbol = document.createElement('div');
         // symbol.className = 'symbol';
@@ -162,46 +179,95 @@ function init() {
         geosymbol.className = 'geosymbol';
         geosymbol.src = './assets/geos/1.png';
         geosymbol.width = "90";
-        element.appendChild(geosymbol);
+        card.appendChild(geosymbol);
         var flag = document.createElement('img');
         flag.className = 'flag';
         flag.src = './assets/flags/1.png';
         flag.width = "24";
-        element.appendChild(flag);
+        card.appendChild(flag);
         var cname = document.createElement('div');
         cname.className = 'cname2';
         cname.innerHTML = '哈萨克斯坦';
-        element.appendChild(cname);
+        card.appendChild(cname);
         var ename = document.createElement('div');
         ename.className = 'ename';
         ename.innerHTML = 'Kazakhstan';
-        element.appendChild(ename);
+        card.appendChild(ename);
         var attr1 = document.createElement('div');
         attr1.className = 'attr-title1';
         attr1.innerHTML = '人口数量：';
-        element.appendChild(attr1);
+        card.appendChild(attr1);
         var attr2 = document.createElement('div');
         attr2.className = 'attr-title2';
         attr2.innerHTML = '官方语言：';
-        element.appendChild(attr2);
+        card.appendChild(attr2);
         var val1 = document.createElement('div');
         val1.className = 'attr-value1';
         val1.innerHTML = '1300万';
-        element.appendChild(val1);
+        card.appendChild(val1);
         var val2 = document.createElement('div');
         val2.className = 'attr-value2';
         val2.innerHTML = '哈萨克语';
-        element.appendChild(val2);
+        card.appendChild(val2);
         var search = document.createElement('img');
         search.className = 'search-icon';
         search.src = './assets/search.png';
         search.width = "10";
-        element.appendChild(search);
+        card.appendChild(search);
         var star = document.createElement('img');
         star.className = 'star-icon';
         star.src = './assets/star.png';
         star.width = "10";
-        element.appendChild(star);
+        card.appendChild(star);
+        var _self = this;
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!currentObject && !inControll)
+                return;
+
+            if (lastHotpot.element) {
+                lastHotpot.element.className = 'element';
+                lastHotpot.element.video.src = undefined;
+            }
+
+            event.currentTarget.className = 'element show';
+            event.currentTarget.video.src = './assets/video/video.mp4';
+            event.currentTarget.video.play();
+            lastHotpot.element = event.currentTarget;
+            if (inControll) {
+                lastHotpot.position = camera.position.clone();
+                lastHotpot.rotation = camera.rotation.clone();
+            }
+            inControll = false;
+            var position3d = position3ds[event.currentTarget.id];
+            var verctorR = new THREE.Vector3(0, 0, 1);
+            verctorR.applyAxisAngle(new THREE.Vector3(1, 0, 0), position3d.rotation.x);
+            verctorR.applyAxisAngle(new THREE.Vector3(0, 1, 0), position3d.rotation.y);
+            verctorR.applyAxisAngle(new THREE.Vector3(0, 0, 1), position3d.rotation.z);
+            new TWEEN.Tween(camera.position)
+                .to({
+                    x: position3d.position.x + 500 * verctorR.x,
+                    y: position3d.position.y + 500 * verctorR.y,
+                    z: position3d.position.z + 500 * verctorR.z,
+                }, 1000)
+                .start();
+            new TWEEN.Tween(camera.rotation)
+                .to({
+                    x: position3d.rotation.x,
+                    y: position3d.rotation.y,
+                    z: position3d.rotation.z
+                }, 1000)
+                .onComplete(() => {
+                    currentObject = lastHotpot.element;
+                })
+                .start();
+            new TWEEN.Tween(_self)
+                .to({}, 1200)
+                .onUpdate(render)
+                .start();
+        });
 
         // var details = document.createElement('div');
         // details.className = 'details';
@@ -297,7 +363,38 @@ function init() {
     renderer.domElement.style.position = 'absolute';
     document.getElementById('container').appendChild(renderer.domElement);
 
-    //
+    renderer.domElement.addEventListener('click', () => {
+        if (!inControll && lastHotpot.position) {
+            currentObject = undefined;
+            if (lastHotpot.element) {
+                lastHotpot.element.className = 'element';
+                lastHotpot.element = undefined;
+            }
+
+            new TWEEN.Tween(camera.position)
+                .to({
+                    x: lastHotpot.position.x,
+                    y: lastHotpot.position.y,
+                    z: lastHotpot.position.z
+                }, 1200)
+                .easing(TWEEN.Easing.Exponential.Out)
+                .start();
+
+            new TWEEN.Tween(camera.rotation)
+                .to({
+                    x: lastHotpot.rotation.x,
+                    y: lastHotpot.rotation.y,
+                    z: lastHotpot.rotation.z
+                }, 1200)
+                .onComplete(() => inControll = true)
+                .easing(TWEEN.Easing.Exponential.Out)
+                .start();
+            new TWEEN.Tween(this)
+                .to({}, 1200)
+                .onUpdate(render)
+                .start();
+        }
+    });
 
     controls = new THREE.TrackballControls(camera, renderer.domElement);
     controls.rotateSpeed = 0.5;
@@ -349,6 +446,7 @@ function transform(targets, duration) {
 
         var object = objects[i];
         var target = targets[i];
+        position3ds[object.element.id] = target;
 
         new TWEEN.Tween(object.position)
             .to({
@@ -403,12 +501,26 @@ function animate() {
 
     TWEEN.update();
 
-    controls.update();
+    if (inControll)
+        controls.update();
 
 }
 
 function render() {
 
-    renderer.render(scene, camera);
+    if (currentObject) {
+        objects.forEach(object => {
+            if (object.element.id !== currentObject.id) {
+                object.element.style.opacity = 0.2;
+            } else {
+                object.element.style.opacity = 1.0;
+            }
+        });
+    } else {
+        objects.forEach(object => {
+            object.element.style.opacity = 1.0;
+        });
+    }
 
+    renderer.render(scene, camera);
 }
