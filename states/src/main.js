@@ -136,6 +136,8 @@ animate();
 function init() {
 
     camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.x = 770;
+    camera.position.y = 130;
     camera.position.z = 3000;
 
     scene = new THREE.Scene();
@@ -153,15 +155,58 @@ function init() {
         number.textContent = (i / 5) + 1;
         element.appendChild(number);
 
-        var symbol = document.createElement('div');
-        symbol.className = 'symbol';
-        symbol.textContent = table[i];
-        element.appendChild(symbol);
+        // var symbol = document.createElement('div');
+        // symbol.className = 'symbol';
+        // symbol.textContent = table[i];
+        var geosymbol = document.createElement('img');
+        geosymbol.className = 'geosymbol';
+        geosymbol.src = './assets/geos/1.png';
+        geosymbol.width = "90";
+        element.appendChild(geosymbol);
+        var flag = document.createElement('img');
+        flag.className = 'flag';
+        flag.src = './assets/flags/1.png';
+        flag.width = "24";
+        element.appendChild(flag);
+        var cname = document.createElement('div');
+        cname.className = 'cname2';
+        cname.innerHTML = '哈萨克斯坦';
+        element.appendChild(cname);
+        var ename = document.createElement('div');
+        ename.className = 'ename';
+        ename.innerHTML = 'Kazakhstan';
+        element.appendChild(ename);
+        var attr1 = document.createElement('div');
+        attr1.className = 'attr-title1';
+        attr1.innerHTML = '人口数量：';
+        element.appendChild(attr1);
+        var attr2 = document.createElement('div');
+        attr2.className = 'attr-title2';
+        attr2.innerHTML = '官方语言：';
+        element.appendChild(attr2);
+        var val1 = document.createElement('div');
+        val1.className = 'attr-value1';
+        val1.innerHTML = '1300万';
+        element.appendChild(val1);
+        var val2 = document.createElement('div');
+        val2.className = 'attr-value2';
+        val2.innerHTML = '哈萨克语';
+        element.appendChild(val2);
+        var search = document.createElement('img');
+        search.className = 'search-icon';
+        search.src = './assets/search.png';
+        search.width = "10";
+        element.appendChild(search);
+        var star = document.createElement('img');
+        star.className = 'star-icon';
+        star.src = './assets/star.png';
+        star.width = "10";
+        element.appendChild(star);
 
-        var details = document.createElement('div');
-        details.className = 'details';
-        details.innerHTML = table[i + 1] + '<br>' + table[i + 2];
-        element.appendChild(details);
+        // var details = document.createElement('div');
+        // details.className = 'details';
+        // details.innerHTML = table[i + 1] + '<br>' + table[i + 2];
+        // element.appendChild(details);
 
         var object = new THREE.CSS3DObject(element);
         object.position.x = Math.random() * 4000 - 2000;
@@ -288,7 +333,7 @@ function init() {
 
     }, false);
 
-    transform(targets.table, 2000);
+    transform(targets.grid, 2000);
 
     //
 
@@ -325,14 +370,14 @@ function transform(targets, duration) {
 
     }
 
-    new TWEEN.Tween(camera.position)
-        .to({
-            x: 0,
-            y: 0,
-            z: 3000
-        }, duration)
-        .onUpdate(render)
-        .start();
+    // new TWEEN.Tween(camera.position)
+    //     .to({
+    //         x: 0,
+    //         y: 0,
+    //         z: 3000
+    //     }, duration)
+    //     .onUpdate(render)
+    //     .start();
 
     new TWEEN.Tween(this)
         .to({}, duration * 2)
