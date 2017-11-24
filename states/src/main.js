@@ -131,10 +131,12 @@ var targets = {
     sphere: [],
     helix: [],
     grid: [],
-    tile: []
+    tile: [],
+    helix2: []
 };
 
 var customState = {};
+var clock = new THREE.Clock();
 
 init();
 animate();
@@ -371,6 +373,7 @@ function init() {
     document.getElementById('container').appendChild(renderer.domElement);
 
     renderer.domElement.addEventListener('click', () => {
+        if (TWEEN.getAll() && TWEEN.getAll().count > 0) return;
         if (!inControll && lastHotpot.position) {
             currentObject = undefined;
             if (lastHotpot.element) {
@@ -412,40 +415,110 @@ function init() {
 
     var button = document.getElementById('table');
     button.addEventListener('click', function (event) {
-
+        inControll = true;
         transform(targets.table, 2000);
-
     }, false);
 
     var button = document.getElementById('sphere');
     button.addEventListener('click', function (event) {
-
+        inControll = true;
         transform(targets.sphere, 2000);
-
     }, false);
 
     var button = document.getElementById('helix');
     button.addEventListener('click', function (event) {
-
+        inControll = true;
         transform(targets.helix, 2000);
-
     }, false);
 
     var button = document.getElementById('grid');
     button.addEventListener('click', function (event) {
-
+        inControll = true;
         transform(targets.grid, 2000);
-
     }, false);
 
     var button = document.getElementById('tile');
     button.addEventListener('click', function (event) {
-
+        inControll = true;
         transform(targets.tile, 2000, 'tile');
+        new TWEEN.Tween(camera.position)
+            .to({
+                x: 770,
+                y: 130,
+                z: 3000,
+            }, 1200)
+            .start();
+    }, false);
+
+    var button = document.getElementById('helix2');
+    button.addEventListener('click', function (event) {
+        inControll = true;
+        transform(targets.helix2, 2000, 'helix2');
+        setTimeout(() => {
+            new TWEEN.Tween(camera.position)
+                .to({
+                    x: 0,
+                    y: -100,
+                    z: 5000,
+                }, 1000)
+                .start();
+            new TWEEN.Tween(camera.rotation)
+                .to({
+                    x: 0,
+                    y: 0,
+                    z: 0.01
+                }, 1000)
+                .onComplete(() => {
+                    setTimeout(() => {
+                        inControll = false;
+                        customState.autoplay = true;
+                        setTimeout(() => {
+                            new TWEEN.Tween(this)
+                                .to({}, 20000)
+                                .onUpdate(() => {
+                                    render();
+                                })
+                                .start();
+
+                            var tmp = new THREE.Vector3();
+                            var vector = new THREE.Vector3();
+                            var cylindrical = new THREE.Cylindrical();
+                            cylindrical.set(1800, 0, 950);
+                            tmp.setFromCylindrical(cylindrical);
+
+                            vector.x = tmp.x * -2;
+                            vector.y = tmp.y;
+                            vector.z = tmp.z * -2;
+
+                            new TWEEN.Tween(camera.position)
+                                .to({
+                                    x: tmp.x,
+                                    y: tmp.y,
+                                    z: tmp.z,
+                                }, 6000)
+                                .onComplete(() => {
+                                    setTimeout(() => {
+                                        new TWEEN.Tween(camera.position)
+                                            .to({
+                                                x: 0,
+                                                y: -1200,
+                                                z: 3000,
+                                            }, 5000)
+                                            .start();
+                                    }, 5000);
+                                })
+                                .easing(TWEEN.Easing.Exponential.Out)
+                                .start();
+                        }, 1000);
+                    }, 1000);
+                })
+                .start();
+        }, 500);
     }, false);
 
 
     tileLayout();
+    helix2Layout();
     transform(targets.grid, 2000);
 
     //
@@ -459,7 +532,7 @@ function transform(targets, duration, type) {
     TWEEN.removeAll();
 
     customState.currentType = type;
-    if (type) {
+    if (type === 'tile') {
         setTimeout(() => {
             resetCustomState();
         }, duration);
@@ -493,15 +566,6 @@ function transform(targets, duration, type) {
 
     }
 
-    // new TWEEN.Tween(camera.position)
-    //     .to({
-    //         x: 0,
-    //         y: 0,
-    //         z: 3000
-    //     }, duration)
-    //     .onUpdate(render)
-    //     .start();
-
     new TWEEN.Tween(this)
         .to({}, duration * 2)
         .onUpdate(render)
@@ -532,25 +596,63 @@ function animate() {
 }
 
 function render() {
-
     if (currentObject && customState.currentType !== 'tile') {
         objects.forEach(object => {
             if (object.element.id !== currentObject.id) {
                 object.element.style.opacity = 0.2;
             } else {
-                object.element.style.opacity = 1.0;
+                var distance = object.position.distanceTo(camera.position);
+                object.element.style.opacity = 3000 / distance;
             }
         });
     } else {
         objects.forEach(object => {
-            object.element.style.opacity = 1.0;
+            var distance = object.position.distanceTo(camera.position);
+            object.element.style.opacity = 3000 / distance;
         });
+    }
+
+    if (customState.autoplay && customState.currentType === 'helix2') {
+        var delta = clock.getDelta();
+        // helix2
+        var vector = new THREE.Vector3();
+        var cylindrical = new THREE.Cylindrical();
+        for (var i = 0, l = objects.length; i < l; i++) {
+
+            var object = objects[i];
+
+            object.w_speed = object.w_speed || 0.02;
+            object.w_theta = object.w_theta || (i * 0.175 + Math.PI * 0.2);
+            object.w_y = object.w_y || (-(i * 24) + 850);
+
+            object.w_theta -= object.w_speed * delta;
+            object.w_y += object.w_speed * delta * 100;
+            object.w_speed *= 1.006;
+
+            cylindrical.set(900, object.w_theta, object.w_y);
+
+            object.position.setFromCylindrical(cylindrical);
+
+            vector.x = object.position.x * 2;
+            vector.y = object.position.y;
+            vector.z = object.position.z * 2;
+
+            object.lookAt(vector);
+        }
+    } else {
+        for (var i = 0, l = objects.length; i < l; i++) {
+            var object = objects[i];
+            object.w_theta = undefined;
+            object.w_y = undefined;
+            object.w_speed = undefined;
+        }
     }
 
     renderer.render(scene, camera);
 }
 
 function resetCustomState() {
+    customState.autoplay = false;
     if (customState.currentType === 'tile') {
         customState.tiles.forEach(tile => {
             tile.element.style.display = 'block';
@@ -559,6 +661,32 @@ function resetCustomState() {
         customState.tiles.forEach(tile => {
             tile.element.style.display = 'none';
         });
+    }
+}
+
+function helix2Layout() {
+    var vector = new THREE.Vector3();
+    var cylindrical = new THREE.Cylindrical();
+
+    for (var i = 0, l = objects.length; i < l; i++) {
+
+        var theta = i * 0.175 + Math.PI * 0.2;
+        var y = -(i * 24) + 850;
+
+        var object = new THREE.Object3D();
+
+        cylindrical.set(900, theta, y);
+
+        object.position.setFromCylindrical(cylindrical);
+
+        vector.x = object.position.x * 2;
+        vector.y = object.position.y;
+        vector.z = object.position.z * 2;
+
+        object.lookAt(vector);
+
+        targets.helix2.push(object);
+
     }
 }
 
