@@ -348,13 +348,54 @@
 
         var road1 = convertData(citiesLD, citiesCoordsLD);
         var road2 = convertData(citiesHS, citiesCoordsHS);
+        for (let r1 = 0; r1 < road1.length; r1++) {
+            road1[r1].coords = insertCoords(road1[r1].coords, r1 % 2 == 0);
+        }
+        for (let r2 = 0; r2 < road2.length; r2++) {
+            if (citiesHS[r2 + 1] == '吉隆坡') {
+                var curveCoords = [
+                    road2[r2].coords[0],
+                    [112, 12.4],
+                    road2[r2].coords[1]
+                ];
+            } else if (citiesHS[r2 + 1] == '河内') {
+                var curveCoords = [
+                    road2[r2].coords[0],
+                    [111, 18.4],
+                    road2[r2].coords[1]
+                ];
+            } else if (citiesHS[r2 + 1] == '雅加达') {
+                var curveCoords = [
+                    road2[r2].coords[0],
+                    [108.6, 0.6],
+                    road2[r2].coords[1]
+                ];
+            } else if (citiesHS[r2 + 1] == '加尔各答') {
+                var curveCoords = [
+                    road2[r2].coords[0],
+                    [89.3, 4.7],
+                    road2[r2].coords[1]
+                ];
+            } else if (citiesHS[r2 + 1] == '雅典') {
+                var curveCoords = [
+                    road2[r2].coords[0],
+                    [58.93, 13.81],
+                    [41.59, 11.19],
+                    [34.03, 31.25],
+                    road2[r2].coords[1]
+                ];
+            } else {
+                var curveCoords = insertCoords(road2[r2].coords, r2 % 2 == 0);
+            }
+            road2[r2].coords = curveCoords;
+        }
         addMarker(road1[0].coords[0], citiesLD[0]);
         var ri = 0;
         var inteval = setInterval(function () {
             if (ri == road1.length - 1) {
                 clearInterval(inteval);
             }
-            var line = new maptalks.QuadBezierCurve(insertCoords(road1[ri].coords, ri % 2 == 0), {
+            var line = new maptalks.QuadBezierCurve(road1[ri].coords, {
                 'symbol': {
                     lineColor: '#23ffe3',
                     lineWidth: 3,
@@ -366,7 +407,7 @@
                 easing: 'linear'
             }, function (frame, currCoord) {
                 if (frame.state.playState == 'finished') {
-                    addMarker(road1[ri].coords[1], citiesLD[ri + 1]);
+                    addMarker(road1[ri].coords[road1[ri].coords.length - 1], citiesLD[ri + 1]);
                     ri++;
                 }
             });
@@ -378,42 +419,7 @@
             if (rj == road2.length - 1) {
                 clearInterval(inteval2);
             }
-            if (citiesHS[rj + 1] == '吉隆坡') {
-                var curveCoords = [
-                    road2[rj].coords[0],
-                    [112, 12.4],
-                    road2[rj].coords[1]
-                ];
-            } else if (citiesHS[rj + 1] == '河内') {
-                var curveCoords = [
-                    road2[rj].coords[0],
-                    [111, 18.4],
-                    road2[rj].coords[1]
-                ];
-            } else if (citiesHS[rj + 1] == '雅加达') {
-                var curveCoords = [
-                    road2[rj].coords[0],
-                    [108.6, 0.6],
-                    road2[rj].coords[1]
-                ];
-            } else if (citiesHS[rj + 1] == '加尔各答') {
-                var curveCoords = [
-                    road2[rj].coords[0],
-                    [89.3, 4.7],
-                    road2[rj].coords[1]
-                ];
-            } else if (citiesHS[rj + 1] == '雅典') {
-                var curveCoords = [
-                    road2[rj].coords[0],
-                    [58.93, 13.81],
-                    [41.59, 11.19],
-                    [34.03, 31.25],
-                    road2[rj].coords[1]
-                ];
-            } else {
-                var curveCoords = insertCoords(road2[rj].coords, rj % 2 == 0);
-            }
-            var line = new maptalks.QuadBezierCurve(curveCoords, {
+            var line = new maptalks.QuadBezierCurve(road2[rj].coords, {
                 'symbol': {
                     lineColor: '#23ffe3',
                     lineWidth: 3,
@@ -425,7 +431,7 @@
                 easing: 'linear'
             }, function (frame, currCoord) {
                 if (frame.state.playState == 'finished') {
-                    addMarker(road2[rj].coords[1], citiesHS[rj + 1]);
+                    addMarker(road2[rj].coords[road2[rj].coords.length - 1], citiesHS[rj + 1]);
                     rj++;
                 }
             });
