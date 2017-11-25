@@ -1,10 +1,10 @@
 
-let pieChart = {
+let pieChart2 = {
   __dom: null,
   __chart: null,
   __option: {},
   initChart: function (data) {
-    this.__dom = document.getElementById('bChart1');
+    this.__dom = document.getElementById('bChart2');
     this.__chart = echarts.init(this.__dom);
     this.__option = {
       title: {
@@ -13,7 +13,7 @@ let pieChart = {
       tooltip: {
         show: false,
       },
-      color: ['rgb(16,164,146)', 'rgb(49,51,55)'],
+      color: ['rgb(44,224,69)', 'rgb(49,51,55)'],
       series: [
         {
           name: '占比',

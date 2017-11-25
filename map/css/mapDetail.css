@@ -1,0 +1,137 @@
+#chart_wrap {
+  width: 359px;
+  height: 272px;
+  position: fixed;
+  right: 45%;
+  bottom: 45%;
+  scaleindex: 0;
+  transform: scale(0);
+  background: url("../images/mapBorder.png") center no-repeat;
+}
+
+#chartSubTitle {
+  width: 200px;
+  height: 30px;
+  line-height: 35px;
+  font-size: 18px;
+  color: #fff;
+  margin-left: 30px;
+  cursor: pointer;
+}
+
+#chart {
+  width: 350px;
+  height: 240px;
+}
+
+#heatmap_wrap {
+  width: 448px;
+  height: 338px;
+  position: fixed;
+  left: 45%;
+  bottom: 45%;
+  scaleindex: 0;
+  transform: scale(0);
+  background: url("../images/mapBorder1.png") center no-repeat;
+}
+
+#heatmapSubTitle {
+  width: 200px;
+  height: 30px;
+  line-height: 35px;
+  font-size: 18px;
+  color: #fff;
+  margin-left: 30px;
+}
+
+#heatmap_wrap video {
+  width: 420px;
+  height: 280px;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+#text_wrap {
+  width: 466px;
+  height: 175px;
+  position: fixed;
+  right: 45%;
+  top: 45%;
+  scaleindex: 0;
+  transform: scale(0);
+  background: url("../images/mapBorder2.png") center no-repeat;
+}
+
+#countryName {
+  font-size: 21px;
+  color: rgb( 49, 224, 225);
+  font-weight: 900;
+  text-shadow: 0 0 10px rgb( 49, 224, 225);
+  line-height: 24px;
+  margin: 20px 0 0 30px;
+}
+
+#countryFlag {
+  width: 100px;
+  float: left;
+  margin: 30px 20px 0 30px;
+}
+
+#items {
+  width: 300px;
+  float: left;
+  font-size: 18px;
+  color: rgb(20, 202, 184);
+  margin-top: 20px;
+}
+
+#items .item {
+  margin: 10px 0;
+}
+
+#items .itemValue {
+  color: rgb(227, 243, 243);
+}
+
+#bottomChart_wrap {
+  position: fixed;
+  width: 800px;
+  height: 200px;
+  left: 560px;
+  bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#bottomTitle_wrap {
+  position: fixed;
+  width: 800px;
+  height: 200px;
+  left: 560px;
+  bottom: 70px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.bChart {
+  width: 240px;
+  height: 200px;
+}
+
+.bTitle {
+  color: #fff;
+  font-size: 18px;
+  line-height: 30px;
+  text-align: center;
+  font-family: 'liHeiTi';
+  letter-spacing: 4px;
+}
+
+.bNumber {
+  color: #ddd;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 900;
+  margin-top: 65px;
+  text-align: center;
+}
