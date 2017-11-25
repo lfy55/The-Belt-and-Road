@@ -21,7 +21,7 @@ window.onload = function () {
 
         bgGradient = context.createRadialGradient((screenWidth >> 1), screenHeight >> 1, screenWidth, screenWidth >> 1, screenHeight >> 1, 0);
         bgGradient.addColorStop(1, '#000');
-        bgGradient.addColorStop(0.2, '#002C30');
+        bgGradient.addColorStop(0.2, '#003037');
     };
 
     generatePoints();
