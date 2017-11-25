@@ -46,8 +46,8 @@
         'textFill': '#23ffe3'
     }];
 
-    var lineColor = 'rgba(21,136,122,0.6)';
-    var fillColor = 'rgba(32,239,213,0.3)';
+    var lineColor = 'rgba(30,224,199,1)';
+    var fillColor = 'rgba(13,85,79,1)';
 
     if (WebGLtest()) {
         initMap();
@@ -84,6 +84,15 @@
             });
             return geo;
         });
+        var polygonsAll = worldCollection.features.map(function (f) {
+            var geo = new maptalks.MultiPolygon(f.geometry.coordinates);
+            geo.setSymbol({
+                lineColor: '#15887a',
+                lineWidth: 2,
+                polygonFill: '#111',
+            });
+            return geo;
+        });
         map = new maptalks.Map('mapContainer', {
             center: [66.7903012612708142, 20.976349249268345],
             zoom: 4.0,
@@ -95,11 +104,13 @@
                 drawAltitude: {
                     polygonFill: {
                         'type': 'linear',
-                        'places': [1, 1, 0.8, 0.2],
+                        'places': [0, 0, 0, 1],
                         'colorStops': [
-                            [0.0, '#cc6666'],
-                            [0.8, 'rgba(30 ,224 ,199,1.0)'],
-                            [1, 'rgba(30 ,255 ,255,1.0)']
+                            [0, 'rgba(50,217,200, 0.7)'],
+                            [0.5, 'rgba(50,217,200, 0.5)'],
+                            [0.7, 'rgba(50,217,200, 0.3)'],
+                            [0.8, 'rgba(50,217,200, 0.2)'],
+                            [1, 'rgba(255 ,255 ,255,0.1)']
                         ]
                     },
                     polygonOpacity: 1,
@@ -135,16 +146,12 @@
         };
         var countryPolygonOptions = {
             symbol: {
-                lineColor: lineColor,
                 lineWidth: 0,
                 polygonFill: fillColor,
-                polygonOpacity: 0,
             },
             properties: {
                 altitude: 0
-            },
-            shadowBlur: 50,
-            shadowColor: fillColor
+            }
         };
         var iran1 = new maptalks.LineString(iranCoords, countryLineOptions);
         var iran2 = new maptalks.Polygon(iranCoords, countryPolygonOptions);
@@ -164,6 +171,7 @@
         malaysia2.setId('malaysiaPolygon');
         countriesHS[3] = [malaysia1, malaysia2];
         map.getBaseLayer().addGeometry(polygons);
+        map.getBaseLayer().addGeometry(polygonsAll);
         map.getBaseLayer().addGeometry([afh1, afh2, iran1, iran2, pakistan1, pakistan2,
             thailand1, thailand2, malaysia1, malaysia2
         ]);
@@ -188,7 +196,7 @@
                 });
                 _poly.updateSymbol({
                     lineWidth: 0,
-                    polygonOpacity: 0
+                    polygonFill: fillColor
                 });
                 _poly.setProperties({
                     altitude: 0
@@ -235,8 +243,8 @@
             });
             _poly.updateSymbol({
                 lineWidth: 3,
-                polygonFill: 'rgba(16,97,87,1.0)',
-                polygonOpacity: 1.0
+                lineColor:'rgb(  35 ,255, 227 )',
+                polygonFill: 'rgba(16,97,87,1.0)'
             });
             setTimeout(function () {
                 maptalks.animation.Animation.animate({
@@ -266,7 +274,7 @@
                 });
                 _poly.updateSymbol({
                     lineWidth: 0,
-                    polygonOpacity: 0
+                    polygonFill: fillColor
                 });
                 _poly.setProperties({
                     altitude: 0
