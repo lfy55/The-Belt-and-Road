@@ -203,6 +203,7 @@
                 _poly.setProperties({
                     altitude: 0
                 });
+                $('#btmDiv').show();
             }
             var _zoom = 5;
             if (id == 'iranPolygon') {
@@ -248,6 +249,7 @@
                 lineColor: 'rgb(  35 ,255, 227 )',
                 polygonFill: 'rgba(16,97,87,1.0)'
             });
+            $('#btmDiv').hide();
             setTimeout(function () {
                 maptalks.animation.Animation.animate({
                     properties: {
@@ -259,6 +261,9 @@
                     if (frame.state.playState == 'running') {
                         _line.setProperties(frame.styles.properties);
                         _poly.setProperties(frame.styles.properties);
+                    }
+                    if (frame.state.playState == 'finished') {
+                        showDetail();
                     }
                 }).play();
             }, 800);
@@ -290,6 +295,7 @@
                 duration: 1000,
                 easing: 'in'
             });
+            $('#btmDiv').show();
         });
     }
 
