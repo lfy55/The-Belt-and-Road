@@ -14,7 +14,7 @@
         [37.35, 55.45],
         [6.45, 51.25]
     ];
-
+    var countriesLD = [];
     var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
     var citiesCoordsHS = [
         [119.30, 26.08],
@@ -29,23 +29,7 @@
         [12.20, 45.26],
         [4.29, 51.55]
     ];
-
-    var areaColor = ['rgba(102,153,153,0.3)', 'rgba(102,153,153,0.3)', 'rgba(102,153,153,0.3)',
-        'rgba(51,0,102,0.3)', 'rgba(102,153,153,0.3)', 'rgba(51,0,102,0.3)', 'rgba(102,153,153,0.3)', 'rgba(102,153,153,0.3)',
-        'rgba(51,0,102,0.3)'
-    ];
-    var areas = ['中亚', '西亚', '俄罗斯', '地中海', '欧洲', '南海', '东南亚', '南亚', '印度洋'];
-    var areasCenters = [
-        [60.55, 40.19],
-        [43.56, 28.26],
-        [46.81, 55],
-        [8, 40],
-        [0.29, 45.55],
-        [114.56, 12.26],
-        [113.81, 0],
-        [78, 20],
-        [60, 10],
-    ];
+    var countriesHS = [];
 
     var symbol = [{
         'markerFile': '../map/images/timeline/slibar.png',
@@ -61,6 +45,9 @@
         'textDy': 30,
         'textFill': '#23ffe3'
     }];
+
+    var lineColor = 'rgba(21,136,122,0.6)';
+    var fillColor = 'rgba(32,239,213,0.3)';
 
     if (WebGLtest()) {
         initMap();
@@ -88,20 +75,22 @@
             geo._geometries.splice(53, 1);
             geo.setId(null);
             geo.config('antiMeridian', 'split');
-            geo.config('shadowBlur', 20);
-            geo.config('shadowColor', '#23ffe3');
+            geo.config('shadowBlur', 50);
+            geo.config('shadowColor', '#15887a');
             geo.setSymbol({
-                lineColor: '#23ffe3',
+                lineColor: '#15887a',
                 lineWidth: 2,
-                polygonFill: 'rgba(35,256,237,0.3)',
+                polygonFill: '#111',
             });
             return geo;
         });
         map = new maptalks.Map('mapContainer', {
-            center: [67.7903012612708142, 25.976349249268345],
-            zoom: 3,
+            center: [66.7903012612708142, 20.976349249268345],
+            zoom: 4.0,
+            maxZoom: 5.0,
+            minZoom: 4.0,
             baseLayer: new maptalks.VectorLayer('v', {
-                opacity: 0.3,
+                opacity: 1,
                 enableAltitude: true,
                 drawAltitude: {
                     polygonFill: {
@@ -110,15 +99,14 @@
                         'colorStops': [
                             [0.0, '#cc6666'],
                             [0.8, 'rgba(30 ,224 ,199,1.0)'],
-                            [1, 'rgba(30 ,254 ,254,1.0)']
+                            [1, 'rgba(30 ,255 ,255,1.0)']
                         ]
                     },
-                    polygonOpacity: 0.8,
+                    polygonOpacity: 1,
                     lineWidth: 0,
-                    // polygonGradientExtent:
                 }
             }),
-            pitch: 0
+            pitch: 20
         });
 
         map.setSpatialReference({
@@ -136,133 +124,48 @@
         vectorlayer2 = new maptalks.VectorLayer('vector2').addTo(map);
         vectorlayer2.setZIndex(1);
 
-        var countrySymbol = {
-            lineColor: 'rgba(30,224,199,1.0)',
-            lineWidth: 2
+        var countryLineOptions = {
+            symbol: {
+                lineColor: lineColor,
+                lineWidth: 0
+            },
+            properties: {
+                altitude: 0
+            }
         };
-        var iran1 = new maptalks.LineString(iranCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var iran2 = new maptalks.Polygon(iranCoords, {
+        var countryPolygonOptions = {
             symbol: {
+                lineColor: lineColor,
                 lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6,
+                polygonFill: fillColor,
+                polygonOpacity: 0,
             },
             properties: {
                 altitude: 0
             },
-            id: 'iranPolygon',
             shadowBlur: 50,
-            shadowColor: 'rgba(30 ,224 ,199,1.0)'
-        });
-
-        var pakistan1 = new maptalks.LineString(pakistanCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var pakistan2 = new maptalks.Polygon(pakistanCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'pakistanPolygon'
-        });
-
-        var afh1 = new maptalks.LineString(afhCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var afh2 = new maptalks.Polygon(afhCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6,
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'afhPolygon',
-            shadowBlur: 20,
-            shadowColor: '#23ffe3'
-        });
-
-        var thailand1 = new maptalks.LineString(thailandCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var thailand2 = new maptalks.Polygon(thailandCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'thailandPolygon'
-        });
-
-        var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6,
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'malaysiaPolygon',
-            shadowBlur: 20,
-            shadowColor: '#23ffe3'
-        });
-
-        var russia1 = new maptalks.MultiLineString(russiaCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var russia2 = new maptalks.MultiPolygon(russiaCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'russiaPolygon'
-        });
-
+            shadowColor: fillColor
+        };
+        var iran1 = new maptalks.LineString(iranCoords, countryLineOptions);
+        var iran2 = new maptalks.Polygon(iranCoords, countryPolygonOptions);
+        iran2.setId('iranPolygon');
+        countriesLD[4] = [iran1, iran2];
+        var pakistan1 = new maptalks.LineString(pakistanCoords, countryLineOptions);
+        var pakistan2 = new maptalks.Polygon(pakistanCoords, countryPolygonOptions);
+        pakistan2.setId('pakistanPolygon');
+        var afh1 = new maptalks.LineString(afhCoords, countryLineOptions);
+        var afh2 = new maptalks.Polygon(afhCoords, countryPolygonOptions);
+        afh2.setId('afhPolygon');
+        var thailand1 = new maptalks.LineString(thailandCoords, countryLineOptions);
+        var thailand2 = new maptalks.Polygon(thailandCoords, countryPolygonOptions);
+        thailand2.setId('thailandPolygon');
+        var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, countryLineOptions);
+        var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, countryPolygonOptions);
+        malaysia2.setId('malaysiaPolygon');
+        countriesHS[3] = [malaysia1, malaysia2];
         map.getBaseLayer().addGeometry(polygons);
-        map.getBaseLayer().addGeometry([iran1, iran2, pakistan1, pakistan2, afh1, afh2,
-            thailand1, thailand2, malaysia1, malaysia2, russia1, russia2
+        map.getBaseLayer().addGeometry([afh1, afh2, iran1, iran2, pakistan1, pakistan2,
+            thailand1, thailand2, malaysia1, malaysia2
         ]);
 
         iran2.addEventListener('click', countryClick);
@@ -270,7 +173,6 @@
         afh2.addEventListener('click', countryClick);
         thailand2.addEventListener('click', countryClick);
         malaysia2.addEventListener('click', countryClick);
-        // russia2.addEventListener('click', countryClick);
 
         var _center, _line, _poly;
 
@@ -278,8 +180,15 @@
             console.info('countryClick');
             var id = e.target.getId();
             if (_center && _line && _poly) {
+                _line.updateSymbol({
+                    lineWidth: 0
+                });
                 _line.setProperties({
                     altitude: 0
+                });
+                _poly.updateSymbol({
+                    lineWidth: 0,
+                    polygonOpacity: 0
                 });
                 _poly.setProperties({
                     altitude: 0
@@ -314,12 +223,20 @@
             }
 
             map.animateTo({
-                pitch: 45,
+                pitch: 60,
                 center: _center,
                 zoom: _zoom
             }, {
-                duration: 2000,
+                duration: 800,
                 easing: 'out'
+            });
+            _line.updateSymbol({
+                lineWidth: 3
+            });
+            _poly.updateSymbol({
+                lineWidth: 3,
+                polygonFill: 'rgba(16,97,87,1.0)',
+                polygonOpacity: 1.0
             });
             setTimeout(function () {
                 maptalks.animation.Animation.animate({
@@ -327,31 +244,38 @@
                         altitude: 500000
                     }
                 }, {
-                    'duration': 2000
+                    'duration': 800
                 }, frame => {
                     if (frame.state.playState == 'running') {
                         _line.setProperties(frame.styles.properties);
                         _poly.setProperties(frame.styles.properties);
                     }
                 }).play();
-            }, 2000);
+            }, 800);
             e.domEvent.stopPropagation();
         }
 
         map.addEventListener('click', function (e) {
             console.info('mapclick');
             if (_line && _poly) {
+                _line.updateSymbol({
+                    lineWidth: 0
+                });
                 _line.setProperties({
                     altitude: 0
+                });
+                _poly.updateSymbol({
+                    lineWidth: 0,
+                    polygonOpacity: 0
                 });
                 _poly.setProperties({
                     altitude: 0
                 });
             }
             map.animateTo({
-                pitch: 0,
-                center: [67.7903012612708142, 25.976349249268345],
-                zoom: 3,
+                pitch: 20,
+                center: [66.7903012612708142, 20.976349249268345],
+                zoom: 4.0,
             }, {
                 duration: 1000,
                 easing: 'in'
@@ -445,39 +369,6 @@
                     addMarker(road1[ri].coords[1], citiesLD[ri + 1]);
                     ri++;
                 }
-                if (ri == road1.length) {
-                    var text = new maptalks.Marker(
-                        [108.56, 50], {
-                            'properties': {
-                                'name': '丝绸之路经济带'
-                            },
-                            'symbol': [{
-                                'markerType': 'rectangle',
-                                'markerFill': 'rgba(0,0,0,0.6)',
-                                'markerLineColor': '#fff',
-                                'markerLineWidth': '2',
-                                'markerHeight': 30,
-                                'markerWidth': 200,
-                                'markerDx': -100,
-                                'markerDy': -18
-                            }, {
-                                'textFaceName': 'LiSu',
-                                'textName': '{name}', //value from name in geometry's properties
-                                'textSize': 22,
-                                'textFill': '#00cc99',
-                            }]
-                        }
-                    ).addTo(vectorlayer2);
-                    text.setInfoWindow({
-                        'dx': 270,
-                        'dy': 100,
-                        'animation': 'scale',
-                        'single': false,
-                        'content': '丝绸之路经济带重点畅通中国经中亚、俄罗斯至欧洲（波罗的海），中国经中亚、西亚至波斯湾地中海，中国至东南亚、南亚、印度洋。'
-                    });
-
-                    text.openInfoWindow();
-                }
             });
         }, 650);
 
@@ -537,83 +428,9 @@
                     addMarker(road2[rj].coords[1], citiesHS[rj + 1]);
                     rj++;
                 }
-                if (rj == road2.length) {
-                    var text2 = new maptalks.Marker(
-                        [60.56, -8], {
-                            'properties': {
-                                'name': '21世纪海上丝绸之路'
-                            },
-                            'symbol': [{
-                                'markerType': 'rectangle',
-                                'markerFill': 'rgba(0,0,0,0.6)',
-                                'markerLineColor': '#fff',
-                                'markerLineWidth': '2',
-                                'markerHeight': 30,
-                                'markerWidth': 240,
-                                'markerDx': -120,
-                                'markerDy': -18
-                            }, {
-                                'textFaceName': 'LiSu',
-                                'textName': '{name}', //value from name in geometry's properties
-                                'textSize': 22,
-                                'textFill': '#00cc99',
-                            }]
-                        }
-                    ).addTo(vectorlayer2);
-                    // text2.animateShow();
-                    text2.setInfoWindow({
-                        'dx': 120,
-                        'dy': 180,
-                        'animation': 'scale',
-                        'single': false,
-                        'content': '21世纪海上丝绸之路重点方向是从中国沿海港口过南海到印度洋，延伸至欧洲，从中国沿海港口过南海到南太平洋。'
-                    });
-
-                    text2.openInfoWindow();
-                }
             });
         }, 650);
 
-        for (var j = 0; j < areasCenters.length; j++) {
-            var marker1 = new maptalks.Marker(areasCenters[j], {
-                'properties': {
-                    'name': areas[j]
-                },
-                symbol: [{
-                    'markerType': 'ellipse',
-                    'markerFill': {
-                        'type': 'radial',
-                        'colorStops': [
-                            [0.00, 'rgba(255,255,255,0)'],
-                            [0.10, areaColor[j]],
-                            [1.00, areaColor[j]]
-                        ]
-                    },
-                    'markerLineWidth': 0,
-                    'markerWidth': 50,
-                    'markerHeight': 50
-                }, {
-                    'textFaceName': 'liHeiTi',
-                    'textName': '{name}', //value from name in geometry's properties
-                    'textSize': 14,
-                    'textFill': '#00CC66',
-                }]
-            }).addTo(vectorlayer2);
-        }
-
-        const player = maptalks.animation.Animation.animate({}, {
-            'duration': Number.MAX_VALUE
-        }, frame => {});
-
-        player.play();
-
-        function randomColor() {
-            return {
-                r: Math.random(),
-                g: Math.random(),
-                b: Math.random()
-            };
-        }
     }
 
 }
