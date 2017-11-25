@@ -132,7 +132,8 @@ var targets = {
     helix: [],
     grid: [],
     tile: [],
-    helix2: []
+    helix2: [],
+    sphere3: []
 };
 
 var customState = {};
@@ -365,15 +366,13 @@ function init() {
 
     }
 
-    //
-
     renderer = new THREE.CSS3DRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.domElement.style.position = 'absolute';
     document.getElementById('container').appendChild(renderer.domElement);
 
     renderer.domElement.addEventListener('click', () => {
-        if (TWEEN.getAll() && TWEEN.getAll().count > 0) return;
+        if (customState.autoplay || (TWEEN.getAll() && TWEEN.getAll().count > 0)) return;
         if (!inControll && lastHotpot.position) {
             currentObject = undefined;
             if (lastHotpot.element) {
@@ -459,7 +458,7 @@ function init() {
                 .to({
                     x: 0,
                     y: -100,
-                    z: 5000,
+                    z: 5000
                 }, 1000)
                 .start();
             new TWEEN.Tween(camera.rotation)
@@ -475,9 +474,7 @@ function init() {
                         setTimeout(() => {
                             new TWEEN.Tween(this)
                                 .to({}, 20000)
-                                .onUpdate(() => {
-                                    render();
-                                })
+                                .onUpdate(render)
                                 .start();
 
                             var tmp = new THREE.Vector3();
@@ -495,7 +492,8 @@ function init() {
                                     x: tmp.x,
                                     y: tmp.y,
                                     z: tmp.z,
-                                }, 6000)
+                                }, 6500)
+                                .onUpdate(render)
                                 .onComplete(() => {
                                     setTimeout(() => {
                                         new TWEEN.Tween(camera.position)
@@ -505,7 +503,7 @@ function init() {
                                                 z: 3000,
                                             }, 5000)
                                             .start();
-                                    }, 5000);
+                                    }, 2500);
                                 })
                                 .easing(TWEEN.Easing.Exponential.Out)
                                 .start();
@@ -516,9 +514,74 @@ function init() {
         }, 500);
     }, false);
 
+    var button = document.getElementById('sphere3');
+    button.addEventListener('click', function (event) {
+        inControll = true;
+        transform(targets.sphere3, 2000, 'sphere3');
+        new TWEEN.Tween(camera.position)
+            .to({
+                x: 0,
+                y: 130,
+                z: 4500
+            }, 1200)
+            .start();
+        setTimeout(() => {
+            inControll = false;
+            customState.autoplay = true;
+            setTimeout(() => {
+                new TWEEN.Tween(camera.position)
+                    .to({
+                        x: -1400,
+                        y: 50,
+                        z: 1600
+                    }, 2000)
+                    .onUpdate(render)
+                    .onComplete(() => {
+                        setTimeout(() => {
+                            new TWEEN.Tween(camera.position)
+                                .to({
+                                    x: 0,
+                                    y: 50,
+                                    z: 2000
+                                }, 1500)
+                                .onUpdate(render)
+                                .onComplete(() => {
+                                    setTimeout(() => {
+                                        new TWEEN.Tween(camera.position)
+                                            .to({
+                                                x: 1400,
+                                                y: 50,
+                                                z: 1700
+                                            }, 1500)
+                                            .onUpdate(render)
+                                            .onComplete(() => {
+                                                new TWEEN.Tween(camera.position)
+                                                    .to({
+                                                        x: 0,
+                                                        y: 130,
+                                                        z: 4500
+                                                    }, 2500)
+                                                    .onUpdate(render)
+                                                    .start();
+                                            })
+                                            .start();
+                                    }, 2000);
+                                })
+                                .start();
+                        }, 2000);
+                    })
+                    .start();
+            }, 2800);
+            new TWEEN.Tween(this)
+                .to({}, 20000)
+                .onUpdate(render)
+                .start();
+        }, 3000);
+    }, false);
 
     tileLayout();
     helix2Layout();
+    sphere3Layout();
     transform(targets.grid, 2000);
 
     //
@@ -544,6 +607,7 @@ function transform(targets, duration, type) {
 
         var object = objects[i];
         var target = targets[i];
+        object.custom = target.custom;
         position3ds[object.element.id] = target;
 
         new TWEEN.Tween(object.position)
@@ -563,14 +627,12 @@ function transform(targets, duration, type) {
             }, Math.random() * duration + duration)
             .easing(TWEEN.Easing.Exponential.InOut)
             .start();
-
     }
 
     new TWEEN.Tween(this)
         .to({}, duration * 2)
         .onUpdate(render)
         .start();
-
 }
 
 function onWindowResize() {
@@ -621,7 +683,7 @@ function render() {
 
             var object = objects[i];
 
-            object.w_speed = object.w_speed || 0.02;
+            object.w_speed = object.w_speed || 0.012;
             object.w_theta = object.w_theta || (i * 0.175 + Math.PI * 0.2);
             object.w_y = object.w_y || (-(i * 24) + 850);
 
@@ -648,6 +710,28 @@ function render() {
         }
     }
 
+    if (customState.autoplay && customState.currentType === 'sphere3') {
+        var delta = clock.getDelta();
+        var speed = 0.3;
+        var rotate = delta * speed;
+        // sphere3
+        var vector = new THREE.Vector3();
+        var spherical = new THREE.Spherical();
+
+        for (var i = 0, l = objects.length; i < l; i++) {
+            var object = objects[i];
+            spherical.set(object.custom.s_radius, object.custom.s_phi, object.custom.s_theta + object.custom.s_rotate);
+
+            object.position.setFromSpherical(spherical);
+            vector.copy(object.position).multiplyScalar(2);
+
+            object.lookAt(vector);
+            object.position.x += object.custom.s_offsetx;
+
+            object.custom.s_rotate += rotate;
+        }
+    }
+
     renderer.render(scene, camera);
 }
 
@@ -661,6 +745,87 @@ function resetCustomState() {
         customState.tiles.forEach(tile => {
             tile.element.style.display = 'none';
         });
+    }
+}
+
+function sphere3Layout() {
+    // sphere
+    var vector = new THREE.Vector3();
+    var spherical = new THREE.Spherical();
+
+    var len1 = 30,
+        len2 = 40,
+        len3 = objects.length - len1 - len2;
+
+    for (var i = 0; i < len1; i++) {
+        var phi = Math.acos(-1 + (2 * i) / len1);
+        var theta = Math.sqrt(len1 * Math.PI) * phi;
+        var object = new THREE.Object3D();
+
+        spherical.set(460, phi, theta);
+
+        object.position.setFromSpherical(spherical);
+
+        vector.copy(object.position).multiplyScalar(2);
+
+        object.lookAt(vector);
+        object.position.x -= 1400;
+
+        object.custom = {};
+        object.custom.s_rotate = 0;
+        object.custom.s_phi = phi;
+        object.custom.s_theta = theta;
+        object.custom.s_radius = 460;
+        object.custom.s_offsetx = -1400;
+
+        targets.sphere3.push(object);
+    }
+
+    for (var i = 0; i < len2; i++) {
+        var phi = Math.acos(-1 + (2 * i) / len2);
+        var theta = Math.sqrt(len2 * Math.PI) * phi;
+        var object = new THREE.Object3D();
+
+        spherical.set(520, phi, theta);
+
+        object.position.setFromSpherical(spherical);
+
+        vector.copy(object.position).multiplyScalar(2);
+
+        object.lookAt(vector);
+        object.position.x += 1500;
+
+        object.custom = {};
+        object.custom.s_rotate = 0;
+        object.custom.s_phi = phi;
+        object.custom.s_theta = theta;
+        object.custom.s_radius = 520;
+        object.custom.s_offsetx = 1500;
+
+        targets.sphere3.push(object);
+    }
+
+    for (var i = 0; i < len3; i++) {
+        var phi = Math.acos(-1 + (2 * i) / len3);
+        var theta = Math.sqrt(len3 * Math.PI) * phi;
+        var object = new THREE.Object3D();
+
+        spherical.set(600, phi, theta);
+
+        object.position.setFromSpherical(spherical);
+
+        vector.copy(object.position).multiplyScalar(2);
+
+        object.lookAt(vector);
+
+        object.custom = {};
+        object.custom.s_rotate = 0;
+        object.custom.s_phi = phi;
+        object.custom.s_theta = theta;
+        object.custom.s_radius = 600;
+        object.custom.s_offsetx = 0;
+
+        targets.sphere3.push(object);
     }
 }
 
