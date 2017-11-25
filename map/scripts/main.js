@@ -14,6 +14,7 @@
         [37.35, 55.45],
         [6.45, 51.25]
     ];
+    var inteLD = [0, 1, 2.5, 1.5, 3.5, 2, 1.8, 2.2];
     var countriesLD = [];
     var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
     var citiesCoordsHS = [
@@ -30,6 +31,7 @@
         [4.29, 51.55]
     ];
     var countriesHS = [];
+    var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
 
     var symbol = [{
         'markerFile': '../map/images/timeline/slibar.png',
@@ -243,7 +245,7 @@
             });
             _poly.updateSymbol({
                 lineWidth: 3,
-                lineColor:'rgb(  35 ,255, 227 )',
+                lineColor: 'rgb(  35 ,255, 227 )',
                 polygonFill: 'rgba(16,97,87,1.0)'
             });
             setTimeout(function () {
@@ -352,6 +354,7 @@
                     if (frame.state.playState === 'finished') {}
                 });
             });
+            return marker;
         }
 
         var road1 = convertData(citiesLD, citiesCoordsLD);
@@ -399,51 +402,86 @@
         }
         addMarker(road1[0].coords[0], citiesLD[0]);
         var ri = 0;
-        var inteval = setInterval(function () {
-            if (ri == road1.length - 1) {
-                clearInterval(inteval);
-            }
-            var line = new maptalks.QuadBezierCurve(road1[ri].coords, {
-                'symbol': {
-                    lineColor: '#23ffe3',
-                    lineWidth: 3,
-                    shadowBlur: 5
-                },
-            }).addTo(vectorlayer);
-            line.animateShow({
-                duration: 500,
-                easing: 'linear'
-            }, function (frame, currCoord) {
-                if (frame.state.playState == 'finished') {
-                    addMarker(road1[ri].coords[road1[ri].coords.length - 1], citiesLD[ri + 1]);
-                    ri++;
-                }
-            });
-        }, 650);
+        // var inteval = setInterval(function () {
+        //     if (ri == road1.length) {
+        //         clearInterval(inteval);
+        //         return;
+        //     }
+        //     var line = new maptalks.QuadBezierCurve(road1[ri].coords, {
+        //         'symbol': {
+        //             lineColor: '#23ffe3',
+        //             lineWidth: 3,
+        //             shadowBlur: 5
+        //         },
+        //     }).addTo(vectorlayer);
+        //     line.animateShow({
+        //         duration: inteLD[ri],
+        //         easing: 'linear'
+        //     }, function (frame, currCoord) {
+        //         if (frame.state.playState == 'finished') {
+        //             addMarker(road1[ri].coords[road1[ri].coords.length - 1], citiesLD[ri + 1]);
+        //             ri++;
+        //         }
+        //     });
+        // }, 650);
+
 
         addMarker(road2[0].coords[0], citiesHS[0]);
-        var rj = 0;
-        var inteval2 = setInterval(function () {
-            if (rj == road2.length - 1) {
-                clearInterval(inteval2);
-            }
-            var line = new maptalks.QuadBezierCurve(road2[rj].coords, {
-                'symbol': {
-                    lineColor: '#23ffe3',
-                    lineWidth: 3,
-                    lineDasharray: [5, 5]
-                },
-            }).addTo(vectorlayer);
-            line.animateShow({
-                duration: 500,
-                easing: 'linear'
-            }, function (frame, currCoord) {
-                if (frame.state.playState == 'finished') {
-                    addMarker(road2[rj].coords[road2[rj].coords.length - 1], citiesHS[rj + 1]);
-                    rj++;
-                }
-            });
-        }, 650);
+
+        var clc = 0;
+        for (var i = 0; i < inteLD.length - 1; i++) {
+            clc = clc + inteLD[i];
+            anim1(i, clc);
+        }
+        clc = 0;
+        for (var i = 0; i < inteHS.length - 1; i++) {
+            clc = clc + inteHS[i];
+            anim2(i, clc);
+        }
+
+        function anim1(rj, clc) {
+            console.info(clc * 650 + 100 * rj);
+            console.info(inteLD[rj + 1] * 650);
+            console.info('endend');
+            setTimeout(function () {
+                var line = new maptalks.QuadBezierCurve(road1[rj].coords, {
+                    'symbol': {
+                        lineColor: '#23ffe3',
+                        lineWidth: 3
+                    },
+                }).addTo(vectorlayer);
+                line.animateShow({
+                    duration: inteLD[rj + 1] * 650,
+                    easing: 'linear'
+                }, function (frame, currCoord) {
+                    if (frame.state.playState == 'finished') {
+                        addMarker(road1[rj].coords[road1[rj].coords.length - 1], citiesLD[rj + 1]);
+                    }
+                });
+            }, clc * 650 + 100 * rj);
+        }
+
+        function anim2(rj, clc) {
+            console.info(clc * 650 + 100 * rj);
+            console.info(inteHS[rj + 1] * 650);
+            console.info('endend');
+            setTimeout(function () {
+                var line = new maptalks.QuadBezierCurve(road2[rj].coords, {
+                    'symbol': {
+                        lineColor: '#23ffe3',
+                        lineWidth: 3
+                    },
+                }).addTo(vectorlayer);
+                line.animateShow({
+                    duration: inteHS[rj + 1] * 650,
+                    easing: 'linear'
+                }, function (frame, currCoord) {
+                    if (frame.state.playState == 'finished') {
+                        addMarker(road2[rj].coords[road2[rj].coords.length - 1], citiesHS[rj + 1]);
+                    }
+                });
+            }, clc * 650 + 100 * rj);
+        }
 
     }
 
