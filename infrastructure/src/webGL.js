@@ -1946,7 +1946,7 @@ window.initWebGL = function () {
 				console.log(hotspot.event_data);
 				$(".preview-detail").html(hotspot.event_data.preview_detail);
 				setTimeout(function () {
-					$("#preview").addClass("show");
+					$("#engineeringDetail_wrap").addClass("show");
 				}, 150);
 
 
@@ -1961,7 +1961,7 @@ window.initWebGL = function () {
 			}, 300).start();
 			tween.easing(TWEEN.Easing.Back.InOut);
 
-			$("#preview").removeClass("show");
+			$("#engineeringDetail_wrap").removeClass("show");
 		}
 
 		// add hotspot to clickable collection
@@ -3062,7 +3062,7 @@ window.initWebGL = function () {
 			});
 
 			// hide the preview button
-			$("#preview").removeClass("show");
+			$("#engineeringDetail_wrap").removeClass("show");
 
 			// add listner for parallax in detail view
 			document.addEventListener('mousemove', onDocumentMouseMoveDetail, false);
@@ -3337,6 +3337,7 @@ window.initWebGL = function () {
 			timeline.hide();
 
 			// hide the toggle buttons
+			$("#buttons").removeClass("show");
 			$("#explore-button").removeClass("show");
 			$("#play-button").removeClass("show");
 
@@ -3389,7 +3390,7 @@ window.initWebGL = function () {
 
 			//// hide the preview button
 			setTimeout(function () {
-				$("#preview").addClass("show");
+				$("#engineeringDetail_wrap").addClass("show");
 			}, 3500);
 
 			//console.log("Hide Detail View");
@@ -3467,6 +3468,7 @@ window.initWebGL = function () {
 			// resume sound
 			if (IDR.mode == "play") {
 				$("#explore-button").addClass("show");
+				$("#buttons").addClass("show");
 				//IDR.audio.play("speech");
 
 				playSpeech();
@@ -3842,7 +3844,7 @@ window.initWebGL = function () {
 
 		$("#webgl-content").show().addClass("show");
 		$("#timeline-detector").show();
-		$("#preview").show();
+		$("#engineeringDetail_wrap").show();
 
 		$("#landing").removeClass("show");
 		$("#enter-button").removeClass("show");
@@ -3926,6 +3928,7 @@ window.initWebGL = function () {
 				}, 1000);
 				setTimeout(function () {
 					timeline.show();
+					$("#buttons").addClass("show");
 				}, 2000);
 				setTimeout(function () {
 					locked = false;
@@ -3950,6 +3953,7 @@ window.initWebGL = function () {
 						},
 						'event': 'se'
 					});
+					$("#buttons").addClass("show");
 					$("#play-button").addClass("show");
 					$("#explore-button").removeClass("show");
 				}, 6000);
@@ -4003,11 +4007,13 @@ window.initWebGL = function () {
 				//outerRing.show(); innerRing.show();
 				setTimeout(function () {
 					timeline.show();
+					$("#buttons").addClass("show");
 				}, 4500);
 				setTimeout(function () {
 					$("#explore-button").addClass("show");
 					console.log("isMobile:" + IDR.isMobile);
 					if (IDR.isMobile) {
+						$("#buttons").addClass("show");
 						$("#play-button").addClass("show");
 						$("#explore-button").removeClass("show");
 						//console.log("got here");

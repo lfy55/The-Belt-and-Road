@@ -1,3 +1,61 @@
+const barData = {
+  "2002": {
+    xName: ['美国', '日本', '德国', '英国', '法国'],
+    xAxis: ['us', 'jp', 'de', 'gb', 'fr'],
+    series: [10.64, 3.98, 2.01, 1.6, 1.46],
+  },
+  "2003": {
+    xName: ['美国', '日本', '德国', '英国', '法国'],
+    xAxis: ['us', 'jp', 'de', 'gb', 'fr'],
+    series: [11.14, 4.30, 2.45, 1.86, 1.79],
+  },
+  "2004": {
+    xName: ['美国', '日本', '德国', '英国', '法国'],
+    xAxis: ['us', 'jp', 'de', 'gb', 'fr'],
+    series: [11.87, 4.66, 2.75, 2.19, 2.06],
+  },
+  "2005": {
+    xName: ['美国', '日本', '德国', '英国', '中国'],
+    xAxis: ['us', 'jp', 'de', 'gb', 'cn'],
+    series: [12.64, 4.57, 2.79, 2.30, 2.26],
+  },
+  "2006": {
+    xName: ['美国', '日本', '德国', '中国', '英国'],
+    xAxis: ['us', 'jp', 'de', 'cn', 'gb'],
+    series: [13.39, 4.36, 2.92, 2.71, 2.46],
+  },
+  "2007": {
+    xName: ['美国', '日本', '中国', '德国', '英国'],
+    xAxis: ['us', 'jp', 'cn', 'de', 'gb'],
+    series: [14.06, 4.36, 3.49, 3.33, 2.83],
+  },
+  "2008": {
+    xName: ['美国', '日本', '中国', '德国', '法国'],
+    xAxis: ['us', 'jp', 'cn', 'de', 'fr'],
+    series: [14.37, 4.85, 4.52, 3.65, 2.85],
+  },
+  "2009": {
+    xName: ['美国', '日本', '中国', '德国', '法国'],
+    xAxis: ['us', 'jp', 'cn', 'de', 'fr'],
+    series: [13.94, 5.04, 4.99, 3.34, 2.62],
+  },
+  "2010": {
+    xName: ['美国', '中国', '日本', '德国', '法国'],
+    xAxis: ['us', 'cn', 'jp', 'de', 'fr'],
+    series: [14.50, 5.93, 5.49, 3.31, 2.57],
+  },
+  "2011": {
+    xName: ['美国', '中国', '日本', '德国', '法国'],
+    xAxis: ['us', 'cn', 'jp', 'de', 'fr'],
+    series: [15.08, 7.32, 5.89, 3.61, 2.78],
+  },
+  "2012": {
+    xName: ['美国', '中国', '日本', '德国', '法国'],
+    xAxis: ['us', 'cn', 'jp', 'de', 'fr'],
+    series: [15.68, 8.23, 5.96, 3.4, 2.61],
+  },
+}
+
 function initTimeline() {
 
 
@@ -6,10 +64,7 @@ function initTimeline() {
     data: [20, 15, 25, 35, 5]
   });
 
-  barChart.initChart({
-    xAxis: ['美国', '中国', '日本', '德国', '英国'],
-    series: [18.56, 11.21, 4.93, 3.46, 2.62],
-  })
+  barChart.initChart(barData["2002"])
 
   var slider = $("#timeline-point"),
     labels = $("#timeline .timeline-label>div"),
@@ -94,6 +149,7 @@ function initTimeline() {
       left = isNaN(left) ? 1 : left
       if (left >= maxLeft) {
         left = maxLeft
+        changeYear("2012")
         cancelAnimationFrame(animateCount)
       }
       left = left < 0 ? 0 : left
@@ -164,10 +220,7 @@ function initTimeline() {
     animate()
 
     // 更新柱状图
-    barChart.upDateChart({
-      xAxis: ['美国', '中国', '日本', '德国', '英国'],
-      series: [randomFolat(18, 20), randomFolat(11, 14), randomFolat(4.5, 6), randomFolat(3, 4), randomFolat(2, 3)],
-    })
+    barChart.upDateChart(barData[year])
 
     let data1 = randomNum(1, 100);
     let data2 = randomNum(1, 100 - data1);

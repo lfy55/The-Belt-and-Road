@@ -403,6 +403,12 @@ window.onload = function () {
         zoomlock = false;
         cameraControls = new Controls(renderer.domElement, 450);
 
+        setTimeout(() => {
+            switcher("productsphere", false, 5);
+            setTimeout(() => {
+                switcher("gridSphere", false, 25);
+            }, 10000);
+        }, 15000);
     }
 
     function animateOverlay(percentage) {
