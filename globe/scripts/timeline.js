@@ -57,11 +57,23 @@ const barData = {
 }
 
 function initTimeline() {
+  let globeBtn = $("#globeBtn"), relationBtn = $("#relationBtn")
+  globeBtn.on("click", function () {
+    relationBtn.removeClass("isSelect")
+    globeBtn.addClass("isSelect")
+    switcher("gridSphere", false, 25)
+  })
+  relationBtn.on("click", function () {
+    globeBtn.removeClass("isSelect")
+    relationBtn.addClass("isSelect")
+    switcher("productsphere", false, 5)
+  })
 
-
+  // 初始化UI 
+  initUI()
   // 初始化南丁格尔图
   nightingaleChart.initChart({
-    data: [20, 15, 25, 35, 5]
+    data: [randomNum(30, 50), randomNum(30, 50), randomNum(30, 50), randomNum(30, 50), randomNum(30, 50)]
   });
 
   barChart.initChart(barData["2002"])
@@ -231,7 +243,7 @@ function initTimeline() {
     //更新南丁格尔图
     nightingaleChart.upDateChart({
       //更新数据，name,value,color
-      data: [data1, data2, data3, data4, data5]
+      data: [randomNum(30, 50), randomNum(30, 50), randomNum(30, 50), randomNum(30, 50), randomNum(30, 50)]
     })
 
   }
@@ -251,6 +263,19 @@ function initTimeline() {
       thingContent.fadeOut()
     }, delay * 1000)
   }
+}
+
+function initUI() {
+  $("#title").addClass("isShow")
+  $("#left-subtitle").addClass("isShow")
+  $("#total-margin").addClass("isShow")
+  $("#bar-chart").addClass("isShow")
+  $("#start-timeline").addClass("isShow")
+  $("#lineText").addClass("isShow")
+  $("#timeline").addClass("isShow")
+  $("#right-subtitle").addClass("isShow")
+  $("#nightingale-chart").addClass("isShow")
+  $("#topBtn").addClass("isShow")
 }
 
 /**
