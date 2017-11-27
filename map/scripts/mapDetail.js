@@ -10,45 +10,45 @@ function showDetail() {
   chartDom.animate({
     scaleIndex: 1,
   }, {
-      step: function (now) {
-        chartDom.css('transform', 'scale(' + now + ')');
-        chartDom.css('right', + (1 - now) * 40 + 5 + '%');
-        chartDom.css('bottom', + (1 - now) * 40 + 5 + '%');
-        heatMapDOM.css('transform', 'scale(' + now + ')');
-        heatMapDOM.css('left', + (1 - now) * 40 + 5 + '%');
-        heatMapDOM.css('bottom', + (1 - now) * 40 + 5 + '%');
-        textDom.css('transform', 'scale(' + now + ')');
-        textDom.css('right', + (1 - now) * 40 + 5 + '%');
-        textDom.css('top', + (1 - now) * 40 + 5 + '%');
-      },
-      duration: 1500,
-      done: function () {
-      }
-    })
+    step: function (now) {
+      chartDom.css('transform', 'scale(' + now + ')');
+      chartDom.css('right', +(1 - now) * 40 + 5 + '%');
+      chartDom.css('bottom', +(1 - now) * 40 + 5 + '%');
+      heatMapDOM.css('transform', 'scale(' + now + ')');
+      heatMapDOM.css('left', +(1 - now) * 40 + 5 + '%');
+      heatMapDOM.css('bottom', +(1 - now) * 40 + 5 + '%');
+      textDom.css('transform', 'scale(' + now + ')');
+      textDom.css('right', +(1 - now) * 40 + 5 + '%');
+      textDom.css('top', +(1 - now) * 40 + 5 + '%');
+    },
+    duration: 1500,
+    done: function () {}
+  })
   video.src = './images/heatmap.mp4'
   video.play()
   changeChart("资源分布")
 }
 
-function hideDetail() {
+function hideDetail(callback) {
   chartDom.animate({
     scaleIndex: 0,
   }, {
-      step: function (now) {
-        chartDom.css('transform', 'scale(' + now + ')');
-        chartDom.css('right', + (1 - now) * 40 + 5 + '%');
-        chartDom.css('bottom', + (1 - now) * 40 + 5 + '%');
-        heatMapDOM.css('transform', 'scale(' + now + ')');
-        heatMapDOM.css('left', + (1 - now) * 40 + 5 + '%');
-        heatMapDOM.css('bottom', + (1 - now) * 40 + 5 + '%');
-        textDom.css('transform', 'scale(' + now + ')');
-        textDom.css('right', + (1 - now) * 40 + 5 + '%');
-        textDom.css('top', + (1 - now) * 40 + 5 + '%');
-      },
-      duration: 1500,
-      done: function () {
-      }
-    })
+    step: function (now) {
+      chartDom.css('transform', 'scale(' + now + ')');
+      chartDom.css('right', +(1 - now) * 40 + 5 + '%');
+      chartDom.css('bottom', +(1 - now) * 40 + 5 + '%');
+      heatMapDOM.css('transform', 'scale(' + now + ')');
+      heatMapDOM.css('left', +(1 - now) * 40 + 5 + '%');
+      heatMapDOM.css('bottom', +(1 - now) * 40 + 5 + '%');
+      textDom.css('transform', 'scale(' + now + ')');
+      textDom.css('right', +(1 - now) * 40 + 5 + '%');
+      textDom.css('top', +(1 - now) * 40 + 5 + '%');
+    },
+    duration: 1500,
+    done: function () {
+      if (callback) callback();
+    }
+  })
 }
 
 const charts = ["资源分布", "国家组织"]

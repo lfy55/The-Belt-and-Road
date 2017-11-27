@@ -96,10 +96,10 @@
             return geo;
         });
         map = new maptalks.Map('mapContainer', {
-            center: [66.7903012612708142, 20.976349249268345],
-            zoom: 4.0,
-            maxZoom: 5.0,
-            minZoom: 4.0,
+            center: [66.7903012612708142, 10.976349249268345],
+            zoom: 3.8,
+            maxZoom: 4.0,
+            minZoom: 3.8,
             baseLayer: new maptalks.VectorLayer('v', {
                 opacity: 1,
                 enableAltitude: true,
@@ -203,7 +203,7 @@
                 _poly.setProperties({
                     altitude: 0
                 });
-                $('#btmDiv').show();
+                hideDetail();
             }
             var _zoom = 5;
             if (id == 'iranPolygon') {
@@ -289,13 +289,15 @@
             }
             map.animateTo({
                 pitch: 20,
-                center: [66.7903012612708142, 20.976349249268345],
-                zoom: 4.0,
+                center: [66.7903012612708142, 10.976349249268345],
+                zoom: 3.8,
             }, {
                 duration: 1000,
                 easing: 'in'
             });
-            $('#btmDiv').show();
+            hideDetail(function(){
+                $('#btmDiv').show();
+            });
         });
     }
 
