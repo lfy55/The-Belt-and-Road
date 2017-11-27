@@ -403,12 +403,12 @@ window.onload = function () {
         zoomlock = false;
         cameraControls = new Controls(renderer.domElement, 450);
 
-        setTimeout(() => {
-            switcher("productsphere", false, 5);
-            setTimeout(() => {
-                switcher("gridSphere", false, 25);
-            }, 10000);
-        }, 15000);
+        // setTimeout(() => {
+        //     switcher("productsphere", false, 5);
+        //     setTimeout(() => {
+        //         switcher("gridSphere", false, 25);
+        //     }, 10000);
+        // }, 15000);
     }
 
     function animateOverlay(percentage) {
@@ -2605,7 +2605,7 @@ window.onload = function () {
                 for (var v = 0; v < particles / percentage; v++) {
                     a = false, b = false, c = false;
                     //easing=Math.sin((0.55+(v%100)/100*0.4)*Math.PI);
-                    easing = 0.2 + (v % 1000) / 1000;
+                    easing = 0.3 + (v % 1000) / 1000;
                     if (Math.abs(positions[v * 3 + 0] - destination[v * 3 + 0]) > error) positions[v * 3 + 0] += (destination[v * 3 + 0] - positions[v * 3 + 0]) / increment * easing;
                     else {
                         positions[v * 3 + 0] = destination[v * 3 + 0];
