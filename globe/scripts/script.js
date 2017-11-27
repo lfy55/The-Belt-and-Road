@@ -83,6 +83,7 @@ window.onload = function () {
     var overlayMaterial = null;
 
     if (WebGLtest()) {
+        window.switcher = switcher;
         init();
         animate();
     } else {
