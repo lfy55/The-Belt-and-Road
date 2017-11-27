@@ -33,7 +33,7 @@
     var countriesHS = [];
     var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
 
-  
+
     var lineColor = 'rgba(30,224,199,1)';
     var fillColor = 'rgba(13,85,79,1)';
 
@@ -45,10 +45,26 @@
     }
 
     function initMap() {
-      
+        var viewer = new Cesium.Viewer('mapContainer', {
+            animation: false,
+            baseLayerPicker:false,
+            fullscreenButton:false,
+            vrButton:false,
+            geocoder:false,
+            homeButton:false,
+            infoBox:false,
+            sceneModePicker:false,
+            selectionIndicator:false,
+            timeline:false,
+            navigationHelpButton:false,
+            sceneMode:Cesium.SceneMode.COLUMBUS_VIEW 
+        });
+        viewer.camera.flyTo({
+            destination:Cesium.Cartesian3.fromDegrees(66,30, 18000000.0),
+        });
     }
 
-    function initData(){
-        
+    function initData() {
+
     }
 }
