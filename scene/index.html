@@ -9,7 +9,13 @@
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <link href="css/new.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script>
-  
+  <script src="./CesiumUnminified/Cesium.js"></script>
+  <style>
+    @import url(./CesiumUnminified/Widgets/Widgets.css);
+    .cesium-viewer .cesium-widget-credits {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -22,7 +28,7 @@
     <div id="mapContainer">
 
     </div>
-    
+
     <div id="noWebGL" style="display:none">
       <div id='description'>The globe of economic complexity dynamically maps out the entire world production of goods to create an economic landscape
         of countries around the globe.
@@ -33,7 +39,7 @@
   </div>
 
   <script src="scripts/noWebGL.js"></script>
-  
+
   <script src="scripts/main.js"></script>
 </body>
 
