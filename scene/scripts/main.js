@@ -35,6 +35,8 @@
     var lineColor = 'rgba(30,224,199,1)';
     var fillColor = 'rgba(13,85,79,1)';
 
+    var pathEntities = [];
+
     if (WebGLtest()) {
         initMap();
     } else {
@@ -75,7 +77,9 @@
         // scene.screenSpaceCameraController.enableLook = false;
         var first = true;
         scene.camera.moveEnd.addEventListener(function () {
-            if (first) initData();
+            if (first) {
+                initData();
+            }
             first = false;
         });
 
@@ -109,30 +113,35 @@
             var pickedFeature = scene.pick(movement.position);
             if (pickedFeature != undefined) {
                 if (pickedFeature.id.name == 'Afghanistan') {
+                    hidepath();
                     showChart('afh');
                     showCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Pakistan') {
+                    hidepath();
                     showChart('pak');
                     showCountry(_pakFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Iran') {
+                    hidepath();
                     showChart('iran');
                     showCountry(_iranFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Kazakhstan') {
+                    hidepath();
                     showChart('kaz');
                     showCountry(_kazFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                 } else {
+                    showpath();
                     showChart();
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
@@ -140,6 +149,7 @@
                     hideCountry(_kazFeature);
                 }
             } else {
+                showpath();
                 showChart();
                 hideCountry(_afhFeature);
                 hideCountry(_pakFeature);
@@ -200,18 +210,18 @@
         viewer.clock.clockRange = Cesium.ClockRange.CLAMPED; //Loop at the end
         viewer.clock.multiplier = 20;
 
-        viewer.entities.add({
+        pathEntities.push(viewer.entities.add({
             position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[0][0], citiesCoordsLD[0][1]),
             billboard: {
                 image: './images/slibar.png'
             }
-        });
-        viewer.entities.add({
+        }));
+        pathEntities.push(viewer.entities.add({
             position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[0][0], citiesCoordsHS[0][1]),
             billboard: {
                 image: './images/slibar.png'
             }
-        });
+        }));
         var ldp1 = 1,
             ldp2 = 1;
         viewer.clock.onTick.addEventListener(function (t) {
@@ -220,21 +230,21 @@
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsLD);
                 var long = cartographicPosition.longitude / Math.PI * 180;
                 if (ldp1 < citiesCoordsLD.length && Math.abs(citiesCoordsLD[ldp1][0] - long) <= 0.1) {
-                    viewer.entities.add({
+                    pathEntities.push(viewer.entities.add({
                         position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1]),
                         billboard: {
                             image: './images/slibar.png'
                         }
-                    });
+                    }));
                     ldp1++;
                 }
             } else if (ldp1 == citiesCoordsLD.length - 1) {
-                viewer.entities.add({
+                pathEntities.push(viewer.entities.add({
                     position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1]),
                     billboard: {
                         image: './images/slibar.png'
                     }
-                });
+                }));
                 ldp1++;
             }
             var tsHS = positionHS.getValue(t.currentTime);
@@ -243,21 +253,21 @@
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsHS);
                 var lat = cartographicPosition.latitude / Math.PI * 180;
                 if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][1] - lat) <= 0.1) {
-                    viewer.entities.add({
+                    pathEntities.push(viewer.entities.add({
                         position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
                         billboard: {
                             image: './images/slibar.png'
                         }
-                    });
+                    }));
                     ldp2++;
                 }
             } else if (ldp2 == citiesCoordsHS.length - 1) {
-                viewer.entities.add({
+                pathEntities.push(viewer.entities.add({
                     position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
                     billboard: {
                         image: './images/slibar.png'
                     }
-                });
+                }));
                 ldp2++;
             }
         });
@@ -357,6 +367,9 @@
             interpolationDegree: 3,
             interpolationAlgorithm: Cesium.HermitePolynomialApproximation
         });
+
+        pathEntities.push(entityLD);
+        pathEntities.push(entityHS);
         // viewer.zoomTo(entity, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90)));
     }
 
@@ -383,16 +396,7 @@
         ]
     };
 
-    var chartColors=['#00cc00','#11f0d4','#1240ab']
-
-    function computeCircle(radius) {
-        var positions = [];
-        for (var i = 0; i < 360; i++) {
-            var radians = Cesium.Math.toRadians(i);
-            positions.push(new Cesium.Cartesian2(radius * Math.cos(radians), radius * Math.sin(radians)));
-        }
-        return positions;
-    }
+    var chartColors = ['#00cc00', '#11f0d4', '#1240ab']
 
     var lastcharts = [];
 
@@ -422,5 +426,19 @@
             viewer.entities.add(entity);
             lastcharts.push(entity);
         }
+    }
+
+    function hidepath() {
+        for (var i = 0; i < pathEntities.length; i++) {
+            pathEntities[i].show = false;
+        }
+    }
+
+    function showpath() {
+        setTimeout(function () {
+            for (var i = 0; i < pathEntities.length; i++) {
+                pathEntities[i].show = true;
+            }
+        }, 1500);
     }
 }
