@@ -21,7 +21,7 @@ window.onload = function () {
 
         bgGradient = context.createRadialGradient((screenWidth >> 1), screenHeight >> 1, screenWidth, screenWidth >> 1, screenHeight >> 1, 0);
         bgGradient.addColorStop(1, '#000');
-        bgGradient.addColorStop(0.2, '#003037');
+        bgGradient.addColorStop(0.2, '#003F44');
     };
 
     generatePoints();
@@ -93,7 +93,7 @@ function renderPoints() {
 function renderWire() {
     context.globalAlpha = 0.02;
     context.lineWidth = 1;
-    context.strokeStyle = '#BBB';
+    context.strokeStyle = '#DDD';
     context.beginPath();
 
     var i = points.length - 1;

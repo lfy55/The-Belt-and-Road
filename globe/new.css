@@ -18,7 +18,7 @@
 #title {
   position: fixed;
   top: 20px;
-  left: 25px;
+  left: -475px;
   color: #23ffe3;
   font-family: 'liHeiTi';
   font-size: 36px;
@@ -26,17 +26,27 @@
   background: url("./images/title-logo.png") left center no-repeat;
   background-size: 36px;
   text-shadow: none;
+  transition: all 3s;
+}
+
+#title.isShow {
+  left: 25px;
 }
 
 #left-subtitle {
   position: fixed;
   top: 120px;
-  left: 160px;
+  left: -340px;
   color: #23ffe3;
   font-family: 'liHeiTi';
   font-size: 24px;
   border: 10px solid transparent;
   border-image: url(./images/subtitle-border.png) 21/14px repeat;
+  transition: all 3s;
+}
+
+#left-subtitle.isShow {
+  left: 160px;
 }
 
 #total-margin {
@@ -44,13 +54,18 @@
   height: 278px;
   background: url("./images/total-bg.png") center center no-repeat;
   position: fixed;
-  left: 100px;
+  left: -400px;
   top: 243px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "SimHei";
   color: rgb(221, 213, 213);
+  transition: all 3s;
+}
+
+#total-margin.isShow {
+  left: 100px;
 }
 
 #total-margin .total-title,
@@ -86,8 +101,13 @@
   width: 400px;
   height: 250px;
   position: fixed;
-  left: 39px;
+  left: -461px;
   top: 556px;
+  transition: all 3s;
+}
+
+#bar-chart.isShow {
+  left: 39px;
 }
 
 #bar-icon {
@@ -108,20 +128,30 @@
 #right-subtitle {
   position: fixed;
   top: 120px;
-  right: 160px;
+  right: -340px;
   color: #23ffe3;
   font-family: 'liHeiTi';
   font-size: 24px;
   border: 10px solid transparent;
   border-image: url(./images/subtitle-border.png) 21/14px repeat;
+  transition: all 3s;
+}
+
+#right-subtitle.isShow {
+  right: 160px;
 }
 
 #start-timeline {
   position: fixed;
   bottom: 60px;
-  left: 80px;
+  left: -420px;
   width: 60px;
   cursor: pointer;
+  transition: all 3s;
+}
+
+#start-timeline.isShow {
+  left: 80px;
 }
 
 #line-chart {
@@ -142,6 +172,11 @@
   width: 400px;
   height: 400px;
   top: 280px;
+  right: -460px;
+  transition: all 3s;
+}
+
+#nightingale-chart.isShow {
   right: 40px;
 }
 
@@ -162,9 +197,14 @@
   position: fixed;
   width: 80%;
   height: 50px;
-  bottom: 10px;
+  bottom: -190px;
   left: 10%;
   z-index: 5;
+  transition: all 3s;
+}
+
+#timeline.isShow {
+  bottom: 10px;
 }
 
 #timeline .timeline-label {
@@ -243,4 +283,58 @@
   float: left;
   max-width: 280px;
   margin-bottom: 15px;
+}
+
+#lineText {
+  position: fixed;
+  bottom: 30px;
+  left: -480px;
+  width: 180px;
+  color: #23ffe3;
+  font-family: 'liHeiTi';
+  font-size: 16px;
+  text-align: center;
+  transition: all 3s;
+}
+
+#lineText.isShow {
+  left: 20px;
+}
+
+#topBtn {
+  position: fixed;
+  top: -180px;
+  width: 100px;
+  height: 30px;
+  left: 910px;
+  background: #36907e;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #18f4dd;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  transition: all 3s;
+}
+
+#topBtn.isShow {
+  top: 20px;
+}
+
+#globeBtn,
+#relationBtn {
+  width: 45px;
+  height: 25px;
+  color: #fff;
+  border-radius: 5px;
+  line-height: 25px;
+  font-size: 18px;
+  font-family: "LiHeiti";
+  text-align: center;
+  cursor: pointer;
+}
+
+#globeBtn.isSelect,
+#relationBtn.isSelect {
+  background: #fff;
+  color: #137e70;
 }
