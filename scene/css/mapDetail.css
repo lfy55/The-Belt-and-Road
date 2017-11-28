@@ -1,137 +1,132 @@
-#chart_wrap {
-  width: 359px;
-  height: 272px;
+#message_wrap {
+  width: 312px;
+  height: 264px;
   position: fixed;
-  right: 45%;
-  bottom: 45%;
+  left: 50%;
+  bottom: 50%;
   scaleindex: 0;
   transform: scale(0);
-  background: url("../images/mapBorder.png") center no-repeat;
+  transform-origin: left bottom;
+  background: url("../images/detail/messageBorder.png") center no-repeat;
 }
 
-#chartSubTitle {
-  width: 200px;
-  height: 30px;
-  line-height: 35px;
-  font-size: 18px;
-  color: #fff;
-  margin-left: 30px;
-  cursor: pointer;
-}
-
-#chart {
+#pie_wrap {
   width: 350px;
-  height: 240px;
-}
-
-#heatmap_wrap {
-  width: 448px;
-  height: 338px;
+  height: 264px;
   position: fixed;
-  left: 45%;
-  bottom: 45%;
+  left: 50%;
+  top: 50%;
   scaleindex: 0;
   transform: scale(0);
-  background: url("../images/mapBorder1.png") center no-repeat;
+  transform-origin: left top;
+  background: url("../images/detail/pieBorder.png") center no-repeat;
 }
 
-#heatmapSubTitle {
-  width: 200px;
-  height: 30px;
+#line_wrap {
+  width: 632px;
+  height: 264px;
+  position: fixed;
+  right: 50%;
+  bottom: 50%;
+  scaleindex: 0;
+  transform: scale(0);
+  transform-origin: right bottom;
+  background: url("../images/detail/lineBorder.png") center no-repeat;
+}
+
+.detail_subtitle {
+  color: #23ffe3;
+  font-size: 16px;
+  line-height: 30px;
+  left: 18px;
+  position: absolute;
+  top: 2px;
+}
+
+#line_wrap .detail_subtitle {
+  left: 40px;
+}
+
+#population_wrap {
+  position: absolute;
+  left: 40px;
+  top: 130px;
+  width: 470px;
+  height: 316px;
+}
+
+#GDP_wrap {
+  position: absolute;
+  left: 40px;
+  bottom: 50px;
+  width: 470px;
+  height: 316px;
+}
+
+#resources_wrap {
+  position: absolute;
+  right: 40px;
+  top: 130px;
+  width: 280px;
+  height: 190px;
+}
+
+.total_subtitle_wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40px;
+  background-image: linear-gradient( 90deg, rgb(9, 106, 103) 0%, rgb(9, 183, 165) 100%);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.total_subtitle_wrap .total_icon {
+  flex-shrink: 0;
+  margin-left: 13px;
+  width: 27px;
+}
+
+.total_subtitle_wrap .total_subtitle_text {
+  margin-left: 13px;
+  color: #23ffe3;
+  font-size: 18px;
   line-height: 35px;
-  font-size: 18px;
-  color: #fff;
-  margin-left: 30px;
+  flex-grow: 1;
 }
 
-#heatmap_wrap video {
-  width: 420px;
-  height: 280px;
-  margin-top: 15px;
-  margin-left: 10px;
+.total_subtitle_wrap .total_subtitle_status {
+  width: 60px;
+  height: 60px;
+  margin-right: 0px;
+  flex-shrink: 0;
 }
 
-#text_wrap {
-  width: 466px;
-  height: 175px;
-  position: fixed;
-  right: 45%;
-  top: 45%;
-  scaleindex: 0;
-  transform: scale(0);
-  background: url("../images/mapBorder2.png") center no-repeat;
+.total_subtitle_wrap .total_subtitle_status.select {
+  animation: rotate 4s linear infinite;
 }
 
-#countryName {
-  font-size: 21px;
-  color: rgb( 49, 224, 225);
-  font-weight: 900;
-  text-shadow: 0 0 10px rgb( 49, 224, 225);
-  line-height: 24px;
-  margin: 20px 0 0 30px;
+@keyframes rotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-#countryFlag {
-  width: 100px;
-  float: left;
-  margin: 30px 20px 0 30px;
-}
-
-#items {
-  width: 300px;
-  float: left;
-  font-size: 18px;
-  color: rgb(20, 202, 184);
-  margin-top: 20px;
-}
-
-#items .item {
-  margin: 10px 0;
-}
-
-#items .itemValue {
-  color: rgb(227, 243, 243);
-}
-
-#bottomChart_wrap {
-  position: fixed;
-  width: 800px;
-  height: 200px;
-  left: 560px;
-  bottom: 60px;
-  display: flex;
-  justify-content: space-between;
-}
-
-#bottomTitle_wrap {
-  position: fixed;
-  width: 800px;
-  height: 200px;
-  left: 560px;
-  bottom: 70px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.bChart {
-  width: 240px;
-  height: 200px;
-}
-
-.bTitle {
-  color: #fff;
-  font-size: 18px;
-  line-height: 30px;
-  text-align: center;
-  font-family: 'liHeiTi';
-  letter-spacing: 4px;
-}
-
-.bNumber {
-  color: #ddd;
-  font-size: 26px;
-  line-height: 30px;
-  font-weight: 900;
-  margin-top: 65px;
-  text-align: center;
+.total_content_wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40px;
+  bottom: 0;
+  background: rgba(3, 61, 62, 0.75);
+  border: 1px solid #000000;
+  box-shadow: 0px 3px 4.26px 1.74px rgba(0, 0, 0, 0.58);
 }

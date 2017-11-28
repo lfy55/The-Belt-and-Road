@@ -1,80 +1,50 @@
-let chartDom = $("#chart_wrap"),
-  heatMapDOM = $("#heatmap_wrap"),
-  textDom = $("#text_wrap")
+let messageDom = $("#message_wrap"),
+  pieDOM = $("#pie_wrap"),
+  lineDom = $("#line_wrap")
 
 var video = document.createElement('video')
 video.className = 'video'
-heatMapDOM.append(video)
+
 
 function showDetail() {
-  chartDom.animate({
+  messageDom.animate({
     scaleIndex: 1,
   }, {
-    step: function (now) {
-      chartDom.css('transform', 'scale(' + now + ')');
-      chartDom.css('right', +(1 - now) * 40 + 5 + '%');
-      chartDom.css('bottom', +(1 - now) * 40 + 5 + '%');
-      heatMapDOM.css('transform', 'scale(' + now + ')');
-      heatMapDOM.css('left', +(1 - now) * 40 + 5 + '%');
-      heatMapDOM.css('bottom', +(1 - now) * 40 + 5 + '%');
-      textDom.css('transform', 'scale(' + now + ')');
-      textDom.css('right', +(1 - now) * 40 + 5 + '%');
-      textDom.css('top', +(1 - now) * 40 + 5 + '%');
-    },
-    duration: 1500,
-    done: function () {}
-  })
-  video.src = './images/heatmap.mp4'
-  video.play()
-  changeChart("资源分布")
+      step: function (now) {
+        messageDom.css('transform', 'scale(' + now + ')');
+        messageDom.css('left', +(1 - now) * 46.2 + 3.8 + '%');
+        messageDom.css('bottom', +(1 - now) * 45 + 5 + '%');
+        pieDOM.css('transform', 'scale(' + now + ')');
+        pieDOM.css('left', +(1 - now) * 46.2 + 3.8 + '%');
+        pieDOM.css('top', +(1 - now) * 40 + 10 + '%');
+        lineDom.css('transform', 'scale(' + now + ')');
+        lineDom.css('right', +(1 - now) * 46.2 + 3.8 + '%');
+        lineDom.css('bottom', +(1 - now) * 45 + 5 + '%');
+      },
+      duration: 1500,
+      done: function () { }
+    })
 }
 
 function hideDetail(callback) {
-  chartDom.animate({
+  messageDom.animate({
     scaleIndex: 0,
   }, {
-    step: function (now) {
-      chartDom.css('transform', 'scale(' + now + ')');
-      chartDom.css('right', +(1 - now) * 40 + 5 + '%');
-      chartDom.css('bottom', +(1 - now) * 40 + 5 + '%');
-      heatMapDOM.css('transform', 'scale(' + now + ')');
-      heatMapDOM.css('left', +(1 - now) * 40 + 5 + '%');
-      heatMapDOM.css('bottom', +(1 - now) * 40 + 5 + '%');
-      textDom.css('transform', 'scale(' + now + ')');
-      textDom.css('right', +(1 - now) * 40 + 5 + '%');
-      textDom.css('top', +(1 - now) * 40 + 5 + '%');
-    },
-    duration: 1500,
-    done: function () {
-      if (callback) callback();
-    }
-  })
+      step: function (now) {
+        messageDom.css('transform', 'scale(' + now + ')');
+        messageDom.css('left', +(1 - now) * 46.2 + 3.8 + '%');
+        messageDom.css('bottom', +(1 - now) * 45 + 5 + '%');
+        pieDOM.css('transform', 'scale(' + now + ')');
+        pieDOM.css('left', +(1 - now) * 46.2 + 3.8 + '%');
+        pieDOM.css('top', +(1 - now) * 40 + 10 + '%');
+        lineDom.css('transform', 'scale(' + now + ')');
+        lineDom.css('right', +(1 - now) * 46.2 + 3.8 + '%');
+        lineDom.css('bottom', +(1 - now) * 45 + 5 + '%');
+      },
+      duration: 1500,
+      done: function () {
+        if (callback) callback();
+      }
+    })
 }
-
-const charts = ["资源分布", "国家组织"]
-let index = 0
-chartDom.on('click', function () {
-  index++
-  changeChart(charts[index % 2])
-})
-
-function changeChart(title) {
-  chartDom.empty()
-  chartDom.append(`<div id="chartSubTitle">${title}</div>
-  <div id="chart"></div>`)
-
-  setTimeout(() => {
-    if (title === "资源分布") {
-      radarChart.initChart({
-        data1: [100, 8, 0.40, -180, 2000],
-        data2: [60, 5, 0.30, -100, 1500]
-      })
-    } else {
-      codeChart.initChart()
-    }
-  }, 0)
-}
-pieChart.initChart()
-pieChart2.initChart()
-pieChart3.initChart()
 // showDetail()
