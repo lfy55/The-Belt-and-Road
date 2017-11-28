@@ -48,3 +48,17 @@ function hideDetail(callback) {
     })
 }
 // showDetail()
+
+var populationChart = CreateBar('population_chart'),
+  GDPChart = CreateBar('GDP_chart')
+
+populationChart.initChart({
+  xName: ['法国', '英国', '德国', '日本', '中国'],
+  xAxis: ['fr', 'gb', 'de', 'jp', 'cn'],
+  series: [1.46, 1.6, 2.01, 3.98, 10.64],
+})
+GDPChart.initChart({
+  xName: ['法国', '英国', '德国', '中国', '美国'],
+  xAxis: ['fr', 'gb', 'de', 'cn', 'us'],
+  series: [1.46, 1.6, 2.01, 3.98, 10.64],
+})
