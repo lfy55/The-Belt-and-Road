@@ -8,7 +8,8 @@
   <link rel="icon" href="images/favicon.ico" />
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <link href="css/new.css" rel="stylesheet" type="text/css">
-  <!--<script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script>-->
+  <link rel="stylesheet" href="./css/mapDetail.css">
+  <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script>
   <script src="./CesiumUnminified/Cesium.js"></script>
   <style>
     @import url(./CesiumUnminified/Widgets/Widgets.css);
@@ -23,7 +24,7 @@
   <div id="UI">
     <!-- 标题 -->
     <div id="title">一带一路 · 大事件可视化系统</div>
-
+    <div id="detail_wrap"></div>
     <div id="container"></div>
     <div id="mapContainer">
 
@@ -39,6 +40,9 @@
   </div>
 
   <script src="scripts/noWebGL.js"></script>
+  <script src="./lib/echarts.js"></script>
+  <script src="./scripts/mapDetail.js"></script>
+
   <script src="scripts/path.js"></script>
   <script src="scripts/webglGlobalDataSource.js"></script>
   <script src="scripts/main.js"></script>
