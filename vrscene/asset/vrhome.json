@@ -1,0 +1,11 @@
+{
+"TOTAL_MEMORY": 67108864,
+"dataUrl": "vrhome.data.unityweb",
+"asmCodeUrl": "vrhome.asm.code.unityweb",
+"asmMemoryUrl": "vrhome.asm.memory.unityweb",
+"asmFrameworkUrl": "vrhome.asm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Light",
+"backgroundColor": "#FFFFFF"
+}
