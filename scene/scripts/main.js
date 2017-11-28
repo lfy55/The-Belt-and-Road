@@ -21,8 +21,8 @@
         [105.84, 21.03],
         [101.42, 3.08],
         [106.49, -6.10],
-        [88.20, 22.33],
-        [79.52, 6.55],
+        [89.20, 22.33],
+        [80.52, 6.55],
         [36.49, -1.17],
         [23.44, 38.02],
         [12.20, 45.26],
@@ -73,15 +73,11 @@
         // scene.screenSpaceCameraController.enableZoom = false;
         // scene.screenSpaceCameraController.enableTilt = false;
         // scene.screenSpaceCameraController.enableLook = false;
+        var first = true;
         scene.camera.moveEnd.addEventListener(function () {
-            initData();
+            if (first) initData();
+            first = false;
         });
-
-        // var dataSource = new WebGLGlobeDataSource();
-        // dataSource.loadUrl('./scripts/population909500.json').then(function () {
-
-        // });
-        // viewer.dataSources.add(dataSource);
 
         var promise = Cesium.GeoJsonDataSource.load('./scripts/world.json');
         var _afhFeature, _pakFeature, _iranFeature, _kazFeature;
@@ -113,32 +109,38 @@
             var pickedFeature = scene.pick(movement.position);
             if (pickedFeature != undefined) {
                 if (pickedFeature.id.name == 'Afghanistan') {
+                    showChart('afh');
                     showCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Pakistan') {
+                    showChart('pak');
                     showCountry(_pakFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Iran') {
+                    showChart('iran');
                     showCountry(_iranFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Kazakhstan') {
+                    showChart('kaz');
                     showCountry(_kazFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                 } else {
+                    showChart();
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 }
             } else {
+                showChart();
                 hideCountry(_afhFeature);
                 hideCountry(_pakFeature);
                 hideCountry(_iranFeature);
@@ -187,32 +189,6 @@
     }
 
     function initData() {
-        // var path1 = [citiesCoordsLD[0][0], citiesCoordsLD[0][1]];
-        // var i = 0;
-        // var isConstant = false;
-        // viewer.entities.add({
-        //     polyline: {
-        //         positions: new Cesium.CallbackProperty(function (time, result) {
-        //             var t = (time.secondsOfDay % 30);
-        //             if (t / 4 > i) {
-        //                 i++;
-        //                 if (i > 7) {
-        //                     return;
-        //                 }
-        //                 path1.push(citiesCoordsLD[i][0], citiesCoordsLD[i][1]);
-        //             }
-        //             return Cesium.Cartesian3.fromDegreesArray(path1, Cesium.Ellipsoid.WGS84, result);
-        //         }, isConstant),
-        //         width: 10.0,
-        //         material: new Cesium.PolylineGlowMaterialProperty({
-        //             color: Cesium.Color.DEEPSKYBLUE,
-        //             glowPower: 0.1
-        //         })
-        //     }
-        // });
-
-        // viewer.dataSources.add(Cesium.CzmlDataSource.load(czml)).then(function (ds) {});
-
         //Set bounds of our simulation time
         var start = Cesium.JulianDate.fromDate(new Date(2017, 11, 25, 16));
         var stop = Cesium.JulianDate.addSeconds(start, 2000, new Cesium.JulianDate());
@@ -265,8 +241,8 @@
 
             if (tsHS) {
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsHS);
-                var long = cartographicPosition.longitude / Math.PI * 180;
-                if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][0] - long) <= 0.1) {
+                var lat = cartographicPosition.latitude / Math.PI * 180;
+                if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][1] - lat) <= 0.1) {
                     viewer.entities.add({
                         position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
                         billboard: {
@@ -290,7 +266,7 @@
         function computeCirclularFlightLD() {
             var property = new Cesium.SampledPositionProperty();
             for (var i = 0; i < path1.length; i++) {
-                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1], 0);
+                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1]);
                 var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
                 property.addSample(time, position);
             }
@@ -300,7 +276,7 @@
         function computeCirclularFlightHS() {
             var property = new Cesium.SampledPositionProperty();
             for (var i = 0; i < path2.length; i++) {
-                var position = Cesium.Cartesian3.fromDegrees(path2[i][0], path2[i][1], 0);
+                var position = Cesium.Cartesian3.fromDegrees(path2[i][0], path2[i][1]);
                 var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
                 property.addSample(time, position);
             }
@@ -382,5 +358,69 @@
             interpolationAlgorithm: Cesium.HermitePolynomialApproximation
         });
         // viewer.zoomTo(entity, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90)));
+    }
+
+    var ctp = {
+        'iran': [
+            [51.25, 33.40],
+            [53.25, 33.40],
+            [55.25, 33.40],
+        ],
+        'afh': [
+            [64.31, 34.34],
+            [66.31, 34.34],
+            [68.31, 34.34],
+        ],
+        'pak': [
+            [67.4, 29.7],
+            [69.4, 29.7],
+            [71.4, 29.7],
+        ],
+        'kaz': [
+            [65.12, 48.48],
+            [67.12, 48.48],
+            [69.12, 48.48]
+        ]
+    };
+
+    var chartColors=['#00cc00','#11f0d4','#1240ab']
+
+    function computeCircle(radius) {
+        var positions = [];
+        for (var i = 0; i < 360; i++) {
+            var radians = Cesium.Math.toRadians(i);
+            positions.push(new Cesium.Cartesian2(radius * Math.cos(radians), radius * Math.sin(radians)));
+        }
+        return positions;
+    }
+
+    var lastcharts = [];
+
+    function showChart(id) {
+        for (var i = 0; i < lastcharts.length; i++) {
+            viewer.entities.remove(lastcharts[i]);
+        }
+        lastcharts = [];
+        if (!id) return;
+        for (var i = 0; i < 3; i++) {
+            var height = Math.random() % 0.5;
+            var longitude = ctp[id][i][0];
+            var latitude = ctp[id][i][1];
+            var color = Cesium.Color.fromCssColorString(chartColors[i]);
+
+            //WebGL Globe only contains lines, so that's the only graphics we create.
+            var entity = new Cesium.Entity({
+                position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 500000 + height * 3000000),
+                cylinder: {
+                    length: 2 * (500000 + height * 3000000),
+                    topRadius: 60000.0,
+                    bottomRadius: 60000.0,
+                    material: new Cesium.ColorMaterialProperty(color),
+                    outline: false,
+                }
+            });
+            viewer.entities.add(entity);
+            lastcharts.push(entity);
+        }
     }
 }
