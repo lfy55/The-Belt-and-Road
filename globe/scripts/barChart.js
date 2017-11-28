@@ -32,8 +32,8 @@ var barChart = {
       grid: {
         left: '5%',
         right: '5%',
-        bottom: '3%',
-        containLabel: true
+        bottom: 34,
+        containLabel: false,
       },
       xAxis: [
         {
@@ -53,7 +53,47 @@ var barChart = {
           axisLabel: {
             color: '#fff',
             fontSize: 14,
-            fontFamily: 'liHeiTi',
+            formatter: function (e) {
+              return `{${e}|}`
+            },
+            rich: {
+              cn: {
+                height: 28,
+                backgroundColor: {
+                  image: './images/flags/CN@2x.png'
+                }
+              },
+              de: {
+                height: 28,
+                backgroundColor: {
+                  image: './images/flags/DE@2x.png'
+                }
+              },
+              fr: {
+                height: 28,
+                backgroundColor: {
+                  image: './images/flags/FR@2x.png'
+                }
+              },
+              gb: {
+                height: 28,
+                backgroundColor: {
+                  image: './images/flags/GB@2x.png'
+                }
+              },
+              jp: {
+                height: 28,
+                backgroundColor: {
+                  image: './images/flags/JP@2x.png'
+                }
+              },
+              us: {
+                height: 28,
+                backgroundColor: {
+                  image: './images/flags/US@2x.png'
+                }
+              }
+            },
           },
         }
       ],
@@ -72,7 +112,7 @@ var barChart = {
             normal: {
               show: true,
               position: 'top',
-              formatter: '{c}亿元',
+              formatter: '${c}万亿',
               fontSize: 14,
               distance: 15,
               fontFamily: 'liHeiTi',

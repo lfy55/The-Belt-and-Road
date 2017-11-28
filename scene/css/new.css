@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'liHeiTi';
+  src: url("../font/zzgflht.otf");
+}
+
+#title {
+  position: fixed;
+  top: 20px;
+  left: 25px;
+  color: #23ffe3;
+  font-family: 'liHeiTi';
+  font-size: 36px;
+  padding-left: 50px;
+  background: url("../images/title-logo.png") left center no-repeat;
+  background-size: 36px;
+  text-shadow: none;
+  z-index: 1;
+}
+
+#mapContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url("../images/mapbk.png") center no-repeat;
+}
+

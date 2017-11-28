@@ -1,0 +1,140 @@
+<html>
+
+<head>
+    <title>The map of economic complexity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div style="position:absolute;left:0;top:0;width:500px;height:300px;overflow:hidden;">
+        <svg id="root" width="500" height="300" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+            <title>svg</title>
+            <path d="M20,100 c80 -200 280 200 380 0 h-400" fill="none" stroke-width="1" stroke="gray" stroke-dasharray="3,3" />
+        </svg>
+    </div>
+
+    <div id="dotMove" style="position:absolute;width:6px;height:6px;overflow:hidden;background-color:#FF0000;"></div>
+
+    <script type="text/javascript">
+        /*  
+                                                                                                                                                                                                                                                                                                                                                                                                    参考维基百科  
+                                                                                                                                                                                                                                                                                                                                                                                                    http://zh.wikipedia.org/wiki/%E8%B2%9D%E8%8C%B2%E6%9B%B2%E7%B7%9A  
+                                                                                                                                                                                                                                                                                                                                                                                                    */
+        function Point2D(x, y) {
+            this.x = x || 0.0;
+            this.y = y || 0.0;
+        }
+        /*  
+         cp在此是四個元素的陣列:  
+         cp[0]為起始點，或上圖中的P0  
+         cp[1]為第一個控制點，或上圖中的P1  
+         cp[2]為第二個控制點，或上圖中的P2  
+         cp[3]為結束點，或上圖中的P3  
+         t為參數值，0 <= t <= 1  
+        */
+        function PointOnCubicBezier(cp, t) {
+            var ax, bx, cx;
+            var ay, by, cy;
+            var tSquared, tCubed;
+            var result = new Point2D;
+
+            /*計算多項式係數*/
+
+            cx = 3.0 * (cp[1].x - cp[0].x);
+            bx = 3.0 * (cp[2].x - cp[1].x) - cx;
+            ax = cp[3].x - cp[0].x - cx - bx;
+
+            cy = 3.0 * (cp[1].y - cp[0].y);
+            by = 3.0 * (cp[2].y - cp[1].y) - cy;
+            ay = cp[3].y - cp[0].y - cy - by;
+
+            /*計算位於參數值t的曲線點*/
+
+            tSquared = t * t;
+            tCubed = tSquared * t;
+
+            result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x;
+            result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y;
+            console.info(result);
+            return result;
+        }
+
+        /*  
+         ComputeBezier以控制點cp所產生的曲線點，填入Point2D結構的陣列。  
+         呼叫者必須分配足夠的記憶體以供輸出結果，其為<sizeof(Point2D) numberOfPoints>  
+        */
+
+        function ComputeBezier(cp, numberOfPoints, curve) {
+            var dt;
+            var i;
+
+            dt = 1.0 / (numberOfPoints - 1);
+
+            for (i = 0; i < numberOfPoints; i++)
+                curve[i] = PointOnCubicBezier(cp, i * dt);
+        }
+
+        var cp = [
+            new Point2D(0, 0), new Point2D(100, 50), new Point2D(100, 50), new Point2D(200, 0)
+        ];
+        var numberOfPoints = 100;
+        var curve = [];
+        var finalCurves = [];
+        var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
+
+        var citiesCoordsLD = [
+
+            [80.52, 6.55],
+            [58.0, 0.20],
+            [36.49, -1.17],
+            //   [91.01480088096555, 8.213409196546634],
+            //     [89.95, 25.63],
+            //      [85.44902426983847, 15.589625331985294],
+
+            //    [79.52, 6.55],
+            // [36.49, -1.17],
+        ];
+
+        for (var i = 0; i < citiesCoordsLD.length - 2; i++) {
+            var seg = [citiesCoordsLD[i], citiesCoordsLD[i + 1], citiesCoordsLD[i + 2]];
+            // var st = seg[0];
+            // var ed = seg[1];
+            // var midx = (seg[0][0] + seg[1][0]) / 2;
+            // if (i % 2 == 0) {
+            //     var midy = (seg[0][1] + seg[1][1]) / 2 - Math.abs(seg[0][0] - seg[1][0]) * 0.16;
+            // } else {
+            //     var midy = (seg[0][1] + seg[1][1]) / 2 + Math.abs(seg[0][0] - seg[1][0]) * 0.16;
+            // }
+            var cp = [
+                new Point2D(seg[0][0], seg[0][1]),
+                // new Point2D(midx, midy), new Point2D(midx, midy),
+                new Point2D(seg[1][0], seg[1][1]),
+                new Point2D(seg[1][0], seg[1][1]),
+                new Point2D(seg[2][0], seg[2][1])
+            ];
+            ComputeBezier(cp, 80, curve);
+            curve.forEach(function (p) {
+                finalCurves.push(p);
+            });
+        }
+        var s = '[';
+        finalCurves.forEach(function (fc) {
+            s += '[' + fc.x + ',' + fc.y + '],';
+        });
+        s += ']';
+
+        console.info(s);
+        // var i = 0,
+        //     dot = document.getElementById("dotMove");
+        // setInterval(function () {
+        //     dot.style.left = finalCurves[i].x*20 + 'px';
+        //     dot.style.top = finalCurves[i].y*20 + 'px';
+        //     i++;
+        //     if (i == 700) i = 0;
+        // }, 350);
+    </script>
+</body>
+
+</html>

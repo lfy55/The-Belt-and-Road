@@ -14,7 +14,8 @@
         [37.35, 55.45],
         [6.45, 51.25]
     ];
-
+    var inteLD = [0, 1, 2.5, 1.5, 3.5, 2, 1.8, 2.2];
+    var countriesLD = [];
     var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
     var citiesCoordsHS = [
         [119.30, 26.08],
@@ -29,23 +30,8 @@
         [12.20, 45.26],
         [4.29, 51.55]
     ];
-
-    var areaColor = ['rgba(102,153,153,0.3)', 'rgba(102,153,153,0.3)', 'rgba(102,153,153,0.3)',
-        'rgba(51,0,102,0.3)', 'rgba(102,153,153,0.3)', 'rgba(51,0,102,0.3)', 'rgba(102,153,153,0.3)', 'rgba(102,153,153,0.3)',
-        'rgba(51,0,102,0.3)'
-    ];
-    var areas = ['中亚', '西亚', '俄罗斯', '地中海', '欧洲', '南海', '东南亚', '南亚', '印度洋'];
-    var areasCenters = [
-        [60.55, 40.19],
-        [43.56, 28.26],
-        [46.81, 55],
-        [8, 40],
-        [0.29, 45.55],
-        [114.56, 12.26],
-        [113.81, 0],
-        [78, 20],
-        [60, 10],
-    ];
+    var countriesHS = [];
+    var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
 
     var symbol = [{
         'markerFile': '../map/images/timeline/slibar.png',
@@ -61,6 +47,9 @@
         'textDy': 30,
         'textFill': '#23ffe3'
     }];
+
+    var lineColor = 'rgba(30,224,199,1)';
+    var fillColor = 'rgba(13,85,79,1)';
 
     if (WebGLtest()) {
         initMap();
@@ -88,37 +77,49 @@
             geo._geometries.splice(53, 1);
             geo.setId(null);
             geo.config('antiMeridian', 'split');
-            geo.config('shadowBlur', 20);
-            geo.config('shadowColor', '#23ffe3');
+            geo.config('shadowBlur', 50);
+            geo.config('shadowColor', '#15887a');
             geo.setSymbol({
-                lineColor: '#23ffe3',
+                lineColor: '#15887a',
                 lineWidth: 2,
-                polygonFill: 'rgba(35,256,237,0.3)',
+                polygonFill: '#111',
+            });
+            return geo;
+        });
+        var polygonsAll = worldCollection.features.map(function (f) {
+            var geo = new maptalks.MultiPolygon(f.geometry.coordinates);
+            geo.setSymbol({
+                lineColor: '#15887a',
+                lineWidth: 2,
+                polygonFill: '#111',
             });
             return geo;
         });
         map = new maptalks.Map('mapContainer', {
-            center: [67.7903012612708142, 25.976349249268345],
-            zoom: 3,
+            center: [66.7903012612708142, 10.976349249268345],
+            zoom: 3.8,
+            maxZoom: 4.0,
+            minZoom: 3.8,
             baseLayer: new maptalks.VectorLayer('v', {
-                opacity: 0.3,
+                opacity: 1,
                 enableAltitude: true,
                 drawAltitude: {
                     polygonFill: {
                         'type': 'linear',
-                        'places': [1, 1, 0.8, 0.2],
+                        'places': [0, 0, 0, 1],
                         'colorStops': [
-                            [0.0, '#cc6666'],
-                            [0.8, 'rgba(30 ,224 ,199,1.0)'],
-                            [1, 'rgba(30 ,254 ,254,1.0)']
+                            [0, 'rgba(50,217,200, 0.7)'],
+                            [0.5, 'rgba(50,217,200, 0.5)'],
+                            [0.7, 'rgba(50,217,200, 0.3)'],
+                            [0.8, 'rgba(50,217,200, 0.2)'],
+                            [1, 'rgba(255 ,255 ,255,0.1)']
                         ]
                     },
-                    polygonOpacity: 0.8,
+                    polygonOpacity: 1,
                     lineWidth: 0,
-                    // polygonGradientExtent:
                 }
             }),
-            pitch: 0
+            pitch: 20
         });
 
         map.setSpatialReference({
@@ -136,133 +137,45 @@
         vectorlayer2 = new maptalks.VectorLayer('vector2').addTo(map);
         vectorlayer2.setZIndex(1);
 
-        var countrySymbol = {
-            lineColor: 'rgba(30,224,199,1.0)',
-            lineWidth: 2
+        var countryLineOptions = {
+            symbol: {
+                lineColor: lineColor,
+                lineWidth: 0
+            },
+            properties: {
+                altitude: 0
+            }
         };
-        var iran1 = new maptalks.LineString(iranCoords, {
-            symbol: countrySymbol,
+        var countryPolygonOptions = {
+            symbol: {
+                lineWidth: 0,
+                polygonFill: fillColor,
+            },
             properties: {
                 altitude: 0
             }
-        });
-
-        var iran2 = new maptalks.Polygon(iranCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6,
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'iranPolygon',
-            shadowBlur: 50,
-            shadowColor: 'rgba(30 ,224 ,199,1.0)'
-        });
-
-        var pakistan1 = new maptalks.LineString(pakistanCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var pakistan2 = new maptalks.Polygon(pakistanCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'pakistanPolygon'
-        });
-
-        var afh1 = new maptalks.LineString(afhCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var afh2 = new maptalks.Polygon(afhCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6,
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'afhPolygon',
-            shadowBlur: 20,
-            shadowColor: '#23ffe3'
-        });
-
-        var thailand1 = new maptalks.LineString(thailandCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var thailand2 = new maptalks.Polygon(thailandCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'thailandPolygon'
-        });
-
-        var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6,
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'malaysiaPolygon',
-            shadowBlur: 20,
-            shadowColor: '#23ffe3'
-        });
-
-        var russia1 = new maptalks.MultiLineString(russiaCoords, {
-            symbol: countrySymbol,
-            properties: {
-                altitude: 0
-            }
-        });
-
-        var russia2 = new maptalks.MultiPolygon(russiaCoords, {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: '#23ffe3',
-                polygonOpacity: 0.6
-            },
-            properties: {
-                altitude: 0
-            },
-            id: 'russiaPolygon'
-        });
-
+        };
+        var iran1 = new maptalks.LineString(iranCoords, countryLineOptions);
+        var iran2 = new maptalks.Polygon(iranCoords, countryPolygonOptions);
+        iran2.setId('iranPolygon');
+        countriesLD[4] = [iran1, iran2];
+        var pakistan1 = new maptalks.LineString(pakistanCoords, countryLineOptions);
+        var pakistan2 = new maptalks.Polygon(pakistanCoords, countryPolygonOptions);
+        pakistan2.setId('pakistanPolygon');
+        var afh1 = new maptalks.LineString(afhCoords, countryLineOptions);
+        var afh2 = new maptalks.Polygon(afhCoords, countryPolygonOptions);
+        afh2.setId('afhPolygon');
+        var thailand1 = new maptalks.LineString(thailandCoords, countryLineOptions);
+        var thailand2 = new maptalks.Polygon(thailandCoords, countryPolygonOptions);
+        thailand2.setId('thailandPolygon');
+        var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, countryLineOptions);
+        var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, countryPolygonOptions);
+        malaysia2.setId('malaysiaPolygon');
+        countriesHS[3] = [malaysia1, malaysia2];
         map.getBaseLayer().addGeometry(polygons);
-        map.getBaseLayer().addGeometry([iran1, iran2, pakistan1, pakistan2, afh1, afh2,
-            thailand1, thailand2, malaysia1, malaysia2, russia1, russia2
+        map.getBaseLayer().addGeometry(polygonsAll);
+        map.getBaseLayer().addGeometry([afh1, afh2, iran1, iran2, pakistan1, pakistan2,
+            thailand1, thailand2, malaysia1, malaysia2
         ]);
 
         iran2.addEventListener('click', countryClick);
@@ -270,7 +183,6 @@
         afh2.addEventListener('click', countryClick);
         thailand2.addEventListener('click', countryClick);
         malaysia2.addEventListener('click', countryClick);
-        // russia2.addEventListener('click', countryClick);
 
         var _center, _line, _poly;
 
@@ -278,12 +190,20 @@
             console.info('countryClick');
             var id = e.target.getId();
             if (_center && _line && _poly) {
+                _line.updateSymbol({
+                    lineWidth: 0
+                });
                 _line.setProperties({
                     altitude: 0
+                });
+                _poly.updateSymbol({
+                    lineWidth: 0,
+                    polygonFill: fillColor
                 });
                 _poly.setProperties({
                     altitude: 0
                 });
+                hideDetail();
             }
             var _zoom = 5;
             if (id == 'iranPolygon') {
@@ -314,47 +234,69 @@
             }
 
             map.animateTo({
-                pitch: 45,
+                pitch: 60,
                 center: _center,
                 zoom: _zoom
             }, {
-                duration: 2000,
+                duration: 800,
                 easing: 'out'
             });
+            _line.updateSymbol({
+                lineWidth: 3
+            });
+            _poly.updateSymbol({
+                lineWidth: 3,
+                lineColor: 'rgb(  35 ,255, 227 )',
+                polygonFill: 'rgba(16,97,87,1.0)'
+            });
+            $('#btmDiv').hide();
             setTimeout(function () {
                 maptalks.animation.Animation.animate({
                     properties: {
                         altitude: 500000
                     }
                 }, {
-                    'duration': 2000
+                    'duration': 800
                 }, frame => {
                     if (frame.state.playState == 'running') {
                         _line.setProperties(frame.styles.properties);
                         _poly.setProperties(frame.styles.properties);
                     }
+                    if (frame.state.playState == 'finished') {
+                        showDetail();
+                    }
                 }).play();
-            }, 2000);
+            }, 800);
             e.domEvent.stopPropagation();
         }
 
         map.addEventListener('click', function (e) {
             console.info('mapclick');
             if (_line && _poly) {
+                _line.updateSymbol({
+                    lineWidth: 0
+                });
                 _line.setProperties({
                     altitude: 0
+                });
+                _poly.updateSymbol({
+                    lineWidth: 0,
+                    polygonFill: fillColor
                 });
                 _poly.setProperties({
                     altitude: 0
                 });
             }
             map.animateTo({
-                pitch: 0,
-                center: [67.7903012612708142, 25.976349249268345],
-                zoom: 3,
+                pitch: 20,
+                center: [66.7903012612708142, 10.976349249268345],
+                zoom: 3.8,
             }, {
                 duration: 1000,
                 easing: 'in'
+            });
+            hideDetail(function(){
+                $('#btmDiv').show();
             });
         });
     }
@@ -420,200 +362,135 @@
                     if (frame.state.playState === 'finished') {}
                 });
             });
+            return marker;
         }
 
         var road1 = convertData(citiesLD, citiesCoordsLD);
         var road2 = convertData(citiesHS, citiesCoordsHS);
-        addMarker(road1[0].coords[0], citiesLD[0]);
-        var ri = 0;
-        var inteval = setInterval(function () {
-            if (ri == road1.length - 1) {
-                clearInterval(inteval);
-            }
-            var line = new maptalks.QuadBezierCurve(insertCoords(road1[ri].coords, ri % 2 == 0), {
-                'symbol': {
-                    lineColor: '#23ffe3',
-                    lineWidth: 3,
-                    shadowBlur: 5
-                },
-            }).addTo(vectorlayer);
-            line.animateShow({
-                duration: 500,
-                easing: 'linear'
-            }, function (frame, currCoord) {
-                if (frame.state.playState == 'finished') {
-                    addMarker(road1[ri].coords[1], citiesLD[ri + 1]);
-                    ri++;
-                }
-                if (ri == road1.length) {
-                    var text = new maptalks.Marker(
-                        [108.56, 50], {
-                            'properties': {
-                                'name': '丝绸之路经济带'
-                            },
-                            'symbol': [{
-                                'markerType': 'rectangle',
-                                'markerFill': 'rgba(0,0,0,0.6)',
-                                'markerLineColor': '#fff',
-                                'markerLineWidth': '2',
-                                'markerHeight': 30,
-                                'markerWidth': 200,
-                                'markerDx': -100,
-                                'markerDy': -18
-                            }, {
-                                'textFaceName': 'LiSu',
-                                'textName': '{name}', //value from name in geometry's properties
-                                'textSize': 22,
-                                'textFill': '#00cc99',
-                            }]
-                        }
-                    ).addTo(vectorlayer2);
-                    text.setInfoWindow({
-                        'dx': 270,
-                        'dy': 100,
-                        'animation': 'scale',
-                        'single': false,
-                        'content': '丝绸之路经济带重点畅通中国经中亚、俄罗斯至欧洲（波罗的海），中国经中亚、西亚至波斯湾地中海，中国至东南亚、南亚、印度洋。'
-                    });
-
-                    text.openInfoWindow();
-                }
-            });
-        }, 650);
-
-        addMarker(road2[0].coords[0], citiesHS[0]);
-        var rj = 0;
-        var inteval2 = setInterval(function () {
-            if (rj == road2.length - 1) {
-                clearInterval(inteval2);
-            }
-            if (citiesHS[rj + 1] == '吉隆坡') {
+        for (let r1 = 0; r1 < road1.length; r1++) {
+            road1[r1].coords = insertCoords(road1[r1].coords, r1 % 2 == 0);
+        }
+        for (let r2 = 0; r2 < road2.length; r2++) {
+            if (citiesHS[r2 + 1] == '吉隆坡') {
                 var curveCoords = [
-                    road2[rj].coords[0],
+                    road2[r2].coords[0],
                     [112, 12.4],
-                    road2[rj].coords[1]
+                    road2[r2].coords[1]
                 ];
-            } else if (citiesHS[rj + 1] == '河内') {
+            } else if (citiesHS[r2 + 1] == '河内') {
                 var curveCoords = [
-                    road2[rj].coords[0],
+                    road2[r2].coords[0],
                     [111, 18.4],
-                    road2[rj].coords[1]
+                    road2[r2].coords[1]
                 ];
-            } else if (citiesHS[rj + 1] == '雅加达') {
+            } else if (citiesHS[r2 + 1] == '雅加达') {
                 var curveCoords = [
-                    road2[rj].coords[0],
+                    road2[r2].coords[0],
                     [108.6, 0.6],
-                    road2[rj].coords[1]
+                    road2[r2].coords[1]
                 ];
-            } else if (citiesHS[rj + 1] == '加尔各答') {
+            } else if (citiesHS[r2 + 1] == '加尔各答') {
                 var curveCoords = [
-                    road2[rj].coords[0],
+                    road2[r2].coords[0],
                     [89.3, 4.7],
-                    road2[rj].coords[1]
+                    road2[r2].coords[1]
                 ];
-            } else if (citiesHS[rj + 1] == '雅典') {
+            } else if (citiesHS[r2 + 1] == '雅典') {
                 var curveCoords = [
-                    road2[rj].coords[0],
+                    road2[r2].coords[0],
                     [58.93, 13.81],
                     [41.59, 11.19],
                     [34.03, 31.25],
-                    road2[rj].coords[1]
+                    road2[r2].coords[1]
                 ];
             } else {
-                var curveCoords = insertCoords(road2[rj].coords, rj % 2 == 0);
+                var curveCoords = insertCoords(road2[r2].coords, r2 % 2 == 0);
             }
-            var line = new maptalks.QuadBezierCurve(curveCoords, {
-                'symbol': {
-                    lineColor: '#23ffe3',
-                    lineWidth: 3,
-                    lineDasharray: [5, 5]
-                },
-            }).addTo(vectorlayer);
-            line.animateShow({
-                duration: 500,
-                easing: 'linear'
-            }, function (frame, currCoord) {
-                if (frame.state.playState == 'finished') {
-                    addMarker(road2[rj].coords[1], citiesHS[rj + 1]);
-                    rj++;
-                }
-                if (rj == road2.length) {
-                    var text2 = new maptalks.Marker(
-                        [60.56, -8], {
-                            'properties': {
-                                'name': '21世纪海上丝绸之路'
-                            },
-                            'symbol': [{
-                                'markerType': 'rectangle',
-                                'markerFill': 'rgba(0,0,0,0.6)',
-                                'markerLineColor': '#fff',
-                                'markerLineWidth': '2',
-                                'markerHeight': 30,
-                                'markerWidth': 240,
-                                'markerDx': -120,
-                                'markerDy': -18
-                            }, {
-                                'textFaceName': 'LiSu',
-                                'textName': '{name}', //value from name in geometry's properties
-                                'textSize': 22,
-                                'textFill': '#00cc99',
-                            }]
-                        }
-                    ).addTo(vectorlayer2);
-                    // text2.animateShow();
-                    text2.setInfoWindow({
-                        'dx': 120,
-                        'dy': 180,
-                        'animation': 'scale',
-                        'single': false,
-                        'content': '21世纪海上丝绸之路重点方向是从中国沿海港口过南海到印度洋，延伸至欧洲，从中国沿海港口过南海到南太平洋。'
-                    });
+            road2[r2].coords = curveCoords;
+        }
+        addMarker(road1[0].coords[0], citiesLD[0]);
+        var ri = 0;
+        // var inteval = setInterval(function () {
+        //     if (ri == road1.length) {
+        //         clearInterval(inteval);
+        //         return;
+        //     }
+        //     var line = new maptalks.QuadBezierCurve(road1[ri].coords, {
+        //         'symbol': {
+        //             lineColor: '#23ffe3',
+        //             lineWidth: 3,
+        //             shadowBlur: 5
+        //         },
+        //     }).addTo(vectorlayer);
+        //     line.animateShow({
+        //         duration: inteLD[ri],
+        //         easing: 'linear'
+        //     }, function (frame, currCoord) {
+        //         if (frame.state.playState == 'finished') {
+        //             addMarker(road1[ri].coords[road1[ri].coords.length - 1], citiesLD[ri + 1]);
+        //             ri++;
+        //         }
+        //     });
+        // }, 650);
 
-                    text2.openInfoWindow();
-                }
-            });
-        }, 650);
 
-        for (var j = 0; j < areasCenters.length; j++) {
-            var marker1 = new maptalks.Marker(areasCenters[j], {
-                'properties': {
-                    'name': areas[j]
-                },
-                symbol: [{
-                    'markerType': 'ellipse',
-                    'markerFill': {
-                        'type': 'radial',
-                        'colorStops': [
-                            [0.00, 'rgba(255,255,255,0)'],
-                            [0.10, areaColor[j]],
-                            [1.00, areaColor[j]]
-                        ]
+        addMarker(road2[0].coords[0], citiesHS[0]);
+
+        var clc = 0;
+        for (var i = 0; i < inteLD.length - 1; i++) {
+            clc = clc + inteLD[i];
+            anim1(i, clc);
+        }
+        clc = 0;
+        for (var i = 0; i < inteHS.length - 1; i++) {
+            clc = clc + inteHS[i];
+            anim2(i, clc);
+        }
+
+        function anim1(rj, clc) {
+            console.info(clc * 650 + 100 * rj);
+            console.info(inteLD[rj + 1] * 650);
+            console.info('endend');
+            setTimeout(function () {
+                var line = new maptalks.QuadBezierCurve(road1[rj].coords, {
+                    'symbol': {
+                        lineColor: '#23ffe3',
+                        lineWidth: 3
                     },
-                    'markerLineWidth': 0,
-                    'markerWidth': 50,
-                    'markerHeight': 50
-                }, {
-                    'textFaceName': 'liHeiTi',
-                    'textName': '{name}', //value from name in geometry's properties
-                    'textSize': 14,
-                    'textFill': '#00CC66',
-                }]
-            }).addTo(vectorlayer2);
+                }).addTo(vectorlayer);
+                line.animateShow({
+                    duration: inteLD[rj + 1] * 650,
+                    easing: 'linear'
+                }, function (frame, currCoord) {
+                    if (frame.state.playState == 'finished') {
+                        addMarker(road1[rj].coords[road1[rj].coords.length - 1], citiesLD[rj + 1]);
+                    }
+                });
+            }, clc * 650 + 100 * rj);
         }
 
-        const player = maptalks.animation.Animation.animate({}, {
-            'duration': Number.MAX_VALUE
-        }, frame => {});
-
-        player.play();
-
-        function randomColor() {
-            return {
-                r: Math.random(),
-                g: Math.random(),
-                b: Math.random()
-            };
+        function anim2(rj, clc) {
+            console.info(clc * 650 + 100 * rj);
+            console.info(inteHS[rj + 1] * 650);
+            console.info('endend');
+            setTimeout(function () {
+                var line = new maptalks.QuadBezierCurve(road2[rj].coords, {
+                    'symbol': {
+                        lineColor: '#23ffe3',
+                        lineWidth: 3
+                    },
+                }).addTo(vectorlayer);
+                line.animateShow({
+                    duration: inteHS[rj + 1] * 650,
+                    easing: 'linear'
+                }, function (frame, currCoord) {
+                    if (frame.state.playState == 'finished') {
+                        addMarker(road2[rj].coords[road2[rj].coords.length - 1], citiesHS[rj + 1]);
+                    }
+                });
+            }, clc * 650 + 100 * rj);
         }
+
     }
 
 }

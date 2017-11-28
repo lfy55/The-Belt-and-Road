@@ -4,7 +4,7 @@ let radarChart = {
     __chart: null,
     __option: {},
     initChart: function (data) {
-        this.__dom = document.getElementById('chart_content');
+        this.__dom = document.getElementById('chart');
         this.__chart = echarts.init(this.__dom);
         this.__option = {
             tooltip: {
@@ -24,7 +24,7 @@ let radarChart = {
                         { text: '其他' }
                     ],
                     center: ['50%', '50%'],
-                    radius: 240,
+                    radius: "70%",
                     startAngle: 90,
                     splitNumber: 4,
                     shape: 'circle',
