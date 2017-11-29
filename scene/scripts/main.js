@@ -211,7 +211,7 @@
         viewer.clock.multiplier = 20;
 
         pathEntities.push(viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[0][0], citiesCoordsLD[0][1]),
+            position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[0][0], citiesCoordsLD[0][1], 180000),
             billboard: {
                 image: './images/slibar.png'
             }
@@ -229,9 +229,12 @@
             if (tsLD) {
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsLD);
                 var long = cartographicPosition.longitude / Math.PI * 180;
-                if (ldp1 < citiesCoordsLD.length && Math.abs(citiesCoordsLD[ldp1][0] - long) <= 0.1) {
+                if(viewer.trackedEntity){
+                    console.info('HS:' + long);
+                }
+                if (ldp1 < citiesCoordsLD.length && Math.abs(citiesCoordsLD[ldp1][0] - long) <= 1.0) {
                     pathEntities.push(viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1]),
+                        position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1], 180000),
                         billboard: {
                             image: './images/slibar.png'
                         }
@@ -252,7 +255,8 @@
             if (tsHS) {
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsHS);
                 var lat = cartographicPosition.latitude / Math.PI * 180;
-                if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][1] - lat) <= 0.1) {
+                // console.info('HS:' + Math.abs(citiesCoordsHS[ldp2][1] - lat));
+                if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][1] - lat) <= 0.5) {
                     pathEntities.push(viewer.entities.add({
                         position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
                         billboard: {
@@ -276,7 +280,7 @@
         function computeCirclularFlightLD() {
             var property = new Cesium.SampledPositionProperty();
             for (var i = 0; i < path1.length; i++) {
-                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1]);
+                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1], 180000);
                 var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
                 property.addSample(time, position);
             }
@@ -331,7 +335,6 @@
             interpolationDegree: 3,
             interpolationAlgorithm: Cesium.HermitePolynomialApproximation
         });
-
         var positionHS = computeCirclularFlightHS();
         var entityHS = viewer.entities.add({
 
@@ -371,6 +374,19 @@
         pathEntities.push(entityLD);
         pathEntities.push(entityHS);
         // viewer.zoomTo(entity, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90)));
+
+        setTimeout(function () {
+            viewer.trackedEntity = entityLD;
+        }, 15000);
+        setTimeout(function () {
+            viewer.trackedEntity = undefined;
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(60, -35, 11800000.0),
+                orientation: {
+                    pitch: Cesium.Math.toRadians(-60)
+                }
+            });
+        }, 23000);
     }
 
     var ctp = {
