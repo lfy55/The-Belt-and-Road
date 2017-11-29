@@ -35,7 +35,9 @@
           <span class="total_subtitle_text">人口总量</span>
           <img class="total_subtitle_status select" src="./images/total/status_select.png" alt="">
         </div>
-        <div class="total_content_wrap"></div>
+        <div class="total_content_wrap">
+          <div class="total_chart" id="population_chart"></div>
+        </div>
       </div>
       <div id="GDP_wrap">
         <div class="total_subtitle_wrap">
@@ -43,7 +45,9 @@
           <span class="total_subtitle_text">GDP生产总值</span>
           <img class="total_subtitle_status" src="./images/total/status_noselect.png" alt="">
         </div>
-        <div class="total_content_wrap"></div>
+        <div class="total_content_wrap">
+          <div class="total_chart" id="GDP_chart"></div>
+        </div>
       </div>
       <div id="resources_wrap">
         <div class="total_subtitle_wrap">
@@ -51,7 +55,9 @@
           <span class="total_subtitle_text">已探明石油总量</span>
           <img class="total_subtitle_status" src="./images/total/status_noselect.png" alt="">
         </div>
-        <div class="total_content_wrap"></div>
+        <div class="total_content_wrap">
+          <div class="total_chart"></div>
+        </div>
       </div>
     </div>
     <div id="detail_wrap">
@@ -76,6 +82,7 @@
 
   <script src="scripts/noWebGL.js"></script>
   <script src="./lib/echarts.js"></script>
+  <script src="./scripts/totalChart.js"></script>
   <script src="./scripts/mapDetail.js"></script>
 
   <script src="scripts/path.js"></script>
