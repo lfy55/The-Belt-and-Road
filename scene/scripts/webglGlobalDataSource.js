@@ -300,7 +300,7 @@ WebGLGlobeDataSource.prototype.load = function (data) {
                 // polyline: polyline,
                 point: {
                     color: color, // default: WHITE
-                    pixelSize: 8, // default: 1
+                    pixelSize: 4, // default: 1
                 },
             });
 
