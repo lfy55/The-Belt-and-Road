@@ -16,8 +16,8 @@ function CreateBar(domID) {
           show: false,
         },
         grid: {
-          left: 100,
-          right: 30,
+          left: 130,
+          right: 45,
           bottom: 0,
           top: 0,
           containLabel: false,
@@ -48,52 +48,53 @@ function CreateBar(domID) {
               color: '#fff',
               fontSize: 14,
               formatter: function (e, e1) {
-                console.log(e, e1)
-                return `{num|${5 - e1}}{name|${data.xName[e1]}}{${e}|}`
+                return `{num|${('0' + (10 - e1)).slice(-2)}}{name|${data.xName[e1]}} {${e}|}`
               },
               rich: {
                 num: {
                   color: '#fff',
-                  width: 15,
-                  align: 'left'
+                  width: 20,
+                  align: 'left',
+                  padding: [0, 0, 0, 5],
                 },
                 name: {
                   color: '#fff',
-                  width: 30,
-                  align: 'right'
+                  width: 40,
+                  align: 'right',
+                  padding: [0, 10, 0, 0],
                 },
                 cn: {
-                  height: 28,
+                  height: 24,
                   backgroundColor: {
                     image: './images/flags/CN@2x.png'
                   }
                 },
                 de: {
-                  height: 28,
+                  height: 24,
                   backgroundColor: {
                     image: './images/flags/DE@2x.png'
                   }
                 },
                 fr: {
-                  height: 28,
+                  height: 24,
                   backgroundColor: {
                     image: './images/flags/FR@2x.png'
                   }
                 },
                 gb: {
-                  height: 28,
+                  height: 24,
                   backgroundColor: {
                     image: './images/flags/GB@2x.png'
                   }
                 },
                 jp: {
-                  height: 28,
+                  height: 24,
                   backgroundColor: {
                     image: './images/flags/JP@2x.png'
                   }
                 },
                 us: {
-                  height: 28,
+                  height: 24,
                   backgroundColor: {
                     image: './images/flags/US@2x.png'
                   }
@@ -113,7 +114,7 @@ function CreateBar(domID) {
                 position: 'right',
                 formatter: '${c}万亿',
                 fontSize: 14,
-                distance: 15,
+                distance: 5,
               },
             },
             data: data.series

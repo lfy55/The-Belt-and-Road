@@ -44,6 +44,90 @@
 }
 
 #line_wrap .detail_subtitle {
+  right: 20px;
+  left: 10px;
+}
+
+.detail_content {
+  position: absolute;
+  top: 32px;
+  left: 5px;
+  right: 10px;
+  bottom: 5px;
+}
+
+.detail_content .detail_chart {
+  width: 100%;
+  height: 100%;
+}
+
+.detail_content .detail_content_title {
+  font-size: 16px;
+  color: #ffffff;
+  margin: 10px 0 10px 30px;
+  line-height: 30px;
+}
+
+.detail_content .detail_content_title .bigNum {
+  font-size: 26px;
+  font-family: "LiHeiTi";
+  color: rgb(52, 83, 145);
+}
+
+#message_list {
+  width: 100%;
+  height: calc(100% - 55px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  overflow-y: auto;
+}
+
+#message_list::-webkit-scrollbar {
+  width: 6px;
+}
+
+#message_list::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 10px;
+}
+
+#message_list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #31e0e1;
+}
+
+#message_list .message_item {
+  display: flex;
+  height: 30px;
+  margin: 3px;
+  align-items: center;
+  color: #fff;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+#message_list .message_item .message_content_topFlag {
+  margin: 0 15px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #f00;
+  border-radius: 10px;
+  flex: 0 0 auto;
+}
+
+#message_list .message_item .message_content_name {
+  flex: 1 0 auto;
+}
+
+#message_list .message_item .message_content_value {
+  flex: 1 0 auto;
+  width: 100px;
+  margin-right: 10px;
+  text-align: right;
+}
+
+#line_wrap .detail_subtitle {
   left: 40px;
 }
 
@@ -67,7 +151,7 @@
   position: absolute;
   right: 40px;
   top: 130px;
-  width: 280px;
+  width: 320px;
   height: 190px;
 }
 
@@ -134,4 +218,41 @@
 .total_content_wrap .total_chart {
   width: 100%;
   height: 100%;
+}
+
+#total_list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#total_list .total_item {
+  width: 100%;
+  height: 25px;
+  line-height: 25px;
+  color: #ffffff;
+  font-size: 18px;
+  display: flex;
+}
+
+#total_list .total_item .total_num {
+  margin-left: 10px;
+  width: 30px;
+  flex: 0 0 auto;
+}
+
+#total_list .total_item .total_country {
+  flex: 0 0 auto;
+}
+
+#total_list .total_item>img {
+  height: 25px;
+  margin-left: 8px;
+}
+
+#total_list .total_item .total_value {
+  width: 100px;
+  margin-right: 10px;
+  flex: 1 0 auto;
+  text-align: right;
 }
