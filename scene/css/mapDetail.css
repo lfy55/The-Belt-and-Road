@@ -188,6 +188,7 @@
   height: 60px;
   margin-right: 0px;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .total_subtitle_wrap .total_subtitle_status.select {
