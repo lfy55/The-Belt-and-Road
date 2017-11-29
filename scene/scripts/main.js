@@ -12,8 +12,8 @@
         [37.35, 55.45],
         [6.45, 51.25]
     ];
-    var inteLD = [0, 1, 2.5, 1.5, 3.5, 2, 1.8, 2.2];
-    var countriesLD = [];
+    // var inteLD = [0, 1, 2.5, 1.5, 3.5, 2, 1.8, 2.2];
+    // var countriesLD = [];
     var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
     var citiesCoordsHS = [
         [119.30, 26.08],
@@ -28,14 +28,15 @@
         [12.20, 45.26],
         [4.29, 51.55]
     ];
-    var countriesHS = [];
-    var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
+    // var countriesHS = [];
+    // var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
 
 
-    var lineColor = 'rgba(30,224,199,1)';
-    var fillColor = 'rgba(13,85,79,1)';
+    // var lineColor = 'rgba(30,224,199,1)';
+    // var fillColor = 'rgba(13,85,79,1)';
 
     var pathEntities = [];
+    var dataSource;
 
     if (WebGLtest()) {
         initMap();
@@ -114,35 +115,35 @@
             if (pickedFeature != undefined) {
                 if (pickedFeature.id.name == 'Afghanistan') {
                     hidepath();
-                    showChart('afh');
+                    showHighChart('afh');
                     showCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Pakistan') {
                     hidepath();
-                    showChart('pak');
+                    showHighChart('pak');
                     showCountry(_pakFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_iranFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Iran') {
                     hidepath();
-                    showChart('iran');
+                    showHighChart('iran');
                     showCountry(_iranFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_kazFeature);
                 } else if (pickedFeature.id.name == 'Kazakhstan') {
                     hidepath();
-                    showChart('kaz');
+                    showHighChart('kaz');
                     showCountry(_kazFeature);
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
                 } else {
                     showpath();
-                    showChart();
+                    hideHighChart();
                     hideCountry(_afhFeature);
                     hideCountry(_pakFeature);
                     hideCountry(_iranFeature);
@@ -150,7 +151,7 @@
                 }
             } else {
                 showpath();
-                showChart();
+                hideHighChart();
                 hideCountry(_afhFeature);
                 hideCountry(_pakFeature);
                 hideCountry(_iranFeature);
@@ -160,7 +161,7 @@
             function showCountry(feature) {
                 var polygon = feature.polygon;
                 polygon.extrudedHeight = new Cesium.CallbackProperty(function () {
-                    polygon.material = Cesium.Color.fromRgba(0xff36907e);
+                    polygon.material = Cesium.Color.fromRgba(0xff006363);
                     polygon.outlineWidth = 5;
                     polygon.exheight += 10000;
                     if (polygon.exheight > 500000) {
@@ -196,6 +197,8 @@
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
+        dataSource = new WebGLGlobeDataSource();
+        dataSource.loadUrl('./scripts/population909500.json').then(function (e) {});
     }
 
     function initData() {
@@ -211,7 +214,7 @@
         viewer.clock.multiplier = 20;
 
         pathEntities.push(viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[0][0], citiesCoordsLD[0][1], 180000),
+            position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[0][0], citiesCoordsLD[0][1], 5000),
             billboard: {
                 image: './images/slibar.png'
             }
@@ -229,12 +232,12 @@
             if (tsLD) {
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsLD);
                 var long = cartographicPosition.longitude / Math.PI * 180;
-                if(viewer.trackedEntity){
+                if (viewer.trackedEntity) {
                     console.info('HS:' + long);
                 }
                 if (ldp1 < citiesCoordsLD.length && Math.abs(citiesCoordsLD[ldp1][0] - long) <= 1.0) {
                     pathEntities.push(viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1], 180000),
+                        position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1], 5000),
                         billboard: {
                             image: './images/slibar.png'
                         }
@@ -248,6 +251,7 @@
                         image: './images/slibar.png'
                     }
                 }));
+                showHighChart
                 ldp1++;
             }
             var tsHS = positionHS.getValue(t.currentTime);
@@ -280,8 +284,14 @@
         function computeCirclularFlightLD() {
             var property = new Cesium.SampledPositionProperty();
             for (var i = 0; i < path1.length; i++) {
-                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1], 180000);
-                var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1], 5000);
+                if (i > 475 && i <= 675) {
+                    var time = Cesium.JulianDate.addSeconds(start, 475 + (i - 475) * 5, new Cesium.JulianDate());
+                } else if (i <= 475) {
+                    var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+                } else if (i > 675) {
+                    var time = Cesium.JulianDate.addSeconds(start, i + 800, new Cesium.JulianDate());
+                }
                 property.addSample(time, position);
             }
             return property;
@@ -315,8 +325,13 @@
             //Automatically compute orientation based on position movement.
             orientation: new Cesium.VelocityOrientationProperty(positionLD),
 
-            billboard: {
-                image: './images/plane.png',
+            // billboard: {
+            //     image: './images/plane.png',
+            // },
+
+            model: {
+                uri: './SampleData/Cesium_Air.gltf',
+                minimumPixelSize: 64
             },
 
             //Show the path as a pink line sampled in 1 second increments.
@@ -377,7 +392,7 @@
 
         setTimeout(function () {
             viewer.trackedEntity = entityLD;
-        }, 15000);
+        }, 25000);
         setTimeout(function () {
             viewer.trackedEntity = undefined;
             viewer.camera.flyTo({
@@ -386,7 +401,7 @@
                     pitch: Cesium.Math.toRadians(-60)
                 }
             });
-        }, 23000);
+        }, 73000);
     }
 
     var ctp = {
@@ -442,6 +457,14 @@
             viewer.entities.add(entity);
             lastcharts.push(entity);
         }
+    }
+
+    function showHighChart(id) {
+        viewer.dataSources.add(dataSource);
+    }
+
+    function hideHighChart() {
+
     }
 
     function hidepath() {
