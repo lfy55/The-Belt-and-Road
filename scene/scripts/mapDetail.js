@@ -80,22 +80,41 @@ function hideDetail(callback) {
       }
     })
 }
-// showDetail()
 
-var populationChart = CreateBar('population_chart'),
-  GDPChart = CreateBar('GDP_chart'),
+function showShipin() {
+  $({ value: 0 }).animate({ value: 1 }, {
+    step: function (now) {
+      $("#shipinqiandao_wrap").css('transform', 'scale(' + now + ')');
+      $("#shipinqiandao").css('transform', 'scale(' + now + ')');
+    },
+    duration: 1500,
+  })
+}
+
+function hideShipin() {
+  $({ value: 1 }).animate({ value: 0 }, {
+    step: function (now) {
+      $("#shipinqiandao_wrap").css('transform', 'scale(' + now + ')');
+      $("#shipinqiandao").css('transform', 'scale(' + now + ')');
+    },
+    duration: 1500,
+  })
+}
+
+var populationChart = CreateBar('population_chart', '{c}亿'),
+  GDPChart = CreateBar('GDP_chart', '${c}万亿'),
   pieChart = createPie('detail_pie_chart'),
   lineChart = createLine('detail_line_chart')
 
 populationChart.initChart({
-  xName: ['法国', '英国', '德国', '日本', '中国', '法国', '英国', '德国', '日本', '中国'],
-  xAxis: ['fr', 'gb', 'de', 'jp', 'cn', 'fr', 'gb', 'de', 'jp', 'cn'],
-  series: [1.46, 1.6, 2.01, 3.98, 10.64, 1.46, 1.6, 2.01, 3.98, 10.64],
+  xName: ['日本', '俄罗斯', '孟加拉国', '尼日利亚', '巴基斯坦', '巴西', '印度尼西亚', '美国', '印度', '中国'],
+  xAxis: ['jp', 'ru', 'bd', 'ng', 'pk', 'br', 'id', 'us', 'in', 'cn'],
+  series: [1.27, 1.44, 1.62, 1.85, 1.93, 2.07, 2.61, 3.23, 13.24, 13.78],
 })
 GDPChart.initChart({
-  xName: ['法国', '英国', '德国', '中国', '美国', '法国', '英国', '德国', '中国', '美国'],
-  xAxis: ['fr', 'gb', 'de', 'cn', 'us', 'fr', 'gb', 'de', 'cn', 'us'],
-  series: [1.46, 1.6, 2.01, 3.98, 10.64, 1.46, 1.6, 2.01, 3.98, 10.64],
+  xName: ['加拿大', '巴西', '意大利', '印度', '法国', '英国', '德国', '日本', '中国', '美国'],
+  xAxis: ['ca', 'br', 'it', 'in', 'fr', 'gb', 'de', 'jp', 'cn', 'us'],
+  series: [1.53, 1.79, 1.85, 2.26, 2.46, 2.618, 3.46, 4.93, 11.19, 18.56],
 })
 pieChart.initChart()
 lineChart.initChart()
@@ -125,4 +144,14 @@ resourcesStatusDOM.on('click', function () {
   populationStatusDOM[0].src = './images/total/status_noselect.png'
   resourcesStatusDOM.addClass('select')
   resourcesStatusDOM[0].src = './images/total/status_select.png'
+})
+
+$("#shipinqiandao_wrap").on('click', function (e) {
+  console.log(e)
+  if (e.target.id === 'shipinqiandao_wrap') {
+    hideShipin()
+  }
+})
+$("#shipin_close").on('click', function () {
+  hideShipin()
 })
