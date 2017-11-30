@@ -56,6 +56,26 @@ const barData = {
   },
 }
 
+const lineData = [2.144, 2.915, 4.453, 3.846, 4.326, 4.256, 1.819, -1.735, 4.327, 3.156, 2.601]
+
+const GDPData = {
+  "2002": 34.612,
+  "2003": 38.867,
+  "2004": 43.771,
+  "2005": 47.386,
+  "2006": 51.307,
+  "2007": 57.793,
+  "2008": 63.386,
+  "2009": 60.087,
+  "2010": 65.906,
+  "2011": 73.242,
+  "2012": 74.802,
+  "2013": 76.925,
+  "2014": 78.87,
+  "2015": 74.51,
+  "2016": 75.544
+}
+
 function initTimeline() {
   let globeBtn = $("#globeBtn"), relationBtn = $("#relationBtn")
   globeBtn.on("click", function () {
@@ -104,27 +124,39 @@ function initTimeline() {
   thingsValue = [
     {
       id: 1,
-      left: labelsValue[5].left,
-      imgUrl: '',
-      context: '2007年2月13日美国新世纪金融公司（New Century Finance）发出2006年第四季度盈利预警。'
-    },
-    {
-      id: 2,
-      left: ~~((labelsValue[5].left + labelsValue[6].left) / 2),
-      imgUrl: '',
-      context: '汶川大地震，也称2008年四川大地震或5·12大地震，发生于北京时间（UTC+8）2008年5月12日（星期一）14时28分04秒，震中位于中国四川省阿坝藏族羌族自治州汶川县映秀镇附近、四川省省会成都市西北偏西方向79千米处。'
+      left: labelsValue[5].left + 20,
+      imgUrl: './images/things/img1.jpg',
+      context: '2007年2月13日美国新世纪金融公司（New Century Finance）发出2006年第四季度盈利预警，预示全球经济寒冬开始。'
     },
     {
       id: 3,
       left: labelsValue[2].left,
-      imgUrl: '',
+      imgUrl: './images/things/img3.jpg',
       context: '2004年美国总统选举于2004年11月2日举行，时任总统乔治·沃克·布希成功连任，这次他成功同时赢得普选票及选举人票。2005年1月6日选举人投票结束，确定总统人选，他于2005年1月20日宣誓就职。'
     },
     {
       id: 4,
       left: labelsValue[4].left,
-      imgUrl: '',
+      imgUrl: './images/things/img4.jpg',
       context: '中国解除人民币与美金的联系汇率，人民币升值进程开始。'
+    },
+    {
+      id: 5,
+      left: labelsValue[8].left - 30,
+      imgUrl: './images/things/img5.jpg',
+      context: '希腊债务危机，源于2009年12月希腊政府公布政府财政赤字，而后全球三大信用评级相继调低希腊主权信用评级从而揭开希腊债务危机的序幕。希腊债务危机的直接原因即是政府的财政赤字，除希腊外欧洲大部分国家都存在较高的财政赤字，因此，希腊债务危机也引爆了欧洲债务危机。'
+    },
+    {
+      id: 6,
+      left: labelsValue[3].left - 40,
+      imgUrl: './images/things/img6.png',
+      context: '股市泡沫后美联储利率的大幅下降刺激了美国的房地产泡沫，2003年下半年经济强劲复苏，需求快速上升拉动通胀和核心通胀抬头，2004年美联储开始收紧政策，连续17次将利率提高25个基点，2006年6月联邦基金利率达到5.25%。'
+    },
+    {
+      id: 7,
+      left: labelsValue[7].left,
+      imgUrl: './images/things/img7.jpg',
+      context: '美国宣布7000亿美元救市计划的前半段2900亿救助金融业不理想，后续改为救助消费者，等于宣示经济衰退已经从短期风暴变成长期抗战, 美国宣布以134亿美元紧急纾困濒临倒闭的通用、福特、克莱斯勒等三大车厂。'
     }
   ]
   labelsValue.sort((a, b) => b.left - a.left)
@@ -151,7 +183,7 @@ function initTimeline() {
     // 初始化折线图
     lineChart.initChart({
       duration: 1000 * 45,
-      dataY: ['120', '100', '150', '100', '250', '330', '150', '400', '300', '330', '250', '400']
+      dataY: lineData
     });
     var startAnimationTimer = performance.now()
     function moveSlider(timer) {
@@ -204,8 +236,7 @@ function initTimeline() {
 
       //更新折线图
       let lineChartDataLength = nowYear - 2002 + 1;
-      let lineChartData = ['300', '150', '100', '250', '50', '330', '150', '400', '300', '330', '250', '400']
-      let lineChartDataShow = lineChartData.splice(0, lineChartDataLength)
+      let lineChartDataShow = lineData.splice(0, lineChartDataLength)
 
       lineChart.upDateChart({
         dataY: lineChartDataShow
@@ -223,9 +254,9 @@ function initTimeline() {
     }
     new TWEEN.Tween({ tweeningNumber: +totalNumDom.innerText })
       .easing(TWEEN.Easing.Quadratic.Out)
-      .to({ tweeningNumber: ~~randomNum(600, 800) }, 1500)
+      .to({ tweeningNumber: GDPData[year] }, 1500)
       .onUpdate(function () {
-        totalNumDom.innerText = this.tweeningNumber.toFixed(0)
+        totalNumDom.innerText = this.tweeningNumber.toFixed(3)
       })
       .start()
 
@@ -252,7 +283,7 @@ function initTimeline() {
     $('#thing-content-content').empty()
     var nowThing = thingsValue.find(item => item.id === id)
     thingContent[0].style.left = nowThing.left + 10 + 'px'
-    $('#thing-content-content').append(`<img src="http://iph.href.lu/300x200" alt="占位"><div class="text">${nowThing.context}</div>`)
+    $('#thing-content-content').append(`<img src="${nowThing.imgUrl}" alt="图片"><div class="text">${nowThing.context}</div>`)
     thingContent.fadeIn()
   }
 
