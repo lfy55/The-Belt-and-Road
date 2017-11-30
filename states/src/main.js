@@ -426,8 +426,7 @@ function init() {
 
     var button = document.getElementById('helix');
     button.addEventListener('click', function (event) {
-        inControll = true;
-        transform(targets.helix, 2000);
+        showContrast();
     }, false);
 
     var button = document.getElementById('grid');
