@@ -12,8 +12,6 @@
         [37.35, 55.45],
         [6.45, 51.25]
     ];
-    // var inteLD = [0, 1, 2.5, 1.5, 3.5, 2, 1.8, 2.2];
-    // var countriesLD = [];
     var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
     var citiesCoordsHS = [
         [119.30, 26.08],
@@ -28,18 +26,49 @@
         [12.20, 45.26],
         [4.29, 51.55]
     ];
-    // var countriesHS = [];
-    // var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
 
-
-    // var lineColor = 'rgba(30,224,199,1)';
-    // var fillColor = 'rgba(13,85,79,1)';
+    var chartsCities = ['Japan', 'Russia', 'Bangladesh', 'Nigeria', 'Pakistan', 'Brazil', 'Indonesia',
+        'United States of America', 'India', 'China'
+    ];
+    var chartDatas = [1.27, 1.44, 1.62, 1.85, 1.93, 2.07, 2.61, 3.23, 13.24, 13.78];
+    var chartCoords = [
+        [139.686048, 35.975599],
+        [95.718204, 62.959737],
+        [90.234114, 23.831347],
+        [7.372689, 9.255528],
+        [69.702731, 29.770945],
+        [-49.033423, -10.827221],
+        [121.180063, -2.001823],
+        [-97.087162, 40.021106],
+        [78.939869, 22.572888],
+        [107.198117, 34.618151]
+    ];
+    var chartEntities = [];
+    var chartCities2 = ['Canada', 'Brazil', 'Italy', 'India', 'France', 'United Kingdom', 'Germany', 'Japan',
+        'China', 'United States of America'
+    ];
+    var chartDatas2 = [1.53, 1.79, 1.85, 2.26, 2.46, 2.618, 3.46, 4.93, 11.19, 18.56];
+    var chartCoords2 = [
+        [-102.089532, 60.226911],
+        [-49.033423, -10.827221],
+        [13.003957, 42.844922],
+        [78.939869, 22.572888],
+        [2.480704, 46.670523],
+        [-1.493113, 53.868551],
+        [10.796282, 51.130062],
+        [139.686048, 35.975599],
+        [107.198117, 34.618151],
+        [-97.087162, 40.021106]
+    ];
+    var chartEntities2 = [];
 
     var pathEntities = [];
-    var dataSource;
 
+    var countryEntities = [];
     if (WebGLtest()) {
         initMap();
+        setTimeout(showHighChart1, 5000);
+        setTimeout(hideHighChart1, 8000);
     } else {
         $("#noWebGL").show();
     }
@@ -71,11 +100,6 @@
             }
         });
         scene = viewer.scene;
-        // scene.screenSpaceCameraController.enableRotate = false;
-        // scene.screenSpaceCameraController.enableTranslate = false;
-        // scene.screenSpaceCameraController.enableZoom = false;
-        // scene.screenSpaceCameraController.enableTilt = false;
-        // scene.screenSpaceCameraController.enableLook = false;
         var first = true;
         scene.camera.moveEnd.addEventListener(function () {
             if (first) {
@@ -85,83 +109,51 @@
         });
 
         var promise = Cesium.GeoJsonDataSource.load('./scripts/world.json');
-        var _afhFeature, _pakFeature, _iranFeature, _kazFeature;
         promise.then(function (dataSource) {
             viewer.dataSources.add(dataSource);
-            var entities = dataSource.entities.values;
-            for (var i = 0; i < entities.length; i++) {
-                var entity = entities[i];
+            countryEntities = dataSource.entities.values;
+            for (var i = 0; i < countryEntities.length; i++) {
+                var entity = countryEntities[i];
                 entity.polygon.material = Cesium.Color.fromRgba(0x2036907e);
                 entity.polygon.outline = true;
                 entity.polygon.outlineColor = Cesium.Color.fromBytes(30, 224, 199, 255);
                 entity.polygon.exheight = 0;
-                if (entity.name == 'Afghanistan') {
-                    _afhFeature = entity;
-                } else if (entity.name == 'Pakistan') {
-                    _pakFeature = entity;
-                } else if (entity.name == 'Iran') {
-                    _iranFeature = entity;
-                } else if (entity.name == 'Kazakhstan') {
-                    _kazFeature = entity;
-                }
             }
         }).otherwise(function (error) {
             window.alert(error);
         });
 
+        var _slcFeature = [];
         var handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
         handler.setInputAction(function (movement) {
             var pickedFeature = scene.pick(movement.position);
             if (pickedFeature != undefined) {
-                if (pickedFeature.id.name == 'Afghanistan') {
-                    hidepath();
-                    showHighChart('afh');
-                    showCountry(_afhFeature);
-                    hideCountry(_pakFeature);
-                    hideCountry(_iranFeature);
-                    hideCountry(_kazFeature);
-                } else if (pickedFeature.id.name == 'Pakistan') {
-                    hidepath();
-                    showHighChart('pak');
-                    showCountry(_pakFeature);
-                    hideCountry(_afhFeature);
-                    hideCountry(_iranFeature);
-                    hideCountry(_kazFeature);
-                } else if (pickedFeature.id.name == 'Iran') {
-                    hidepath();
-                    showHighChart('iran');
-                    showCountry(_iranFeature);
-                    hideCountry(_afhFeature);
-                    hideCountry(_pakFeature);
-                    hideCountry(_kazFeature);
-                } else if (pickedFeature.id.name == 'Kazakhstan') {
-                    hidepath();
-                    showHighChart('kaz');
-                    showCountry(_kazFeature);
-                    hideCountry(_afhFeature);
-                    hideCountry(_pakFeature);
-                    hideCountry(_iranFeature);
-                } else {
-                    showpath();
-                    hideHighChart();
-                    hideCountry(_afhFeature);
-                    hideCountry(_pakFeature);
-                    hideCountry(_iranFeature);
-                    hideCountry(_kazFeature);
+                hidepath();
+                if (_slcFeature.length > 0) {
+                    _slcFeature.forEach(function (ee) {
+                        hideCountry(ee);
+                    });
+                    _slcFeature = [];
                 }
+                _slcFeature = findCountry(pickedFeature.id.name);
+                _slcFeature.forEach(function (ee) {
+                    showCountry(ee);
+                })
             } else {
                 showpath();
-                hideHighChart();
-                hideCountry(_afhFeature);
-                hideCountry(_pakFeature);
-                hideCountry(_iranFeature);
-                hideCountry(_kazFeature);
+                if (_slcFeature.length > 0) {
+                    _slcFeature.forEach(function (ee) {
+                        hideCountry(ee);
+                    });
+                    _slcFeature = [];
+                }
             }
 
             function showCountry(feature) {
                 var polygon = feature.polygon;
                 polygon.extrudedHeight = new Cesium.CallbackProperty(function () {
                     polygon.material = Cesium.Color.fromRgba(0xff006363);
+
                     polygon.outlineWidth = 5;
                     polygon.exheight += 10000;
                     if (polygon.exheight > 500000) {
@@ -197,8 +189,17 @@
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-        dataSource = new WebGLGlobeDataSource();
-        dataSource.loadUrl('./scripts/population909500.json').then(function (e) {});
+    }
+
+    function findCountry(name) {
+        var fent = [];
+        for (var i = 0; i < countryEntities.length; i++) {
+            var entity = countryEntities[i];
+            if (entity.name == name) {
+                fent.push(entity);
+            }
+        }
+        return fent;
     }
 
     function initData() {
@@ -232,9 +233,6 @@
             if (tsLD) {
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsLD);
                 var long = cartographicPosition.longitude / Math.PI * 180;
-                if (viewer.trackedEntity) {
-                    console.info('HS:' + long);
-                }
                 if (ldp1 < citiesCoordsLD.length && Math.abs(citiesCoordsLD[ldp1][0] - long) <= 1.0) {
                     pathEntities.push(viewer.entities.add({
                         position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1], 5000),
@@ -251,7 +249,6 @@
                         image: './images/slibar.png'
                     }
                 }));
-                showHighChart
                 ldp1++;
             }
             var tsHS = positionHS.getValue(t.currentTime);
@@ -259,7 +256,6 @@
             if (tsHS) {
                 var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsHS);
                 var lat = cartographicPosition.latitude / Math.PI * 180;
-                // console.info('HS:' + Math.abs(citiesCoordsHS[ldp2][1] - lat));
                 if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][1] - lat) <= 0.5) {
                     pathEntities.push(viewer.entities.add({
                         position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
@@ -325,10 +321,6 @@
             //Automatically compute orientation based on position movement.
             orientation: new Cesium.VelocityOrientationProperty(positionLD),
 
-            // billboard: {
-            //     image: './images/plane.png',
-            // },
-
             model: {
                 uri: './SampleData/Cesium_Air.gltf',
                 minimumPixelSize: 64
@@ -365,8 +357,9 @@
             //Automatically compute orientation based on position movement.
             orientation: new Cesium.VelocityOrientationProperty(positionHS),
 
-            billboard: {
-                image: './images/boat.png',
+            model: {
+                uri: './SampleData/Cesium_Air.gltf',
+                minimumPixelSize: 64
             },
 
             //Show the path as a pink line sampled in 1 second increments.
@@ -459,12 +452,91 @@
         }
     }
 
-    function showHighChart(id) {
-        viewer.dataSources.add(dataSource);
+    function showHighChart1() {
+        var i = 0;
+        hideHighChart1();
+        chartCoords.forEach(function (chartCoord) {
+            chartEntities.push(viewer.entities.add({
+                rectangle: {
+                    coordinates: Cesium.Rectangle.fromDegrees(chartCoord[0] - 1.0, chartCoord[1] - 1.0,
+                        chartCoord[0] + 1.0, chartCoord[1] + 1.0),
+                    extrudedHeight: chartDatas[i] * 200000.0,
+                    outline: false,
+                    material: Cesium.Color.fromRandom({
+                        alpha: 1.0
+                    })
+                }
+            }));
+            i++;
+        });
     }
 
-    function hideHighChart() {
+    function hideHighChart1() {
+        chartEntities.forEach(function (e) {
+            viewer.entities.remove(e);
+        })
+        chartEntities = [];
+    }
 
+    function showHighChart2() {
+        var ents = [];
+        var i = 1;
+        ['Canada', 'Iraq', 'Saudi Arabia', 'Iran', 'Venezuela'].forEach(function (cty) {
+            var arr = findCountry(cty);
+            arr.forEach(function (a) {
+                ents.push(a);
+                a.colorindex = i;
+            });
+            i++;
+        });
+        ents.forEach(function (entity) {
+            entity.polygon.material = new Cesium.ImageMaterialProperty({
+                image: './images/hot' + entity.colorindex + '.png',
+                transparent: true
+            });
+        });
+    }
+
+    function hideHighChart2() {
+        var ents = [];
+        var i = 1;
+        ['Canada', 'Iraq', 'Saudi Arabia', 'Iran', 'Venezuela'].forEach(function (cty) {
+            var arr = findCountry(cty);
+            arr.forEach(function (a) {
+                ents.push(a);
+                a.colorindex = i;
+            });
+            i++;
+        });
+        ents.forEach(function (entity) {
+            entity.polygon.material = Cesium.Color.fromRgba(0x2036907e);
+        });
+    }
+
+    function showHighChart3() {
+        var i = 0;
+        hideHighChart3();
+        chartCoords2.forEach(function (chartCoord) {
+            chartEntities2.push(viewer.entities.add({
+                rectangle: {
+                    coordinates: Cesium.Rectangle.fromDegrees(chartCoord[0] - 1.0, chartCoord[1] - 1.0,
+                        chartCoord[0] + 1.0, chartCoord[1] + 1.0),
+                    extrudedHeight: chartDatas2[i] * 200000.0,
+                    outline: false,
+                    material: Cesium.Color.fromRandom({
+                        alpha: 1.0
+                    })
+                }
+            }));
+            i++;
+        });
+    }
+
+    function hideHighChart3() {
+        chartEntities2.forEach(function (e) {
+            viewer.entities.remove(e);
+        })
+        chartEntities2 = [];
     }
 
     function hidepath() {
