@@ -3710,8 +3710,8 @@ window.initWebGL = function () {
 			}
 
 			if (playSpeed > 0.8) playSpeed = 0.8;
-			else if (playSpeed > 0.5) playSpeed = 0.5;
-			else if (playSpeed > 0.4) playSpeed = 0.1;
+			else if (playSpeed > 0.4) playSpeed = 0.6;
+			else if (playSpeed > 0.1) playSpeed = 0.3;
 			else playSpeed = 0.022;
 
 		} else {
