@@ -15,7 +15,7 @@
   <!-- <script src="libs/stats.min.js"></script> -->
   <script src="libs/three.min.js"></script>
   <script src="libs/Tween.js"></script>
-  <script src="src/webGL.js"></script>
+
   <script src="src/noWebGL.js"></script>
   <script src="src/audio.js"></script>
   <script src="data/data.js"></script>
@@ -79,67 +79,67 @@
       <!-- 标题 -->
       <div id="title">一带一路 · 工程项目概览</div>
       <div id="countryList_wrap">
-        <div class="leftSubTitle">援建国家项目列表</div>
+        <div class="leftSubTitle">援建国家项目数量</div>
         <div id="countryList">
           <div class="list_item">
             <div class="top5"></div>
             <div class="nationalFlag"></div>
             <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
+            <div class="value">246,478</div>
+          </div>
+          <div class="list_item">
+            <div class="top5"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">美国</div>
+            <div class="value">176,358</div>
+          </div>
+          <div class="list_item">
+            <div class="top5"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">日本</div>
+            <div class="value">146,246</div>
+          </div>
+          <div class="list_item">
+            <div class="top5"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">德国</div>
+            <div class="value">96,878</div>
+          </div>
+          <div class="list_item">
+            <div class="top5"></div>
+            <div class="nationalFlag"></div>
+            <div class="name">英国</div>
+            <div class="value">66,596</div>
           </div>
           <div class="list_item">
             <div class="top5 notShow"></div>
             <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
+            <div class="name">法国</div>
+            <div class="value">54,865</div>
           </div>
           <div class="list_item">
             <div class="top5 notShow"></div>
             <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
+            <div class="name">意大利</div>
+            <div class="value">43,968</div>
           </div>
           <div class="list_item">
             <div class="top5 notShow"></div>
             <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
+            <div class="name">韩国</div>
+            <div class="value">36,498</div>
           </div>
           <div class="list_item">
             <div class="top5 notShow"></div>
             <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
+            <div class="name">俄罗斯</div>
+            <div class="value">33,348</div>
           </div>
           <div class="list_item">
             <div class="top5 notShow"></div>
             <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
-          </div>
-          <div class="list_item">
-            <div class="top5 notShow"></div>
-            <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
-          </div>
-          <div class="list_item">
-            <div class="top5 notShow"></div>
-            <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
-          </div>
-          <div class="list_item">
-            <div class="top5 notShow"></div>
-            <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
-          </div>
-          <div class="list_item">
-            <div class="top5 notShow"></div>
-            <div class="nationalFlag"></div>
-            <div class="name">中国</div>
-            <div class="value">1,583,246,478</div>
+            <div class="name">澳大利亚</div>
+            <div class="value">26,698</div>
           </div>
         </div>
       </div>
@@ -157,10 +157,15 @@
       </div>
     </div>
     <div id="engineeringDetail_wrap">
-        <div class="leftSubTitle">中国：XX项目</div>
-        <div id="engineering_wrap">
-          <div class="hasBorder"></div>
+      <div class="leftSubTitle">
+        <span id="detail_countryName"></span>&nbsp;:&nbsp;
+        <span id="detail_name"></span>
+      </div>
+      <div id="engineering_wrap">
+        <div class="hasBorder">
         </div>
+        <div class="detail_message"></div>
+      </div>
     </div>
   </div>
 
@@ -169,6 +174,7 @@
   <script src="src/bar.js"></script>
   <script src="src/line.js"></script>
   <script src="src/chart.js"></script>
+  <script src="src/webGL.js"></script>
   <script src="src/main.js"></script>
 
 </html>

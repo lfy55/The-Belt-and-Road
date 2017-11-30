@@ -2,6 +2,7 @@ function createPie(domID) {
   return {
     __dom: document.getElementById(domID),
     __chart: null,
+    __colors: ['#3e86df', '#17e512'],
     __option: {},
     /**
      * 
@@ -20,12 +21,14 @@ function createPie(domID) {
         legend: {
           show: false,
         },
+        color: this.__colors,
         series: [
           {
             name: '访问来源',
             type: 'pie',
             radius: '65%',
             center: ['50%', '50%'],
+            hoverAnimation: false,
             data: [
               { value: 335, name: '宗教A' },
               { value: 1548, name: '宗教B' }

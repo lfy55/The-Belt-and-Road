@@ -1,4 +1,12 @@
-function CreateBar(domID) {
+function getFlag(name) {
+  return {
+    height: 24,
+    backgroundColor: {
+      image: './images/flags/' + name.toLocaleUpperCase() + '@2x.png'
+    }
+  }
+}
+function CreateBar(domID, format) {
   return {
     __dom: document.getElementById(domID),
     __chart: null,
@@ -10,6 +18,26 @@ function CreateBar(domID) {
      */
     initChart(data) {
       this.__chart = echarts.init(this.__dom)
+
+      var richClass = {
+        num: {
+          color: '#fff',
+          width: 20,
+          align: 'left',
+          padding: [0, 0, 0, 5],
+        },
+        name: {
+          color: '#fff',
+          width: 40,
+          align: 'right',
+          padding: [0, 10, 0, 0],
+        },
+      }
+      data.xAxis.forEach(function (item) {
+        if (!richClass[item]) {
+          richClass[item] = getFlag(item)
+        }
+      })
 
       this.__option = {
         tooltip: {
@@ -50,56 +78,7 @@ function CreateBar(domID) {
               formatter: function (e, e1) {
                 return `{num|${('0' + (10 - e1)).slice(-2)}}{name|${data.xName[e1]}} {${e}|}`
               },
-              rich: {
-                num: {
-                  color: '#fff',
-                  width: 20,
-                  align: 'left',
-                  padding: [0, 0, 0, 5],
-                },
-                name: {
-                  color: '#fff',
-                  width: 40,
-                  align: 'right',
-                  padding: [0, 10, 0, 0],
-                },
-                cn: {
-                  height: 24,
-                  backgroundColor: {
-                    image: './images/flags/CN@2x.png'
-                  }
-                },
-                de: {
-                  height: 24,
-                  backgroundColor: {
-                    image: './images/flags/DE@2x.png'
-                  }
-                },
-                fr: {
-                  height: 24,
-                  backgroundColor: {
-                    image: './images/flags/FR@2x.png'
-                  }
-                },
-                gb: {
-                  height: 24,
-                  backgroundColor: {
-                    image: './images/flags/GB@2x.png'
-                  }
-                },
-                jp: {
-                  height: 24,
-                  backgroundColor: {
-                    image: './images/flags/JP@2x.png'
-                  }
-                },
-                us: {
-                  height: 24,
-                  backgroundColor: {
-                    image: './images/flags/US@2x.png'
-                  }
-                }
-              },
+              rich: richClass,
             },
           }
         ],
@@ -112,7 +91,7 @@ function CreateBar(domID) {
               normal: {
                 show: true,
                 position: 'right',
-                formatter: '${c}万亿',
+                formatter: format,
                 fontSize: 14,
                 distance: 5,
               },

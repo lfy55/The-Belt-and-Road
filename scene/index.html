@@ -60,33 +60,33 @@
           <div class="total_chart" id="total_list">
             <div class="total_item">
               <span class="total_num">01</span>
-              <span class="total_country">中国</span>
-              <img src="./images/flags/CN@2x.png" alt="">
-              <span class="total_value">123,456,789</span>
+              <span class="total_country">委内瑞拉</span>
+              <img src="./images/flags/VE@2x.png" alt="">
+              <span class="total_value">298,350桶</span>
             </div>
             <div class="total_item">
               <span class="total_num">02</span>
-              <span class="total_country">美国</span>
+              <span class="total_country">沙特阿拉伯</span>
               <img src="./images/flags/US@2x.png" alt="">
-              <span class="total_value">46,456,789</span>
+              <span class="total_value">268,350桶</span>
             </div>
             <div class="total_item">
               <span class="total_num">03</span>
-              <span class="total_country">沙特阿拉伯</span>
-              <img src="./images/flags/FR@2x.png" alt="">
-              <span class="total_value">9,456,789</span>
+              <span class="total_country">加拿大</span>
+              <img src="./images/flags/SA@2x.png" alt="">
+              <span class="total_value">173,000桶</span>
             </div>
             <div class="total_item">
               <span class="total_num">04</span>
-              <span class="total_country">英国</span>
-              <img src="./images/flags/GB@2x.png" alt="">
-              <span class="total_value">956,789</span>
+              <span class="total_country">伊朗</span>
+              <img src="./images/flags/IR@2x.png" alt="">
+              <span class="total_value">157,800桶</span>
             </div>
             <div class="total_item">
               <span class="total_num">05</span>
-              <span class="total_country">德国</span>
-              <img src="./images/flags/DE@2x.png" alt="">
-              <span class="total_value">756,789</span>
+              <span class="total_country">伊拉克</span>
+              <img src="./images/flags/IQ@2x.png" alt="">
+              <span class="total_value">144,211桶</span>
             </div>
           </div>
         </div>
@@ -148,7 +148,16 @@
       <div id="line_wrap">
         <div class="detail_subtitle">GDP态势</div>
         <div class="detail_content">
-          <div class="detail_chart"></div>
+          <div class="detail_chart" id="detail_line_chart"></div>
+        </div>
+      </div>
+      <div id="shipinqiandao_wrap">
+        <div id="shipinqiandao">
+          <div id="shipin_subTitle">使领馆实时保护</div>
+          <div id="shipin_close"></div>
+          <div id="shipin_content">
+            <iframe src="http://localhost:8080/dist/face-recognition.html"></iframe>
+          </div>
         </div>
       </div>
     </div>
@@ -165,6 +174,7 @@
   <script src="./lib/echarts.js"></script>
   <script src="./scripts/totalChart.js"></script>
   <script src="./scripts/pieChart.js"></script>
+  <script src="./scripts/lineChart.js"></script>
   <script src="./scripts/mapDetail.js"></script>
 
   <script src="scripts/path.js"></script>

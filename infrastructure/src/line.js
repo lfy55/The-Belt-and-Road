@@ -11,7 +11,7 @@ let lineChart = {
         trigger: 'axis',
       },
       legend: {
-        data: ['A', 'B', 'C', 'D'],
+        data: ['中国', '美国', '日本', '德国'],
         left: 20,
         icon: 'rect',
         itemHeight: 3,
@@ -30,7 +30,7 @@ let lineChart = {
           show: false,
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日', '周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016']
         }
       ],
       yAxis: [
@@ -53,38 +53,39 @@ let lineChart = {
           }
         }
       ],
+      color: ['#e93213', '#eaef12', '#09906b', '#16d9ef'],
       series: [
         {
-          name: 'A',
+          name: '中国',
           type: 'line',
           symbolSize: 0,
           hoverAnimation: false,
           smooth: true,
-          data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210]
+          data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 360]
         },
         {
-          name: 'B',
+          name: '美国',
           type: 'line',
           symbolSize: 0,
           hoverAnimation: false,
           smooth: true,
-          data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310]
+          data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 270]
         },
         {
-          name: 'C',
+          name: '日本',
           type: 'line',
           symbolSize: 0,
           hoverAnimation: false,
           smooth: true,
-          data: [150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410]
+          data: [150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410, 361]
         },
         {
-          name: 'D',
+          name: '德国',
           type: 'line',
           symbolSize: 0,
           hoverAnimation: false,
           smooth: true,
-          data: [320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320]
+          data: [320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320, 168]
         }
       ]
     };
