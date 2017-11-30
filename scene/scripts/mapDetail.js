@@ -126,6 +126,10 @@ populationStatusDOM.on('click', function () {
   resourcesStatusDOM[0].src = './images/total/status_noselect.png'
   populationStatusDOM.addClass('select')
   populationStatusDOM[0].src = './images/total/status_select.png'
+
+  hideHighChart2()
+  hideHighChart3()
+  showHighChart1()
 })
 
 GDPStatusDOM.on('click', function () {
@@ -135,6 +139,10 @@ GDPStatusDOM.on('click', function () {
   resourcesStatusDOM[0].src = './images/total/status_noselect.png'
   GDPStatusDOM.addClass('select')
   GDPStatusDOM[0].src = './images/total/status_select.png'
+
+  hideHighChart2()
+  hideHighChart1()
+  showHighChart3()
 })
 
 resourcesStatusDOM.on('click', function () {
@@ -144,6 +152,10 @@ resourcesStatusDOM.on('click', function () {
   populationStatusDOM[0].src = './images/total/status_noselect.png'
   resourcesStatusDOM.addClass('select')
   resourcesStatusDOM[0].src = './images/total/status_select.png'
+
+  hideHighChart1()
+  hideHighChart3()
+  showHighChart2()
 })
 
 $("#shipinqiandao_wrap").on('click', function (e) {
