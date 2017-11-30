@@ -19,9 +19,7 @@
 
     <script type="text/javascript">
         /*  
-                                                                                                                                                                                                                                                                                                                                                                                                    参考维基百科  
-                                                                                                                                                                                                                                                                                                                                                                                                    http://zh.wikipedia.org/wiki/%E8%B2%9D%E8%8C%B2%E6%9B%B2%E7%B7%9A  
-                                                                                                                                                                                                                                                                                                                                                                                                    */
+         */
         function Point2D(x, y) {
             this.x = x || 0.0;
             this.y = y || 0.0;
@@ -85,17 +83,12 @@
         var citiesHS = ['福州', '广州', '河内', '吉隆坡', '雅加达', '加尔各答', '科伦坡', '内罗毕', '雅典', '威尼斯', '鹿特丹'];
 
         var citiesCoordsLD = [
-
-            [80.52, 6.55],
-            [58.0, 0.20],
-            [36.49, -1.17],
-            //   [91.01480088096555, 8.213409196546634],
-            //     [89.95, 25.63],
-            //      [85.44902426983847, 15.589625331985294],
-
-            //    [79.52, 6.55],
-            // [36.49, -1.17],
+            [28.786481391815514, 39.667453342665354],
+            [28.486029951704948, 40.761140993424874],
+            [28.7450507725161, 42.05563490101848],
         ];
+
+
 
         for (var i = 0; i < citiesCoordsLD.length - 2; i++) {
             var seg = [citiesCoordsLD[i], citiesCoordsLD[i + 1], citiesCoordsLD[i + 2]];
@@ -114,11 +107,12 @@
                 new Point2D(seg[1][0], seg[1][1]),
                 new Point2D(seg[2][0], seg[2][1])
             ];
-            ComputeBezier(cp, 80, curve);
+            ComputeBezier(cp, 200, curve);
             curve.forEach(function (p) {
                 finalCurves.push(p);
             });
         }
+
         var s = '[';
         finalCurves.forEach(function (fc) {
             s += '[' + fc.x + ',' + fc.y + '],';

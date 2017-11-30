@@ -9,7 +9,8 @@
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <link href="css/new.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="./css/mapDetail.css">
-  <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script>
+  <!-- <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="./CesiumUnminified/Cesium.js"></script>
   <style>
     @import url(./CesiumUnminified/Widgets/Widgets.css);
@@ -56,19 +57,99 @@
           <img class="total_subtitle_status" src="./images/total/status_noselect.png" alt="">
         </div>
         <div class="total_content_wrap">
-          <div class="total_chart"></div>
+          <div class="total_chart" id="total_list">
+            <div class="total_item">
+              <span class="total_num">01</span>
+              <span class="total_country">中国</span>
+              <img src="./images/flags/CN@2x.png" alt="">
+              <span class="total_value">123,456,789</span>
+            </div>
+            <div class="total_item">
+              <span class="total_num">02</span>
+              <span class="total_country">美国</span>
+              <img src="./images/flags/US@2x.png" alt="">
+              <span class="total_value">46,456,789</span>
+            </div>
+            <div class="total_item">
+              <span class="total_num">03</span>
+              <span class="total_country">沙特阿拉伯</span>
+              <img src="./images/flags/FR@2x.png" alt="">
+              <span class="total_value">9,456,789</span>
+            </div>
+            <div class="total_item">
+              <span class="total_num">04</span>
+              <span class="total_country">英国</span>
+              <img src="./images/flags/GB@2x.png" alt="">
+              <span class="total_value">956,789</span>
+            </div>
+            <div class="total_item">
+              <span class="total_num">05</span>
+              <span class="total_country">德国</span>
+              <img src="./images/flags/DE@2x.png" alt="">
+              <span class="total_value">756,789</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div id="detail_wrap">
       <div id="message_wrap">
         <div class="detail_subtitle">重要港口城市</div>
+        <div class="detail_content">
+          <div class="detail_content_title">
+            港口数量&nbsp;
+            <span class="bigNum">9</span>&nbsp;个
+          </div>
+          <div id="message_list">
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+            <div class="message_item">
+              <div class="message_content_topFlag"></div>
+              <div class="message_content_name">XXXXX港口</div>
+              <div class="message_content_value">25698万吨</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="pie_wrap">
         <div class="detail_subtitle">民族构成</div>
+        <div class="detail_content">
+          <div class="detail_chart" id="detail_pie_chart"></div>
+        </div>
       </div>
       <div id="line_wrap">
         <div class="detail_subtitle">GDP态势</div>
+        <div class="detail_content">
+          <div class="detail_chart" id="detail_line_chart"></div>
+        </div>
       </div>
     </div>
     <div id="noWebGL" style="display:none">
@@ -83,6 +164,8 @@
   <script src="scripts/noWebGL.js"></script>
   <script src="./lib/echarts.js"></script>
   <script src="./scripts/totalChart.js"></script>
+  <script src="./scripts/pieChart.js"></script>
+  <script src="./scripts/lineChart.js"></script>
   <script src="./scripts/mapDetail.js"></script>
 
   <script src="scripts/path.js"></script>

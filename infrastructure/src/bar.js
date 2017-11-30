@@ -9,10 +9,7 @@ let barChart = {
     this.__option = {
       color: ['#3398DB'],
       tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        }
+        show: false,
       },
       grid: {
         left: '0',
@@ -24,7 +21,7 @@ let barChart = {
       xAxis: [
         {
           type: 'category',
-          data: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+          data: ['软件', '纺织', '工业', '商业', '金融', '食品', '交通', '通信', '化工'],
           axisTick: {
             show: false,
           },
@@ -32,8 +29,11 @@ let barChart = {
             show: false,
           },
           axisLabel: {
+            interval: 0,
+            rotate: 45,
             textStyle: {
-              color: '#3398DB'
+              color: '#3398DB',
+              fontSize: 14,
             }
           },
         }
@@ -58,7 +58,7 @@ let barChart = {
         {
           name: '直接访问',
           type: 'bar',
-          data: [10, 52, 200, 334, 390, 330, 220, 160, 180]
+          data: [380, 320, 295, 276, 256, 210, 176, 160, 120]
         }
       ]
     };

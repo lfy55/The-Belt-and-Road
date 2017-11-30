@@ -160,18 +160,35 @@
   box-sizing: border-box;
   border: 12px solid transparent;
   border-image: url("../images/thing-border.png") 24/18px repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+#engineeringDetail_wrap #engineering_wrap .hasBorder>img {
+  max-height: 176px;
+  max-width: 296px;
+}
+
+#engineeringDetail_wrap #engineering_wrap .detail_message {
+  margin-top: 20px;
+  width: 100%;
+  font-size: 18px;
+  text-indent: 25px;
+  height: calc(100% - 220px);
+}
+
 
 /* 设置滚动条的样式 */
 
-#engineering_wrap::-webkit-scrollbar {
+#engineering_wrap .detail_message::-webkit-scrollbar {
   width: 6px;
 }
 
 
 /* 滚动槽 */
 
-#engineering_wrap::-webkit-scrollbar-track {
+#engineering_wrap .detail_message::-webkit-scrollbar-track {
   background: rgba(30, 30, 30, 0.8);
   border-radius: 10px;
 }
@@ -179,7 +196,7 @@
 
 /* 滚动条滑块 */
 
-#engineering_wrap::-webkit-scrollbar-thumb {
+#engineering_wrap .detail_message::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background: #31e0e1;
 }
