@@ -272,7 +272,7 @@ window.initWebGL = function () {
 			y = 1996;
 			d = Math.floor((r - 6) / 12) + 2;
 
-		} else if (r >= 42 && r < 286) {
+		} else if (r >= 42 && r < 288) {
 			var y = Math.floor((r - 36) / 12) + 1996;
 			var m = Math.floor(r - 36) % 12 + 1;
 			//console.log((r -((y-1996)*12)-m-35));
@@ -281,10 +281,10 @@ window.initWebGL = function () {
 			} else {
 				d = Math.floor(((r - ((y - 1996) * 12) - m - 35)) * 28) + 1;
 			}
-		} else if (r >= 281) {
-			y = 2016;
-			m = 7;
-			d = 4;
+		} else if (r >= 288) {
+			y = 2017;
+			m = 1;
+			d = 30;
 		} else if (r < 1) {
 			y = 1996;
 			m = 1;
@@ -317,10 +317,10 @@ window.initWebGL = function () {
 			}
 		}
 
-		if (r >= 281) {
-			y = 2016;
-			m = 7;
-			d = 4;
+		if (r >= 288) {
+			y = 2017;
+			m = 1;
+			d = 30;
 		}
 
 
@@ -361,7 +361,7 @@ window.initWebGL = function () {
 		//console.log("r:" + r);
 
 
-		if (r >= 282.1 && IDR.mode == "play") {
+		if (r >= 290 && IDR.mode == "play") {
 			// stop timeline from moving
 			playSpeed = 0;
 			clearInterval(IDR.progressTimer);
@@ -1946,6 +1946,7 @@ window.initWebGL = function () {
 				console.log(hotspot.event_data);
 				$(".preview-detail").html(hotspot.event_data.preview_detail);
 				setTimeout(function () {
+					changeDetail(hotspot.event_data);
 					$("#engineeringDetail_wrap").addClass("show");
 				}, 150);
 
@@ -3691,6 +3692,8 @@ window.initWebGL = function () {
 				targetRotY = getHotSpotRot(index);
 				distance = targetRotY - currentRot;
 				playSpeed = distance / timeToEvent;
+				// console.log("timeToEvent:" + timeToEvent);
+				// console.log("palySpeed:" + playSpeed);
 				if (playSpeed < 0) {
 					playSpeed *= -1;
 				}
@@ -3701,14 +3704,15 @@ window.initWebGL = function () {
 				targetRotY = getHotSpotRot(IDR.events.length - 1);
 				distance = targetRotY - currentRot;
 				playSpeed = distance / timeToEvent;
-				console.log("timeToEvent:" + timeToEvent);
-				console.log("palySpeed:" + playSpeed);
 				if (playSpeed < 0) {
 					playSpeed *= -1;
 				}
 			}
 
-			if (playSpeed < 0.06) playSpeed = 0.06;
+			if (playSpeed > 0.8) playSpeed = 0.8;
+			else if (playSpeed > 0.4) playSpeed = 0.6;
+			else if (playSpeed > 0.1) playSpeed = 0.3;
+			else playSpeed = 0.022;
 
 		} else {
 			playSpeed = 0;
