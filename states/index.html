@@ -2,506 +2,569 @@
 <html>
 
 <head>
-	<title>three.js css3d</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-	<style>
-		html,
-		body {
-			height: 100%;
-		}
+  <title>three.js css3d</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="./css/animate.css">
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
 
-		body {
-			background: #191d1e;
-			/* Old browsers */
-			background: -moz-linear-gradient(0deg, #191d1e 50%, #283139 100%);
-			/* FF3.6+ */
-			background: -webkit-gradient(linear, left top, right bottom, color-stop(50%, #191d1e), color-stop(100%, #283139));
-			/* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(0deg, #191d1e 50%, #283139 100%);
-			/* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(0deg, #191d1e 50%, #283139 100%);
-			/* Opera 11.10+ */
-			background: -ms-linear-gradient(0deg, #191d1e 50%, #283139 100%);
-			/* IE10+ */
-			background: linear-gradient(0deg, #191d1e 50%, #283139 100%);
-			/* W3C */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#191d1e', endColorstr='#283139', GradientType=1);
-			/* IE6-9 fallback on horizontal gradient */
-			background-attachment: fixed;
-			margin: 0;
-			overflow: hidden;
-		}
+    body {
+      background: #191d1e;
+      /* Old browsers */
+      background: -moz-linear-gradient(0deg, #191d1e 50%, #283139 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, right bottom, color-stop(50%, #191d1e), color-stop(100%, #283139));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(0deg, #191d1e 50%, #283139 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(0deg, #191d1e 50%, #283139 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(0deg, #191d1e 50%, #283139 100%);
+      /* IE10+ */
+      background: linear-gradient(0deg, #191d1e 50%, #283139 100%);
+      /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#191d1e', endColorstr='#283139', GradientType=1);
+      /* IE6-9 fallback on horizontal gradient */
+      background-attachment: fixed;
+      margin: 0;
+      overflow: hidden;
+    }
 
-		@font-face {
-			font-family: 'liHeiTi';
-			src: url("./font/zzgflht.otf");
-		}
+    @font-face {
+      font-family: 'liHeiTi';
+      src: url("./font/zzgflht.otf");
+    }
 
-		#canvas {
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 100%;
-		}
+    #canvas {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+    }
 
-		#title {
-			position: fixed;
-			top: 20px;
-			left: 25px;
-			color: #23ffe3;
-			font-family: 'liHeiTi';
-			font-size: 36px;
-			padding-left: 50px;
-			background: url("./assets/title-logo.png") left center no-repeat;
-			background-size: 36px;
-			text-shadow: none;
-			z-index: 300;
-			user-select: none;
-		}
+    #title {
+      position: fixed;
+      top: 20px;
+      left: 25px;
+      color: #23ffe3;
+      font-family: 'liHeiTi';
+      font-size: 36px;
+      padding-left: 50px;
+      background: url("./assets/title-logo.png") left center no-repeat;
+      background-size: 36px;
+      text-shadow: none;
+      z-index: 300;
+      user-select: none;
+    }
 
-		a {
-			color: #ffffff;
-		}
+    a {
+      color: #ffffff;
+    }
 
-		#info {
-			position: absolute;
-			width: 100%;
-			color: #ffffff;
-			padding: 5px;
-			font-family: Monospace;
-			font-size: 13px;
-			font-weight: bold;
-			text-align: center;
-			z-index: 1;
-		}
+    #info {
+      position: absolute;
+      width: 100%;
+      color: #ffffff;
+      padding: 5px;
+      font-family: Monospace;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 1;
+    }
 
-		#menu {
-			position: absolute;
-			bottom: 20px;
-			width: 100%;
-			text-align: center;
-			visibility: hidden;
-		}
+    #menu {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      visibility: hidden;
+    }
 
-		.element {
-			width: 120px;
-			height: 160px;
-			box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.95);
-			border: 1px solid rgba(127, 255, 255, 0.25);
-			text-align: center;
-			border-radius: 6px;
-			cursor: default;
-			user-select: none;
-		}
+    .element {
+      width: 120px;
+      height: 160px;
+      box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.95);
+      border: 1px solid rgba(127, 255, 255, 0.25);
+      text-align: center;
+      border-radius: 6px;
+      cursor: default;
+      user-select: none;
+    }
 
-		.element.show {
-			z-index: 1000000;
-		}
+    .element.show {
+      z-index: 1000000;
+    }
 
-		.element .board {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-			background: rgba(0, 10, 10, 0.99);
-			box-shadow: 0px 0px 4px rgba(0, 255, 255, 0.95);
-			transition: all .4s ease-in-out;
-			-webkit-transition: all .4s ease-in-out;
-		}
+    .element .board {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      background: rgba(0, 10, 10, 0.99);
+      box-shadow: 0px 0px 4px rgba(0, 255, 255, 0.95);
+      transition: all .4s ease-in-out;
+      -webkit-transition: all .4s ease-in-out;
+    }
 
-		.element.show .board {
-			opacity: 1;
-			transform: scaleX(4.2) scaleY(1.52);
-			-webkit-transform: scaleX(4.2) scaleY(1.52);
-			transition: opacity .2s ease-in-out .4s, transform 0.6s ease-in-out .4s;
-			-webkit-transition: opacity .2s ease-in-out .4s, transform 0.6s ease-in-out .4s;
-		}
+    .element.show .board {
+      opacity: 1;
+      transform: scaleX(4.2) scaleY(1.52);
+      -webkit-transform: scaleX(4.2) scaleY(1.52);
+      transition: opacity .2s ease-in-out .4s, transform 0.6s ease-in-out .4s;
+      -webkit-transition: opacity .2s ease-in-out .4s, transform 0.6s ease-in-out .4s;
+    }
 
-		.element .video {
-			position: absolute;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-			transition: all .4s ease-in-out;
-			-webkit-transition: all .4s ease-in-out;
-		}
+    .element .video {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: all .4s ease-in-out;
+      -webkit-transition: all .4s ease-in-out;
+    }
 
-		.element.show .video {
-			left: -190px;
-			top: -45px;
-			width: 500px;
-			height: 250px;
-			opacity: 1;
-			transition: all .3s ease-in-out 0.5s;
-			-webkit-transition: all .3s ease-in-out 0.5s;
-		}
+    .element.show .video {
+      left: -190px;
+      top: -45px;
+      width: 500px;
+      height: 250px;
+      opacity: 1;
+      transition: all .3s ease-in-out 0.5s;
+      -webkit-transition: all .3s ease-in-out 0.5s;
+    }
 
-		.element .card {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			transition: all .6s ease-in-out;
-			-webkit-transition: all .6s ease-in-out;
-		}
+    .element .card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: all .6s ease-in-out;
+      -webkit-transition: all .6s ease-in-out;
+    }
 
-		.element.show .card {
-			opacity: 0;
-		}
+    .element.show .card {
+      opacity: 0;
+    }
 
-		.element:hover {
-			box-shadow: 0px 0px 24px rgba(0, 255, 255, 0.95);
-			border: 2px solid rgba(127, 255, 255, 0.75);
-		}
+    .element:hover {
+      box-shadow: 0px 0px 24px rgba(0, 255, 255, 0.95);
+      border: 2px solid rgba(127, 255, 255, 0.75);
+    }
 
-		.element:hover .geosymbol {
-			opacity: 0.75;
-		}
+    .element:hover .geosymbol {
+      opacity: 0.75;
+    }
 
-		.element .number {
-			position: absolute;
-			top: 6px;
-			right: 6px;
-			font-size: 12px;
-			color: rgba(127, 255, 255, 0.5);
-		}
+    .element .number {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 12px;
+      color: rgba(127, 255, 255, 0.5);
+    }
 
-		.element .symbol {
-			position: absolute;
-			top: 40px;
-			left: 0px;
-			right: 0px;
-			font-size: 60px;
-			font-weight: bold;
-			color: rgba(255, 255, 255, 0.75);
-			text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
-		}
+    .element .symbol {
+      position: absolute;
+      top: 40px;
+      left: 0px;
+      right: 0px;
+      font-size: 60px;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.75);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+    }
 
-		.element .geosymbol {
-			position: absolute;
-			top: 15px;
-			left: 15px;
-			opacity: 0.5;
-		}
+    .element .geosymbol {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      opacity: 0.5;
+    }
 
-		.element .flag {
-			position: absolute;
-			top: 95px;
-			left: 12px;
-		}
+    .element .flag {
+      position: absolute;
+      top: 95px;
+      left: 12px;
+    }
 
-		.element .cname1 {
-			position: absolute;
-			top: 95px;
-			left: 40px;
-			right: 10px;
-			text-align: center;
-			font-size: 14px;
-			font-family: "黑体";
-			letter-spacing: 4px;
-			word-break: keep-all;
-			white-space: nowrap;
-			color: rgba(64, 255, 255, 0.95);
-			text-shadow: 0 0 12px rgba(0, 255, 255, 0.95);
-		}
+    .element .cname1 {
+      position: absolute;
+      top: 95px;
+      left: 40px;
+      right: 10px;
+      text-align: center;
+      font-size: 14px;
+      font-family: "黑体";
+      letter-spacing: 4px;
+      word-break: keep-all;
+      white-space: nowrap;
+      color: rgba(64, 255, 255, 0.95);
+      text-shadow: 0 0 12px rgba(0, 255, 255, 0.95);
+    }
 
-		.element .cname2 {
-			position: absolute;
-			top: 95px;
-			left: 36px;
-			right: 0px;
-			text-align: center;
-			font-size: 13px;
-			font-family: "黑体";
-			word-break: keep-all;
-			white-space: nowrap;
-			color: rgba(64, 255, 255, 0.95);
-			text-shadow: 0 0 12px rgba(0, 255, 255, 0.95);
-		}
+    .element .cname2 {
+      position: absolute;
+      top: 95px;
+      left: 36px;
+      right: 0px;
+      text-align: center;
+      font-size: 13px;
+      font-family: "黑体";
+      word-break: keep-all;
+      white-space: nowrap;
+      color: rgba(64, 255, 255, 0.95);
+      text-shadow: 0 0 12px rgba(0, 255, 255, 0.95);
+    }
 
-		.element .ename {
-			position: absolute;
-			top: 111px;
-			left: 36px;
-			right: 10px;
-			text-align: center;
-			font-size: 9px;
-			color: rgba(64, 255, 255, 0.75);
-		}
+    .element .ename {
+      position: absolute;
+      top: 111px;
+      left: 36px;
+      right: 10px;
+      text-align: center;
+      font-size: 9px;
+      color: rgba(64, 255, 255, 0.75);
+    }
 
-		.element .attr-title1,
-		.attr-title2 {
-			position: absolute;
-			top: 128px;
-			left: 12px;
-			font-family: "黑体";
-			font-size: 8px;
-			color: rgba(64, 255, 255, 0.75);
-		}
+    .element .attr-title1,
+    .attr-title2 {
+      position: absolute;
+      top: 128px;
+      left: 12px;
+      font-family: "黑体";
+      font-size: 8px;
+      color: rgba(64, 255, 255, 0.75);
+    }
 
-		.element .attr-title2 {
-			top: 144px;
-		}
+    .element .attr-title2 {
+      top: 144px;
+    }
 
-		.element .attr-value1,
-		.attr-value2 {
-			position: absolute;
-			top: 128px;
-			left: 50px;
-			right: 15px;
-			text-align: left;
-			font-family: "黑体";
-			font-size: 8px;
-			color: rgba(255, 255, 255, 0.75);
-		}
+    .element .attr-value1,
+    .attr-value2 {
+      position: absolute;
+      top: 128px;
+      left: 50px;
+      right: 15px;
+      text-align: left;
+      font-family: "黑体";
+      font-size: 8px;
+      color: rgba(255, 255, 255, 0.75);
+    }
 
-		.element .attr-value2 {
-			top: 144px;
-		}
+    .element .attr-value2 {
+      top: 144px;
+    }
 
-		.element .search-icon,
-		.star-icon {
-			position: absolute;
-			top: 128px;
-			right: 10px;
-			cursor: pointer;
-		}
+    .element .search-icon,
+    .star-icon {
+      position: absolute;
+      top: 128px;
+      right: 10px;
+      cursor: pointer;
+    }
 
-		.element .star-icon {
-			top: 144px;
-		}
+    .element .star-icon {
+      top: 144px;
+    }
 
-		.element .details {
-			position: absolute;
-			bottom: 15px;
-			left: 0px;
-			right: 0px;
-			font-size: 12px;
-			color: rgba(127, 255, 255, 0.75);
-		}
+    .element .details {
+      position: absolute;
+      bottom: 15px;
+      left: 0px;
+      right: 0px;
+      font-size: 12px;
+      color: rgba(127, 255, 255, 0.75);
+    }
 
-		button {
-			position: absolute;
-			background: none;
-			outline: none;
-			border: 0px;
-			padding: 0px;
-			color: rgba(0, 255, 210, 1.0);
-		}
+    button {
+      position: absolute;
+      background: none;
+      outline: none;
+      border: 0px;
+      padding: 0px;
+      color: rgba(0, 255, 210, 1.0);
+    }
 
-		button svg {
-			cursor: pointer;
-			stroke: rgba(0, 235, 210, 1.0);
-			stroke-width: 32px;
-			width: 50px;
-			height: 50px;
-			fill: transparent;
-		}
+    button svg {
+      cursor: pointer;
+      stroke: rgba(0, 235, 210, 1.0);
+      stroke-width: 32px;
+      width: 50px;
+      height: 50px;
+      fill: transparent;
+    }
 
-		button:hover svg polygon{
-			filter: drop-shadow(2px 2px 10px rgba(0,0,0,.5));
-		}
+    button:hover svg polygon {
+      filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, .5));
+    }
 
-		iframe {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-		}
+    iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
 
-		button span {
-			position: absolute;
-			bottom: -14px;
-			left: 0;
-			width: 100%;
-			text-align: center;
-			font-size: 10px;
-			font-family: "黑体";
-			cursor: pointer;
-			user-select: none;
-		}
+    button span {
+      position: absolute;
+      bottom: -14px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+      font-family: "黑体";
+      cursor: pointer;
+      user-select: none;
+    }
 
-		#menu-div {
-			position: absolute;
-			bottom: 120px;
-			left: 130px;
-			width: 120px;
-			height: 370px;
-			background: url("./assets/menu.png") left center no-repeat;
-			background-size: 100%;
-		}
+    #menu-div {
+      position: absolute;
+      bottom: 120px;
+      left: 130px;
+      width: 120px;
+      height: 370px;
+      background: url("./assets/menu.png") left center no-repeat;
+      background-size: 100%;
+    }
 
-		#nav-menu {
-			bottom: 350px;
-			left: 30px;
-		}
+    #nav-menu {
+      bottom: 350px;
+      left: 30px;
+    }
 
-		#nav-menu span {
-			font-size: 12px;
-			bottom: 30px;
-			color: rgba(200, 255, 255, 0.9);
-			text-shadow: 0 0 5px rgba(0, 255, 225, 1);
-		}
+    #nav-menu span {
+      font-size: 12px;
+      bottom: 30px;
+      color: rgba(200, 255, 255, 0.9);
+      text-shadow: 0 0 5px rgba(0, 255, 225, 1);
+    }
 
-		#nav-menu svg {
-			width: 100px;
-			height: 100px;
-			stroke-width: 24px;
-			fill: rgba(64, 192, 192, 0.2);
-		}
+    #nav-menu svg {
+      width: 100px;
+      height: 100px;
+      stroke-width: 24px;
+      fill: rgba(64, 192, 192, 0.2);
+    }
 
-		button:after {
-			content: '';
-			position: absolute;
-			top: 15px;
-			left: calc(50% - 10px);
-			width: 20px;
-			height: 20px;
-			background-size: 100%;
-			background-position: center;
-			background-repeat: no-repeat;
-			cursor: pointer;
-		}
+    button:after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: calc(50% - 10px);
+      width: 20px;
+      height: 20px;
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
 
-		#tile:after {
-			background-image: url('./assets/1.png');
-		}
+    #tile:after {
+      background-image: url('./assets/1.png');
+    }
 
-		#helix2:after {
-			background-image: url('./assets/2.png');
-		}
+    #helix2:after {
+      background-image: url('./assets/2.png');
+    }
 
-		#sphere3:after {
-			background-image: url('./assets/3.png');
-		}
+    #sphere3:after {
+      background-image: url('./assets/3.png');
+    }
 
-		#grid:after {
-			top: 13px;
-			margin-left: -2px;
-			height: 24px;
-			background-image: url('./assets/4.png');
-		}
+    #grid:after {
+      top: 13px;
+      margin-left: -2px;
+      height: 24px;
+      background-image: url('./assets/4.png');
+    }
 
-		#table:after {
-			background-image: url('./assets/5.png');
-		}
+    #table:after {
+      background-image: url('./assets/5.png');
+    }
 
-		#helix:after {
-			background-image: url('./assets/6.png');
-		}
+    #helix:after {
+      background-image: url('./assets/6.png');
+    }
 
-		#nav-menu:after {
-			content: '';
-			position: absolute;
-			top: 20px;
-			left: calc(50% - 16px);
-			width: 32px;
-			height: 32px;
-			background-image: url('./assets/plus.png');
-			background-size: 100%;
-			background-position: center;
-			cursor: pointer;
-		}
+    #nav-menu:after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: calc(50% - 16px);
+      width: 32px;
+      height: 32px;
+      background-image: url('./assets/plus.png');
+      background-size: 100%;
+      background-position: center;
+      cursor: pointer;
+    }
 
-		#tile {
-			bottom: 300px;
-			left: 80px;
-		}
+    #tile {
+      bottom: 300px;
+      left: 80px;
+    }
 
-		#helix2 {
-			bottom: 260px;
-			left: 34px;
-		}
+    #helix2 {
+      bottom: 260px;
+      left: 34px;
+    }
 
-		#sphere3 {
-			bottom: 220px;
-			left: 80px;
-		}
+    #sphere3 {
+      bottom: 220px;
+      left: 80px;
+    }
 
-		#grid {
-			bottom: 180px;
-			left: 34px;
-		}
+    #grid {
+      bottom: 180px;
+      left: 34px;
+    }
 
-		#table {
-			bottom: 140px;
-			left: 80px;
-		}
+    #table {
+      bottom: 140px;
+      left: 80px;
+    }
 
-		#helix {
-			bottom: 100px;
-			left: 34px;
-		}
-	</style>
-	<link href="css/style.css" rel="stylesheet" type="text/css">
+    #helix {
+      bottom: 100px;
+      left: 34px;
+    }
+  </style>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-	<script src="lib/three.min.js"></script>
-	<script src="lib/tween.min.js"></script>
-	<script src="lib/TrackballControls.js"></script>
-	<script src="lib/CSS3DRenderer.js"></script>
-	<canvas id="canvas">Your browser does not support the Canvas element.</canvas>
-	<div id="title">一带一路 · 全球国家分析</div>
-	<!-- <iframe frameBorder="0" src="./webgl_gpu_particle_system.html"></iframe> -->
-	<div id="container"></div>
-	<div id="menu">
-		<!-- <button id="table">TABLE</button> -->
-		<button id="sphere">SPHERE</button>
-		<!-- <button id="helix">HELIX</button> -->
-		<!-- <button id="grid">GRID</button> -->
-		<!-- <button id="tile">TILE</button>
+  <script src="lib/three.min.js"></script>
+  <script src="lib/tween.min.js"></script>
+  <script src="lib/TrackballControls.js"></script>
+  <script src="lib/CSS3DRenderer.js"></script>
+  <canvas id="canvas">Your browser does not support the Canvas element.</canvas>
+  <div id="title">一带一路 · 全球国家分析</div>
+  <!-- <iframe frameBorder="0" src="./webgl_gpu_particle_system.html"></iframe> -->
+  <div id="container"></div>
+  <div id="menu">
+    <!-- <button id="table">TABLE</button> -->
+    <button id="sphere">SPHERE</button>
+    <!-- <button id="helix">HELIX</button> -->
+    <!-- <button id="grid">GRID</button> -->
+    <!-- <button id="tile">TILE</button>
 		<button id="helix2">HELIX2</button>
 		<button id="sphere3">SPHERE3</button> -->
-	</div>
-	<!-- <div id="menu-div"></div> -->
-	<button id='nav-menu'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>功能目录</span>
-	</button>
-	<button id='tile'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>标记对比</span>
-	</button>
-	<button id='helix2'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>图表化</span>
-	</button>
-	<button id='sphere3'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>组织选择</span>
-	</button>
-	<button id='grid'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>手动搜索</span>
-	</button>
-	<button id='table'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>区域选择</span>
-	</button>
-	<button id='helix'>
-		<svg version="1.1" viewBox="0 0 780 920">
-			<polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
-		</svg>
-		<span>其他设置</span>
-	</button>
+  </div>
+  <!-- <div id="menu-div"></div> -->
+  <button id='nav-menu'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>功能目录</span>
+  </button>
+  <button id='tile'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>标记对比</span>
+  </button>
+  <button id='helix2'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>图表化</span>
+  </button>
+  <button id='sphere3'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>组织选择</span>
+  </button>
+  <button id='grid'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>手动搜索</span>
+  </button>
+  <button id='table'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>区域选择</span>
+  </button>
+  <button id='helix'>
+    <svg version="1.1" viewBox="0 0 780 920">
+      <polygon points="390,10 780,235 780,685 390,910 0,685 0,235" />
+    </svg>
+    <span>其他设置</span>
+  </button>
+  <div id="contrast_wrap">
+    <div id="contrast_content">
+      <div id="contrast_title">
+        <div class="rect"></div>
+        <span class="title_text1">国家信息对比</span>
+        <span class="title_text2">-选中国家</span>
+        <div id="country1">
+          <img src="./assets/KZ@2x.png" alt="" class="contrast_flag">
+          <span class="contrast_countryName">哈萨克斯坦</span>
+          <img src="./assets/legend1.png" alt="" class="contrast_legendImg">
+        </div>
+        <div id="country2">
+          <img src="./assets/PK@2x.png" alt="" class="contrast_flag">
+          <span class="contrast_countryName">巴基斯坦</span>
+          <img src="./assets/legend2.png" alt="" class="contrast_legendImg">
+        </div>
+      </div>
+      <div id="contrast_table">
+        <div class="contrast_item select" id="contrast_item_1">
+          <div class="contrast_item_status"></div>
+          <span class="contrast_item_name">资源储量</span>
+          <span class="contrast_item_value1">45,628</span>
+          <span class="contrast_item_value2">78,956</span>
+        </div>
+        <div class="contrast_item" id="contrast_item_2">
+          <div class="contrast_item_status"></div>
+          <span class="contrast_item_name">人口数目</span>
+          <span class="contrast_item_value1">45,628</span>
+          <span class="contrast_item_value2">78,956</span>
+        </div>
+        <div class="contrast_item" id="contrast_item_3">
+          <div class="contrast_item_status"></div>
+          <span class="contrast_item_name">国土面积</span>
+          <span class="contrast_item_value1">45,628</span>
+          <span class="contrast_item_value2">78,956</span>
+        </div>
+        <div class="contrast_item" id="contrast_item_4">
+          <div class="contrast_item_status"></div>
+          <span class="contrast_item_name">国家生产总值</span>
+          <span class="contrast_item_value1">45,628</span>
+          <span class="contrast_item_value2">78,956</span>
+        </div>
+        <div class="contrast_item" id="contrast_item_5">
+          <div class="contrast_item_status"></div>
+          <span class="contrast_item_name">其他</span>
+          <span class="contrast_item_value1">45,628</span>
+          <span class="contrast_item_value2">78,956</span>
+        </div>
+      </div>
+      <div id="contrast_subTitle">
+        <span id="contrast_item_name_selected">资源储量</span>对比图</div>
+      <div id="contrast_chart_wrap">
+        <div id="contrast_chart"></div>
+      </div>
+    </div>
+    <img src="./assets/close.png" alt="" id="contrast_close">
+  </div>
 
-	<script src="src/particle.js"></script>
-	<script src="src/main.js"></script>
+  <script src="./lib/echarts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <script src="src/particle.js"></script>
+  <script src="src/lineChart.js"></script>
+  <script src="src/contrast.js"></script>
+  <script src="src/main.js"></script>
 </body>
 
 </html>
