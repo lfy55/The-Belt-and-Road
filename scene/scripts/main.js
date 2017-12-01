@@ -67,8 +67,8 @@
     var countryEntities = [];
     if (WebGLtest()) {
         initMap();
-        setTimeout(showHighChart1, 5000);
-        setTimeout(hideHighChart1, 8000);
+        // setTimeout(showHighChart1, 5000);
+        // setTimeout(hideHighChart1, 8000);
     } else {
         $("#noWebGL").show();
     }
@@ -394,7 +394,7 @@
                     pitch: Cesium.Math.toRadians(-60)
                 }
             });
-        }, 73000);
+        }, 75000);
     }
 
     var ctp = {
@@ -485,7 +485,7 @@
             var arr = findCountry(cty);
             arr.forEach(function (a) {
                 ents.push(a);
-                a.colorindex = i;
+                a.colorindex = i;          
             });
             i++;
         });

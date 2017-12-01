@@ -1,6 +1,8 @@
 ﻿window.onload = function () {
     var map;
-    var vectorlayer;
+    var imgBaseLayer, vecBaseLayer;
+    var vectorlayer, vectorlayer2;
+    var heatLayer, ladderLayer;
     var markers = [];
 
     var citiesLD = ['西安', '兰州', '乌鲁木齐', '阿拉木图', '德黑兰', '伊斯坦布尔', '莫斯科', '杜伊斯堡'];
@@ -32,6 +34,14 @@
     ];
     var countriesHS = [];
     var inteHS = [0, 1, 1, 2.5, 1.5, 4.5, 2, 5, 6, 1.5, 1.2];
+    var ydylCountries = [
+        'Panama', 'Morocco', 'India', 'Ethiopia', 'New Zealand', 'Bosnia and Herz.', 'Montenegro', 'Turkmenistan', 'Lithuania', 'Latvia', 'Palestine', 'Albania', 'Afghanistan', 'Estonia', 'Pakistan', 'Slovenia',
+        'Croatia', 'Lebanon', 'Oman', 'Bahrain', 'Yemen', 'Egypt', 'Jordan', 'Syria', 'Indonesia', 'Philippines', 'Myanmar', 'Brunei', 'Timor-Leste', 'Thailand', 'United Arab Emirates', 'Vietnam', 'Singapore', 'Armenia', 'Azerbaijan', 'Israel', 'Belarus', 'Czech Rep.', 'Bangladesh',
+        'Georgia', 'Hungary', 'Iraq', 'Cambodia', 'Iran', 'Kyrgyzstan', 'Lao PDR', 'Kazakhstan', 'Qatar', 'Kuwait', 'Moldova', 'Maldives',
+        'Poland', 'Macedonia', 'Nepal', 'Mongolia', 'Malaysia', 'Serbia', 'Romania', 'Bulgaria', 'Tajikistan', 'Saudi Arabia', 'Slovakia', 'Russia', 'South Africa', 'Sri Lanka', 'Korea', 'Turkey', 'Ukraine', 'Uzbekistan'
+    ];
+
+    var polygonsAll = [];
 
     var symbol = [{
         'markerFile': '../map/images/timeline/slibar.png',
@@ -61,15 +71,6 @@
     function initMap() {
         // mapboxgl.accessToken = 'pk.eyJ1Ijoic2hpeHVhbiIsImEiOiJjaXpoczR4ejEwMWtrMnFtaWtmanl5Yms0In0.pGiOt4qQJHvEScUBK7qgZw';
         // mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ2p1ZTExOTkiLCJhIjoiY2l3NzJsMXZ6MDA1MDJvcGVvOXZ5aGtxNiJ9.6Md6VaUCF6RJPQT5d95Lhw';
-        // map = new maptalks.Map("mapContainer",{
-        //     center:   [70.1, 29.44456],
-        //     zoom   :  3,
-        //     baseLayer : new maptalks.MapboxglLayer('tile',{
-        //         glOptions : {
-        //             'style' : 'mapbox://styles/wangjue1199/cja1sp6mu04hc2smyrdkc1460'
-        //         }
-        //     }),
-        // });
 
         var features = topojson.feature(world, world.objects.land);
         var polygons = features.features.map(function (f) {
@@ -86,219 +87,255 @@
             });
             return geo;
         });
-        var polygonsAll = worldCollection.features.map(function (f) {
-            var geo = new maptalks.MultiPolygon(f.geometry.coordinates);
-            geo.setSymbol({
-                lineColor: '#15887a',
-                lineWidth: 2,
-                polygonFill: '#111',
+        var arr = [];
+        $.getJSON("./scripts/world_polygon.json", function (data) {
+            polygonsAll = maptalks.GeoJSON.toGeometry(data);
+            polygonsAll.forEach(function (geo) {
+                geo.setSymbol({
+                    lineColor: '#15887a',
+                    lineWidth: 2,
+                    polygonFill: '#111',
+                });
+                if (ydylCountries.indexOf(geo.properties.NAME) > -1) {
+                    ydylCountries.splice(ydylCountries.indexOf(geo.properties.NAME), 1);
+                    arr.push(new maptalks.MultiPolygon(geo.getCoordinates(), {
+                        'symbol': {
+                            lineColor: '#15887a',
+                            lineWidth: 2,
+                            polygonFill: '#15887a',
+                            polygonOpacity: 0.2
+                        }
+                    }));
+                }
             });
-            return geo;
+            vecBaseLayer.addGeometry(polygonsAll);
+            vectorlayer.addGeometry(arr);
         });
+
+        imgBaseLayer = new maptalks.MapboxglLayer('tile', {
+            glOptions: {
+                'style': 'mapbox://styles/wangjue1199/cjan7vnxf1qwe2rpdadqdblqu'
+            }
+        });
+        vecBaseLayer = new maptalks.VectorLayer('v', {
+            opacity: 1,
+            enableAltitude: true,
+            drawAltitude: {
+                polygonFill: {
+                    'type': 'linear',
+                    'places': [0, 0, 0, 1],
+                    'colorStops': [
+                        [0, 'rgba(50,217,200, 0.7)'],
+                        [0.5, 'rgba(50,217,200, 0.5)'],
+                        [0.7, 'rgba(50,217,200, 0.3)'],
+                        [0.8, 'rgba(50,217,200, 0.2)'],
+                        [1, 'rgba(255 ,255 ,255,0.1)']
+                    ]
+                },
+                polygonOpacity: 1,
+                lineWidth: 0,
+            }
+        });
+        vectorlayer = new maptalks.VectorLayer('vector1');
+        vectorlayer2 = new maptalks.VectorLayer('vector2');
+
+        vecBaseLayer.addGeometry(polygons);
+
         map = new maptalks.Map('mapContainer', {
             center: [66.7903012612708142, 10.976349249268345],
-            zoom: 3.8,
-            maxZoom: 4.0,
-            minZoom: 3.8,
-            baseLayer: new maptalks.VectorLayer('v', {
-                opacity: 1,
-                enableAltitude: true,
-                drawAltitude: {
-                    polygonFill: {
-                        'type': 'linear',
-                        'places': [0, 0, 0, 1],
-                        'colorStops': [
-                            [0, 'rgba(50,217,200, 0.7)'],
-                            [0.5, 'rgba(50,217,200, 0.5)'],
-                            [0.7, 'rgba(50,217,200, 0.3)'],
-                            [0.8, 'rgba(50,217,200, 0.2)'],
-                            [1, 'rgba(255 ,255 ,255,0.1)']
-                        ]
-                    },
-                    polygonOpacity: 1,
-                    lineWidth: 0,
-                }
-            }),
+            zoom: 4.0,
+            maxZoom: 5.0,
+            minZoom: 4.0,
+            layers: [imgBaseLayer, vecBaseLayer, vectorlayer, vectorlayer2],
             pitch: 20
         });
+        toggleBaseLayer('image');
 
-        map.setSpatialReference({
-            projection: 'EPSG:4326',
-            resolutions: (function () {
-                const resolutions = [];
-                for (let i = 0; i < 19; i++) {
-                    resolutions[i] = 180 / (Math.pow(2, i) * 128);
-                }
-                return resolutions;
-            })()
-        });
+        // map.setSpatialReference({
+        //     projection: 'EPSG:4326',
+        //     resolutions: (function () {
+        //         const resolutions = [];
+        //         for (let i = 0; i < 19; i++) {
+        //             resolutions[i] = 180 / (Math.pow(2, i) * 128);
+        //         }
+        //         return resolutions;
+        //     })()
+        // });
 
-        vectorlayer = new maptalks.VectorLayer('vector1').addTo(map);
-        vectorlayer2 = new maptalks.VectorLayer('vector2').addTo(map);
-        vectorlayer2.setZIndex(1);
+        // var countryLineOptions = {
+        //     symbol: {
+        //         lineColor: lineColor,
+        //         lineWidth: 0
+        //     },
+        //     properties: {
+        //         altitude: 0
+        //     }
+        // };
+        // var countryPolygonOptions = {
+        //     symbol: {
+        //         lineWidth: 0,
+        //         polygonFill: fillColor,
+        //     },
+        //     properties: {
+        //         altitude: 0
+        //     }
+        // };
+        // var iran1 = new maptalks.LineString(iranCoords, countryLineOptions);
+        // var iran2 = new maptalks.Polygon(iranCoords, countryPolygonOptions);
+        // iran2.setId('iranPolygon');
+        // countriesLD[4] = [iran1, iran2];
+        // var pakistan1 = new maptalks.LineString(pakistanCoords, countryLineOptions);
+        // var pakistan2 = new maptalks.Polygon(pakistanCoords, countryPolygonOptions);
+        // pakistan2.setId('pakistanPolygon');
+        // var afh1 = new maptalks.LineString(afhCoords, countryLineOptions);
+        // var afh2 = new maptalks.Polygon(afhCoords, countryPolygonOptions);
+        // afh2.setId('afhPolygon');
+        // var thailand1 = new maptalks.LineString(thailandCoords, countryLineOptions);
+        // var thailand2 = new maptalks.Polygon(thailandCoords, countryPolygonOptions);
+        // thailand2.setId('thailandPolygon');
+        // var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, countryLineOptions);
+        // var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, countryPolygonOptions);
+        // malaysia2.setId('malaysiaPolygon');
+        // countriesHS[3] = [malaysia1, malaysia2];
 
-        var countryLineOptions = {
-            symbol: {
-                lineColor: lineColor,
-                lineWidth: 0
-            },
-            properties: {
-                altitude: 0
-            }
-        };
-        var countryPolygonOptions = {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: fillColor,
-            },
-            properties: {
-                altitude: 0
-            }
-        };
-        var iran1 = new maptalks.LineString(iranCoords, countryLineOptions);
-        var iran2 = new maptalks.Polygon(iranCoords, countryPolygonOptions);
-        iran2.setId('iranPolygon');
-        countriesLD[4] = [iran1, iran2];
-        var pakistan1 = new maptalks.LineString(pakistanCoords, countryLineOptions);
-        var pakistan2 = new maptalks.Polygon(pakistanCoords, countryPolygonOptions);
-        pakistan2.setId('pakistanPolygon');
-        var afh1 = new maptalks.LineString(afhCoords, countryLineOptions);
-        var afh2 = new maptalks.Polygon(afhCoords, countryPolygonOptions);
-        afh2.setId('afhPolygon');
-        var thailand1 = new maptalks.LineString(thailandCoords, countryLineOptions);
-        var thailand2 = new maptalks.Polygon(thailandCoords, countryPolygonOptions);
-        thailand2.setId('thailandPolygon');
-        var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, countryLineOptions);
-        var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, countryPolygonOptions);
-        malaysia2.setId('malaysiaPolygon');
-        countriesHS[3] = [malaysia1, malaysia2];
-        map.getBaseLayer().addGeometry(polygons);
-        map.getBaseLayer().addGeometry(polygonsAll);
-        map.getBaseLayer().addGeometry([afh1, afh2, iran1, iran2, pakistan1, pakistan2,
-            thailand1, thailand2, malaysia1, malaysia2
-        ]);
+        // map.getBaseLayer().addGeometry([afh1, afh2, iran1, iran2, pakistan1, pakistan2,
+        //     thailand1, thailand2, malaysia1, malaysia2
+        // ]);
 
-        iran2.addEventListener('click', countryClick);
-        pakistan2.addEventListener('click', countryClick);
-        afh2.addEventListener('click', countryClick);
-        thailand2.addEventListener('click', countryClick);
-        malaysia2.addEventListener('click', countryClick);
+        // iran2.addEventListener('click', countryClick);
+        // pakistan2.addEventListener('click', countryClick);
+        // afh2.addEventListener('click', countryClick);
+        // thailand2.addEventListener('click', countryClick);
+        // malaysia2.addEventListener('click', countryClick);
 
-        var _center, _line, _poly;
+        // var _center, _line, _poly;
 
-        function countryClick(e) {
-            console.info('countryClick');
-            var id = e.target.getId();
-            if (_center && _line && _poly) {
-                _line.updateSymbol({
-                    lineWidth: 0
-                });
-                _line.setProperties({
-                    altitude: 0
-                });
-                _poly.updateSymbol({
-                    lineWidth: 0,
-                    polygonFill: fillColor
-                });
-                _poly.setProperties({
-                    altitude: 0
-                });
-                hideDetail();
-            }
-            var _zoom = 5;
-            if (id == 'iranPolygon') {
-                _center = [51.25, 35.40];
-                _line = iran1;
-                _poly = iran2;
-            } else if (id == 'pakistanPolygon') {
-                _center = [69, 32];
-                _line = pakistan1;
-                _poly = pakistan2;
-            } else if (id == 'afhPolygon') {
-                _center = [69, 34];
-                _line = afh1;
-                _poly = afh2;
-            } else if (id == 'thailandPolygon') {
-                _center = [100.31, 13.45];
-                _line = thailand1;
-                _poly = thailand2;
-            } else if (id == 'malaysiaPolygon') {
-                _center = [100.31, 5.45];
-                _line = malaysia1;
-                _poly = malaysia2;
-            } else if (id == 'russiaPolygon') {
-                _center = [60.31, 55.45];
-                _zoom = 3;
-                _line = russia1;
-                _poly = russia2;
-            }
+        // function countryClick(e) {
+        //     console.info('countryClick');
+        //     var id = e.target.getId();
+        //     if (_center && _line && _poly) {
+        //         _line.updateSymbol({
+        //             lineWidth: 0
+        //         });
+        //         _line.setProperties({
+        //             altitude: 0
+        //         });
+        //         _poly.updateSymbol({
+        //             lineWidth: 0,
+        //             polygonFill: fillColor
+        //         });
+        //         _poly.setProperties({
+        //             altitude: 0
+        //         });
+        //         hideDetail();
+        //     }
+        //     var _zoom = 5;
+        //     if (id == 'iranPolygon') {
+        //         _center = [51.25, 35.40];
+        //         _line = iran1;
+        //         _poly = iran2;
+        //     } else if (id == 'pakistanPolygon') {
+        //         _center = [69, 32];
+        //         _line = pakistan1;
+        //         _poly = pakistan2;
+        //     } else if (id == 'afhPolygon') {
+        //         _center = [69, 34];
+        //         _line = afh1;
+        //         _poly = afh2;
+        //     } else if (id == 'thailandPolygon') {
+        //         _center = [100.31, 13.45];
+        //         _line = thailand1;
+        //         _poly = thailand2;
+        //     } else if (id == 'malaysiaPolygon') {
+        //         _center = [100.31, 5.45];
+        //         _line = malaysia1;
+        //         _poly = malaysia2;
+        //     } else if (id == 'russiaPolygon') {
+        //         _center = [60.31, 55.45];
+        //         _zoom = 3;
+        //         _line = russia1;
+        //         _poly = russia2;
+        //     }
 
-            map.animateTo({
-                pitch: 60,
-                center: _center,
-                zoom: _zoom
-            }, {
-                duration: 800,
-                easing: 'out'
-            });
-            _line.updateSymbol({
-                lineWidth: 3
-            });
-            _poly.updateSymbol({
-                lineWidth: 3,
-                lineColor: 'rgb(  35 ,255, 227 )',
-                polygonFill: 'rgba(16,97,87,1.0)'
-            });
-            $('#btmDiv').hide();
-            setTimeout(function () {
-                maptalks.animation.Animation.animate({
-                    properties: {
-                        altitude: 500000
-                    }
-                }, {
-                    'duration': 800
-                }, frame => {
-                    if (frame.state.playState == 'running') {
-                        _line.setProperties(frame.styles.properties);
-                        _poly.setProperties(frame.styles.properties);
-                    }
-                    if (frame.state.playState == 'finished') {
-                        showDetail();
-                    }
-                }).play();
-            }, 800);
-            e.domEvent.stopPropagation();
+        //     map.animateTo({
+        //         pitch: 60,
+        //         center: _center,
+        //         zoom: _zoom
+        //     }, {
+        //         duration: 800,
+        //         easing: 'out'
+        //     });
+        //     _line.updateSymbol({
+        //         lineWidth: 3
+        //     });
+        //     _poly.updateSymbol({
+        //         lineWidth: 3,
+        //         lineColor: 'rgb(  35 ,255, 227 )',
+        //         polygonFill: 'rgba(16,97,87,1.0)'
+        //     });
+        //     $('#btmDiv').hide();
+        //     setTimeout(function () {
+        //         maptalks.animation.Animation.animate({
+        //             properties: {
+        //                 altitude: 500000
+        //             }
+        //         }, {
+        //             'duration': 800
+        //         }, frame => {
+        //             if (frame.state.playState == 'running') {
+        //                 _line.setProperties(frame.styles.properties);
+        //                 _poly.setProperties(frame.styles.properties);
+        //             }
+        //             if (frame.state.playState == 'finished') {
+        //                 showDetail();
+        //             }
+        //         }).play();
+        //     }, 800);
+        //     e.domEvent.stopPropagation();
+        // }
+
+        // map.addEventListener('click', function (e) {
+        //     console.info('mapclick');
+        //     if (_line && _poly) {
+        //         _line.updateSymbol({
+        //             lineWidth: 0
+        //         });
+        //         _line.setProperties({
+        //             altitude: 0
+        //         });
+        //         _poly.updateSymbol({
+        //             lineWidth: 0,
+        //             polygonFill: fillColor
+        //         });
+        //         _poly.setProperties({
+        //             altitude: 0
+        //         });
+        //     }
+        //     map.animateTo({
+        //         pitch: 20,
+        //         center: [66.7903012612708142, 10.976349249268345],
+        //         zoom: 3.8,
+        //     }, {
+        //         duration: 1000,
+        //         easing: 'in'
+        //     });
+        //     hideDetail(function(){
+        //         $('#btmDiv').show();
+        //     });
+        // });
+    }
+
+    function toggleBaseLayer(type) {
+        if (type == 'image') {
+            map.removeLayer(vecBaseLayer);
+            map.addLayer(imgBaseLayer);
+            map.sortLayers([imgBaseLayer, vectorlayer, vectorlayer2]);
+
+        } else if (type == 'vector') {
+            map.addLayer(vecBaseLayer);
+            map.removeLayer(imgBaseLayer);
+            map.sortLayers([vecBaseLayer, vectorlayer, vectorlayer2]);
         }
-
-        map.addEventListener('click', function (e) {
-            console.info('mapclick');
-            if (_line && _poly) {
-                _line.updateSymbol({
-                    lineWidth: 0
-                });
-                _line.setProperties({
-                    altitude: 0
-                });
-                _poly.updateSymbol({
-                    lineWidth: 0,
-                    polygonFill: fillColor
-                });
-                _poly.setProperties({
-                    altitude: 0
-                });
-            }
-            map.animateTo({
-                pitch: 20,
-                center: [66.7903012612708142, 10.976349249268345],
-                zoom: 3.8,
-            }, {
-                duration: 1000,
-                easing: 'in'
-            });
-            hideDetail(function(){
-                $('#btmDiv').show();
-            });
-        });
     }
 
     function initData() {
@@ -349,19 +386,20 @@
                     'textDy': 20
                 })
             }
-            marker.addEventListener('click', function () {
-                var i = 0;
-                var that = this;
-                this.animate({
-                    'symbol': symbol
-                }, {
-                    'duration': 2000
-                }, function (frame) {
-                    symbol[0].markerRotation = (i++) * 5;
-                    that.updateSymbol(symbol);
-                    if (frame.state.playState === 'finished') {}
-                });
-            });
+            // marker.addEventListener('click', function () {
+            //     var i = 0;
+            //     var that = this;
+            //     this.animate({
+            //         'symbol': symbol
+            //     }, {
+            //         'duration': 2000
+            //     }, function (frame) {
+            //         symbol[0].markerRotation = (i++) * 5;
+            //         that.updateSymbol(symbol);
+            //         if (frame.state.playState === 'finished') {}
+            //     });
+            // });
+            markers.push(marker);
             return marker;
         }
 
@@ -410,29 +448,6 @@
         }
         addMarker(road1[0].coords[0], citiesLD[0]);
         var ri = 0;
-        // var inteval = setInterval(function () {
-        //     if (ri == road1.length) {
-        //         clearInterval(inteval);
-        //         return;
-        //     }
-        //     var line = new maptalks.QuadBezierCurve(road1[ri].coords, {
-        //         'symbol': {
-        //             lineColor: '#23ffe3',
-        //             lineWidth: 3,
-        //             shadowBlur: 5
-        //         },
-        //     }).addTo(vectorlayer);
-        //     line.animateShow({
-        //         duration: inteLD[ri],
-        //         easing: 'linear'
-        //     }, function (frame, currCoord) {
-        //         if (frame.state.playState == 'finished') {
-        //             addMarker(road1[ri].coords[road1[ri].coords.length - 1], citiesLD[ri + 1]);
-        //             ri++;
-        //         }
-        //     });
-        // }, 650);
-
 
         addMarker(road2[0].coords[0], citiesHS[0]);
 
@@ -448,9 +463,6 @@
         }
 
         function anim1(rj, clc) {
-            console.info(clc * 650 + 100 * rj);
-            console.info(inteLD[rj + 1] * 650);
-            console.info('endend');
             setTimeout(function () {
                 var line = new maptalks.QuadBezierCurve(road1[rj].coords, {
                     'symbol': {
@@ -470,9 +482,6 @@
         }
 
         function anim2(rj, clc) {
-            console.info(clc * 650 + 100 * rj);
-            console.info(inteHS[rj + 1] * 650);
-            console.info('endend');
             setTimeout(function () {
                 var line = new maptalks.QuadBezierCurve(road2[rj].coords, {
                     'symbol': {
@@ -493,4 +502,120 @@
 
     }
 
+    function heatAddtoMap() {
+        resetMap();
+        var data = [];
+        for (var i = 0; i < 1500; i++) {
+            var lng = Math.random() * 240 - 80;
+            var lat = Math.random() * 150 - 75;
+            data.push([lng, lat, Math.random()]);
+        }
+        heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
+    }
+
+
+    function ladderAddtoMap() {
+        resetMap();
+        ladderLayer = new maptalks.VectorLayer('ladder', {
+            opacity: 1,
+            enableAltitude: true,
+            drawAltitude: {
+                polygonFill: {
+                    'type': 'linear',
+                    'places': [0, 0, 0, 1],
+                    'colorStops': [
+                        [0, 'rgba(50,217,200, 0.7)'],
+                        [0.5, 'rgba(50,217,200, 0.5)'],
+                        [0.7, 'rgba(50,217,200, 0.3)'],
+                        [0.8, 'rgba(50,217,200, 0.2)'],
+                        [1, 'rgba(255 ,255 ,255,0.1)']
+                    ]
+                },
+                polygonOpacity: 1,
+                lineWidth: 0,
+            }
+        }).addTo(map);
+        var countryLineOptions = {
+            symbol: {
+                lineColor: lineColor,
+                lineWidth: 2
+            },
+            properties: {
+                altitude: 0
+            }
+        };
+        var countryPolygonOptions = {
+            symbol: {
+                lineWidth: 0,
+                polygonFill: fillColor,
+            },
+            properties: {
+                altitude: 0
+            }
+        };
+        var i = 0;
+        worldCollection.features.map(function (f) {
+            var ctyFeatures = [];
+            if (typeof (f.geometry.coordinates[0][0][0]) == 'number') {
+                ctyFeatures.push(new maptalks.MultiLineString(f.geometry.coordinates, countryLineOptions));
+            } else {
+                f.geometry.coordinates.forEach(function (gc) {
+                    ctyFeatures.push(new maptalks.MultiLineString(f.geometry.coordinates[gc], countryLineOptions));
+                })
+            }
+            ctyFeatures.push(new maptalks.MultiPolygon(f.geometry.coordinates, countryPolygonOptions));
+            var altitude = (Math.random() * 10) * 50000;
+            ctyFeatures.forEach(function (f) {
+                f.setProperties({
+                    altitude: altitude
+                });
+            });
+            ladderLayer.addGeometry(ctyFeatures);
+        });
+        map.setPitch(60);
+    }
+
+    function resetMap() {
+        if (heatLayer) map.removeLayer(heatLayer);
+        if (ladderLayer) map.removeLayer(ladderLayer);
+        markers.forEach(function (marker) {
+            if (marker.player) {
+                marker.player.finish();
+            }
+        });
+        map.setPitch(20);
+    }
+
+    var tog = 0;
+    $('#toogleBase').click(function () {
+        if (tog % 2 == 0) {
+            toggleBaseLayer('vector');
+        } else {
+            toggleBaseLayer('image');
+        }
+        tog++;
+    });
+
+    $('#heatBtn').click(function () {
+        heatAddtoMap();
+    });
+
+    $('#ladderBtn').click(function () {
+        ladderAddtoMap();
+    });
+
+    $('#mainCity').click(function () {
+        resetMap();
+        markers.forEach(function (marker) {
+            var i = 0;
+            marker.player = marker.animate({
+                'symbol': symbol
+            }, {
+                'duration': 200000
+            }, function (frame) {
+                symbol[0].markerRotation = (i++) * 5;
+                marker.updateSymbol(symbol);
+            });
+        });
+    });
 }
