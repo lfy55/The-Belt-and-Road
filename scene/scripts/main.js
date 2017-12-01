@@ -152,7 +152,7 @@
             function showCountry(feature) {
                 var polygon = feature.polygon;
                 polygon.extrudedHeight = new Cesium.CallbackProperty(function () {
-                    polygon.material = Cesium.Color.fromRgba(0xff006363);
+                    polygon.material = Cesium.Color.fromCssColorString('#006363');
 
                     polygon.outlineWidth = 5;
                     polygon.exheight += 10000;
@@ -452,7 +452,7 @@
         }
     }
 
-    function showHighChart1() {
+    window.showHighChart1  = function showHighChart1() {
         var i = 0;
         hideHighChart1();
         chartCoords.forEach(function (chartCoord) {
@@ -471,14 +471,14 @@
         });
     }
 
-    function hideHighChart1() {
+    window.hideHighChart1  = function hideHighChart1() {
         chartEntities.forEach(function (e) {
             viewer.entities.remove(e);
         })
         chartEntities = [];
     }
 
-    function showHighChart2() {
+    window.showHighChart2  = function showHighChart2() {
         var ents = [];
         var i = 1;
         ['Canada', 'Iraq', 'Saudi Arabia', 'Iran', 'Venezuela'].forEach(function (cty) {
@@ -497,7 +497,7 @@
         });
     }
 
-    function hideHighChart2() {
+    window.hideHighChart2  = function hideHighChart2() {
         var ents = [];
         var i = 1;
         ['Canada', 'Iraq', 'Saudi Arabia', 'Iran', 'Venezuela'].forEach(function (cty) {
@@ -513,7 +513,7 @@
         });
     }
 
-    function showHighChart3() {
+    window.showHighChart3  = function showHighChart3() {
         var i = 0;
         hideHighChart3();
         chartCoords2.forEach(function (chartCoord) {
@@ -532,7 +532,7 @@
         });
     }
 
-    function hideHighChart3() {
+    window.hideHighChart3  = function hideHighChart3() {
         chartEntities2.forEach(function (e) {
             viewer.entities.remove(e);
         })
