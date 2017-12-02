@@ -1,7 +1,7 @@
 ﻿window.onload = function () {
     var map;
     var imgBaseLayer, vecBaseLayer;
-    var vectorlayer, vectorlayer2;
+    var vectorlayer0, vectorlayer, vectorlayer2;
     var heatLayer, ladderLayer;
     var markers = [];
 
@@ -42,6 +42,16 @@
     ];
 
     var polygonsAll = [];
+    var kazCities = [
+        '卡拉干达', '卡拉曼', '赞加达尔', '塔利斯塔', '埃索达'
+    ];
+    var kazCitiesCoords = [
+        [65.053389, 52.385164],
+        [48.606205, 48.118782],
+        [56.360838, 47.750121],
+        [71.30847, 44.893521],
+        [77.857907, 44.420788]
+    ];
 
     var symbol = [{
         'markerFile': '../map/images/timeline/slibar.png',
@@ -63,14 +73,14 @@
 
     if (WebGLtest()) {
         initMap();
-        initData();
+        // initData();
     } else {
         $("#noWebGL").show();
     }
 
     function initMap() {
         // mapboxgl.accessToken = 'pk.eyJ1Ijoic2hpeHVhbiIsImEiOiJjaXpoczR4ejEwMWtrMnFtaWtmanl5Yms0In0.pGiOt4qQJHvEScUBK7qgZw';
-        // mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ2p1ZTExOTkiLCJhIjoiY2l3NzJsMXZ6MDA1MDJvcGVvOXZ5aGtxNiJ9.6Md6VaUCF6RJPQT5d95Lhw';
+        mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ2p1ZTExOTkiLCJhIjoiY2l3NzJsMXZ6MDA1MDJvcGVvOXZ5aGtxNiJ9.6Md6VaUCF6RJPQT5d95Lhw';
 
         var features = topojson.feature(world, world.objects.land);
         var polygons = features.features.map(function (f) {
@@ -98,18 +108,38 @@
                 });
                 if (ydylCountries.indexOf(geo.properties.NAME) > -1) {
                     ydylCountries.splice(ydylCountries.indexOf(geo.properties.NAME), 1);
-                    arr.push(new maptalks.MultiPolygon(geo.getCoordinates(), {
+                    var item = new maptalks.MultiPolygon(geo.getCoordinates(), {
                         'symbol': {
                             lineColor: '#15887a',
                             lineWidth: 2,
                             polygonFill: '#15887a',
                             polygonOpacity: 0.2
                         }
-                    }));
+                    });
+                    if (geo.properties.NAME == 'Kazakhstan') {
+                        item.addEventListener('click', function () {
+                            map.removeLayer(vectorlayer);
+                            map.animateTo({
+                                pitch: 30,
+                                center: [69.55, 45.19],
+                                zoom: 5
+                            }, {
+                                duration: 800,
+                                easing: 'out'
+                            }, function (frame) {
+                                if (frame.state.playState === 'finished') {
+                                    initVectorLayer2(item);
+                                }
+                            });
+                        });
+
+                    }
+                    arr.push(item);
                 }
+
             });
-            vecBaseLayer.addGeometry(polygonsAll);
-            vectorlayer.addGeometry(arr);
+            // vecBaseLayer.addGeometry(polygonsAll);
+            vectorlayer0.addGeometry(arr);
         });
 
         imgBaseLayer = new maptalks.MapboxglLayer('tile', {
@@ -117,36 +147,26 @@
                 'style': 'mapbox://styles/wangjue1199/cjan7vnxf1qwe2rpdadqdblqu'
             }
         });
-        vecBaseLayer = new maptalks.VectorLayer('v', {
-            opacity: 1,
-            enableAltitude: true,
-            drawAltitude: {
-                polygonFill: {
-                    'type': 'linear',
-                    'places': [0, 0, 0, 1],
-                    'colorStops': [
-                        [0, 'rgba(50,217,200, 0.7)'],
-                        [0.5, 'rgba(50,217,200, 0.5)'],
-                        [0.7, 'rgba(50,217,200, 0.3)'],
-                        [0.8, 'rgba(50,217,200, 0.2)'],
-                        [1, 'rgba(255 ,255 ,255,0.1)']
-                    ]
-                },
-                polygonOpacity: 1,
-                lineWidth: 0,
+        // vecBaseLayer = new maptalks.VectorLayer('v', {
+        //     opacity: 1
+        // });
+        vecBaseLayer = new maptalks.MapboxglLayer('tile2', {
+            glOptions: {
+                'style': 'mapbox://styles/wangjue1199/cjanogmb0esol2qmfage0f1wl'
             }
         });
+        vectorlayer0 = new maptalks.VectorLayer('vector0');
         vectorlayer = new maptalks.VectorLayer('vector1');
         vectorlayer2 = new maptalks.VectorLayer('vector2');
 
-        vecBaseLayer.addGeometry(polygons);
+        // vecBaseLayer.addGeometry(polygons);
 
         map = new maptalks.Map('mapContainer', {
             center: [66.7903012612708142, 10.976349249268345],
             zoom: 4.0,
             maxZoom: 5.0,
             minZoom: 4.0,
-            layers: [imgBaseLayer, vecBaseLayer, vectorlayer, vectorlayer2],
+            layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, vectorlayer, vectorlayer2],
             pitch: 20
         });
         toggleBaseLayer('image');
@@ -329,12 +349,12 @@
         if (type == 'image') {
             map.removeLayer(vecBaseLayer);
             map.addLayer(imgBaseLayer);
-            map.sortLayers([imgBaseLayer, vectorlayer, vectorlayer2]);
+            map.sortLayers([imgBaseLayer, vectorlayer0, vectorlayer, vectorlayer2]);
 
         } else if (type == 'vector') {
             map.addLayer(vecBaseLayer);
             map.removeLayer(imgBaseLayer);
-            map.sortLayers([vecBaseLayer, vectorlayer, vectorlayer2]);
+            map.sortLayers([vecBaseLayer, vectorlayer0, vectorlayer, vectorlayer2]);
         }
     }
 
@@ -513,6 +533,17 @@
         heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
     }
 
+    function backFirstPage() {
+        map.animateTo({
+            pitch: 20,
+            center: [66.7903012612708142, 10.976349249268345],
+            zoom: 4.0
+        }, {
+            duration: 800,
+            easing: 'out'
+        });
+        map.addLayer(vectorlayer);
+    }
 
     function ladderAddtoMap() {
         resetMap();
@@ -520,17 +551,7 @@
             opacity: 1,
             enableAltitude: true,
             drawAltitude: {
-                polygonFill: {
-                    'type': 'linear',
-                    'places': [0, 0, 0, 1],
-                    'colorStops': [
-                        [0, 'rgba(50,217,200, 0.7)'],
-                        [0.5, 'rgba(50,217,200, 0.5)'],
-                        [0.7, 'rgba(50,217,200, 0.3)'],
-                        [0.8, 'rgba(50,217,200, 0.2)'],
-                        [1, 'rgba(255 ,255 ,255,0.1)']
-                    ]
-                },
+                polygonFill: 'rgba(50,217,200, 0.5)',
                 polygonOpacity: 1,
                 lineWidth: 0,
             }
@@ -584,6 +605,107 @@
             }
         });
         map.setPitch(20);
+    }
+
+    function initVectorLayer2(item) {
+        item.updateSymbol({
+            'polygonOpacity': 0
+        });
+        var coors = item.getCoordinates();
+        var newitem = new maptalks.MultiPolygon(coors, {
+            'symbol': {
+                lineColor: '#15887a',
+                lineWidth: 4,
+                'polygonPatternFile': '../map/images/kazbg.jpg',
+                'polygonOpacity': 1
+            },
+            'shadowBlur': 50,
+            'shadowColor': '#15887a'
+        });
+        newitem.addTo(vectorlayer2);
+        var i = 0;
+
+        kazCities.forEach(function (c) {
+            new maptalks.Marker(kazCitiesCoords[i], {
+                properties: {
+                    'name': c
+                },
+                symbol: [{
+                    'markerFile': '../map/images/mapoint.png',
+                    'markerDx': 0,
+                    'markerDy': 14,
+                }, {
+                    'textFaceName': 'LiHeiTi',
+                    'textName': '{name}',
+                    'textSize': 14,
+                    'textDy': 30,
+                    'textFill': '#ffffff'
+                }]
+            }).addTo(vectorlayer2);
+            i++;
+        });
+
+        // new maptalks.Marker([71.26, 51.11], {
+        //     symbol: {
+        //         'markerType': 'ellipse',
+        //         'markerFillPatternFile': '../map/images/slg.png',
+        //         'markerWidth': 40,
+        //         'markerHeight': 40,
+        //         'markerDx': 0,
+        //         'markerDy': 20,
+        //     }
+        // }).addTo(vectorlayer2);
+        new maptalks.ui.UIMarker([71.26, 51.11], {
+            'content': `<div style="width: 112px;
+    height: 112px;
+    border: solid 3px #fff;
+    border-radius: 50%;
+    margin: 10px 10px;">
+          <div style="width: 88px;
+    height: 88px;
+    border: solid 2px #fff;
+    border-radius: 50%;
+    margin: 10px;">
+            <div style="width: 64px;
+    height: 64px;
+    border: solid 2px #fff;
+    border-radius: 50%;
+    margin: 10px;">
+              <div style="width: 40px;
+    height: 40px;
+      box-shadow: 0 0 15px #fff;
+    border-radius: 50%;
+    margin: 12px;">
+                <div style="width: 40px;
+    height: 40px;
+    border-radius: 50%;overflow:hidden">
+                  <img src='../map/images/slg.png' style="width:50px;height:50px;margin:-5px 0 0 -5px" />
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`
+        }).addTo(map).show();
+
+        new maptalks.Marker([66.179648, 48.641949], {
+            properties: {
+                'name': '中国援建项目Aresia'
+            },
+            symbol: [{
+                'markerFile': '../map/images/mapoint.png',
+                'markerDx': 0,
+                'markerDy': 14,
+            }, {
+                'textFaceName': 'LiHeiTi',
+                'textName': '{name}',
+                'textSize': 14,
+                'textDy': 30,
+                'textFill': '#ffff00'
+            }]
+        }).addTo(vectorlayer2);
+
+
     }
 
     var tog = 0;
