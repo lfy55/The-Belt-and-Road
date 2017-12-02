@@ -9,9 +9,11 @@
   <link rel="stylesheet" type="text/css" href="./lib/mapbox-gl.css">
   <link type="text/css" rel="stylesheet" href="../map/lib/maptalks.css">
   <link href="css/style.css" rel="stylesheet" type="text/css">
-  <link href="css/mapDetail.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="./css/control.css">
+  <!-- <link href="css/mapDetail.css" rel="stylesheet" type="text/css"> -->
   <link href="css/new.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script>
+  <!-- <script type="text/javascript" src="../map/lib/jquery-1.12.1.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script type="text/javascript" src="../map/lib/maptalks.js"></script>
   <script type="text/javascript" src='../map/lib/mapbox-gl-dev.js'></script>
   <script type="text/javascript" src="../map/lib/maptalks.mapboxgl.js"></script>
@@ -26,7 +28,7 @@
 
   <div id="UI">
     <!-- 标题 -->
-    <div id="title">一带一路 · 大事件可视化系统</div>
+    <div id="title">一带一路 · 地理信息系统</div>
 
     <div id="container"></div>
     <div id="mapContainer">
@@ -87,6 +89,24 @@
       <button id='mainCity'>重要城市</button>
       <button id='ladderBtn'>梯形图</button>
     </div>
+    <div id="control_wrap">
+      <div id="control_center_wrap">
+        <img src="./images/control/control_out.png" alt="" class="hasAnimate" id="control_center_out">
+        <!-- <img src="./images/control/control_in.png" alt="" id="control_center_in"> -->
+      </div>
+      <div class="control_item_wrap select" id="route_wrap">
+        <div class="control_item_title">一带一路 • 路线展示</div>
+      </div>
+      <div class="control_item_wrap" id="population_wrap">
+        <div class="control_item_title">人口信息展示</div>
+      </div>
+      <div class="control_item_wrap" id="city_wrap">
+        <div class="control_item_title">重点城市展示</div>
+      </div>
+      <div class="control_item_wrap" id="GDPMessage_wrap">
+        <div class="control_item_title">GDP信息展示</div>
+      </div>
+    </div>
     <div id="noWebGL" style="display:none">
       <div id='description'>The globe of economic complexity dynamically maps out the entire world production of goods to create an economic landscape
         of countries around the globe.
@@ -112,6 +132,7 @@
   <script type="text/javascript" src="../map/lib/topojson.v1.min.js"></script>
   <script type="text/javascript" src="../map/lib/world.js"></script>
   <script type="text/javascript" src="../map/scripts/world.js"></script>
+  <script src="scripts/control.js"></script>
   <script src="scripts/main.js"></script>
 </body>
 
