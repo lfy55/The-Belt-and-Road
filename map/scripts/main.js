@@ -1,6 +1,6 @@
 ﻿window.onload = function () {
     var map;
-    var imgBaseLayer, vecBaseLayer;
+    var imgBaseLayer, vecBaseLayer, clusterLayer;
     var vectorlayer0, vectorlayer, vectorlayer2;
     var heatLayer, ladderLayer;
     var markers = [];
@@ -42,15 +42,18 @@
     ];
 
     var polygonsAll = [];
+    var kazTypes = ['city', 'city', 'city', 'city', 'city', 'prog-ing', 'slg']; //'prog-ed',
     var kazCities = [
-        '卡拉干达', '卡拉曼', '赞加达尔', '塔利斯塔', '埃索达'
+        '卡拉干达', '卡拉曼', '赞加达尔', '塔利斯塔', '埃索达', '中国援建项目Aresia', '中国驻哈萨克斯坦大使馆'
     ];
     var kazCitiesCoords = [
         [65.053389, 52.385164],
         [48.606205, 48.118782],
         [56.360838, 47.750121],
         [71.30847, 44.893521],
-        [77.857907, 44.420788]
+        [77.857907, 44.420788],
+        [66.179648, 48.641949],
+        [71.26, 51.11]
     ];
 
     var symbol = [{
@@ -73,7 +76,7 @@
 
     if (WebGLtest()) {
         initMap();
-        // initData();
+        $('.mapboxgl-control-container').hide();
     } else {
         $("#noWebGL").show();
     }
@@ -161,15 +164,77 @@
 
         // vecBaseLayer.addGeometry(polygons);
 
+        var allSDMarkers = [];
+        Object.values(allSDs).forEach(function (k) {
+            var marker = new maptalks.Marker(k, {
+                'symbol': {
+                    'markerType': 'ellipse',
+                    'markerFill': 'rgb(135,196,240)',
+                    'markerFillOpacity': 1,
+                    'markerLineColor': '#34495e',
+                    'markerLineWidth': 1,
+                    'markerWidth': 10,
+                    'markerHeight': 10,
+                    'markerDx': 0,
+                    'markerDy': 0,
+                }
+            });
+            allSDMarkers.push(marker);
+        });
+        var clusterLayer = new maptalks.ClusterLayer('cluster', allSDMarkers, {
+            'noClusterWithOneMarker': true,
+            'maxClusterRadius': 30,
+            'maxClusterZoom': 18,
+            'symbol': {
+                'markerType': 'ellipse',
+                'markerFill': {
+                    property: 'count',
+                    type: 'interval',
+                    stops: [
+                        [0, 'rgb(135, 196, 240)'],
+                        [9, '#1bbc9b'],
+                        [99, 'rgb(216, 115, 149)']
+                    ]
+                },
+                'markerFillOpacity': 0.7,
+                'markerLineOpacity': 1,
+                'markerLineWidth': 3,
+                'markerLineColor': '#fff',
+                'markerWidth': {
+                    property: 'count',
+                    type: 'interval',
+                    stops: [
+                        [0, 30],
+                        [9, 45],
+                        [99, 60]
+                    ]
+                },
+                'markerHeight': {
+                    property: 'count',
+                    type: 'interval',
+                    stops: [
+                        [0, 30],
+                        [9, 45],
+                        [99, 60]
+                    ]
+                }
+            },
+            'drawClusterText': true,
+            'geometryEvents': true,
+            'single': true
+        });
+
         map = new maptalks.Map('mapContainer', {
-            center: [66.7903012612708142, 10.976349249268345],
+            center: [66.7903012612708142, 20.976349249268345],
             zoom: 4.0,
-            maxZoom: 5.0,
+            maxZoom: 8.0,
             minZoom: 4.0,
-            layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, vectorlayer, vectorlayer2],
+            layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, vectorlayer, vectorlayer2],
             pitch: 20
         });
         toggleBaseLayer('image');
+
+
 
         // map.setSpatialReference({
         //     projection: 'EPSG:4326',
@@ -343,18 +408,19 @@
         //         $('#btmDiv').show();
         //     });
         // });
+
     }
 
     function toggleBaseLayer(type) {
         if (type == 'image') {
             map.removeLayer(vecBaseLayer);
             map.addLayer(imgBaseLayer);
-            map.sortLayers([imgBaseLayer, vectorlayer0, vectorlayer, vectorlayer2]);
+            imgBaseLayer.bringToBack();
 
         } else if (type == 'vector') {
             map.addLayer(vecBaseLayer);
             map.removeLayer(imgBaseLayer);
-            map.sortLayers([vecBaseLayer, vectorlayer0, vectorlayer, vectorlayer2]);
+            vecBaseLayer.bringToBack();
         }
     }
 
@@ -524,19 +590,23 @@
 
     function heatAddtoMap() {
         resetMap();
-        var data = [];
-        for (var i = 0; i < 1500; i++) {
-            var lng = Math.random() * 240 - 80;
-            var lat = Math.random() * 150 - 75;
-            data.push([lng, lat, Math.random()]);
-        }
-        heatLayer = new maptalks.HeatLayer('heat', data).addTo(map);
+        var addData = [];
+        allHeatData.forEach(function (data) {
+            addData.push(data);
+            for (var i = 0; i < 4; i++) {
+                addData.push([data[0] + 0.001 * i, data[1], Math.random()]);
+            }
+            for (var i = 0; i < 4; i++) {
+                addData.push([data[0], data[1] - 0.001 * i, Math.random()]);
+            }
+        });
+        heatLayer = new maptalks.HeatLayer('heat', addData).addTo(map);
     }
 
     function backFirstPage() {
         map.animateTo({
             pitch: 20,
-            center: [66.7903012612708142, 10.976349249268345],
+            center: [66.7903012612708142, 20.976349249268345],
             zoom: 4.0
         }, {
             duration: 800,
@@ -597,8 +667,10 @@
     }
 
     function resetMap() {
+        if (vectorlayer) map.removeLayer(vectorlayer);
         if (heatLayer) map.removeLayer(heatLayer);
         if (ladderLayer) map.removeLayer(ladderLayer);
+
         markers.forEach(function (marker) {
             if (marker.player) {
                 marker.player.finish();
@@ -607,105 +679,142 @@
         map.setPitch(20);
     }
 
-    function initVectorLayer2(item) {
-        item.updateSymbol({
-            'polygonOpacity': 0
-        });
-        var coors = item.getCoordinates();
-        var newitem = new maptalks.MultiPolygon(coors, {
-            'symbol': {
-                lineColor: '#15887a',
-                lineWidth: 4,
-                'polygonPatternFile': '../map/images/kazbg.jpg',
-                'polygonOpacity': 1
-            },
-            'shadowBlur': 50,
-            'shadowColor': '#15887a'
-        });
-        newitem.addTo(vectorlayer2);
-        var i = 0;
+    var lastKazCity;
 
+    function initVectorLayer2() {
+        toggleBaseLayer('vector');
+        $.getJSON("./scripts/world_polygon.json", function (data) {
+            polygonsAll = maptalks.GeoJSON.toGeometry(data);
+            polygonsAll.forEach(function (geo) {
+                if (geo.properties.NAME == 'Kazakhstan') {
+                    var coors = geo.getCoordinates();
+                    var newitem = new maptalks.MultiPolygon(coors, {
+                        'symbol': {
+                            lineColor: '#15887a',
+                            lineWidth: 4,
+                            polygonOpacity: 0
+                        },
+                        'shadowBlur': 50,
+                        'shadowColor': '#15887a'
+                    });
+                    newitem.addTo(vectorlayer2);
+                    return;
+                }
+                geo.setSymbol({
+                    lineColor: '#15887a',
+                    lineWidth: 2,
+                    polygonFill: '#444',
+                });
+                vectorlayer2.addGeometry(geo);
+            });
+        });
+        var i = 0;
         kazCities.forEach(function (c) {
-            new maptalks.Marker(kazCitiesCoords[i], {
-                properties: {
-                    'name': c
-                },
-                symbol: [{
-                    'markerFile': '../map/images/mapoint.png',
-                    'markerDx': 0,
-                    'markerDy': 14,
-                }, {
-                    'textFaceName': 'LiHeiTi',
-                    'textName': '{name}',
-                    'textSize': 14,
-                    'textDy': 30,
-                    'textFill': '#ffffff'
-                }]
-            }).addTo(vectorlayer2);
+            if (kazTypes[i] == 'city') {
+                var m = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c
+                    },
+                    symbol: [{
+                        'markerFile': '../map/images/city.png',
+                        'markerDx': 0,
+                        'markerDy': 14,
+                    }, {
+                        'textFaceName': 'LiHeiTi',
+                        'textName': '{name}',
+                        'textSize': 14,
+                        'textDy': -20,
+                        'textFill': '#ffffff'
+                    }]
+                }).addTo(vectorlayer2);
+            } else if (kazTypes[i] == 'prog-ing') {
+                var m = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c
+                    },
+                    symbol: [{
+                        'markerFile': '../map/images/prog_ing.png',
+                        'markerDx': 0,
+                        'markerDy': 14,
+                    }, {
+                        'textFaceName': 'LiHeiTi',
+                        'textName': '{name}',
+                        'textSize': 14,
+                        'textDy': 30,
+                        'textFill': '#ffff00'
+                    }]
+                }).addTo(vectorlayer2);
+            } else if (kazTypes[i] == 'prog-ed') {
+                var m = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c
+                    },
+                    symbol: [{
+                        'markerFile': '../map/images/prog_ed.png',
+                        'markerDx': 0,
+                        'markerDy': 14,
+                    }, {
+                        'textFaceName': 'LiHeiTi',
+                        'textName': '{name}',
+                        'textSize': 14,
+                        'textDy': 30,
+                        'textFill': '#00ff00'
+                    }]
+                }).addTo(vectorlayer2);
+            } else if (kazTypes[i] == 'slg') {
+                var m = new maptalks.Marker([71.26, 51.11], {
+                    properties: {
+                        'name': c
+                    },
+                    symbol: {
+                        'markerType': 'ellipse',
+                        'markerFillPatternFile': '../map/images/slg.png',
+                        'markerLineColor': '#fff',
+                        'markerWidth': 50,
+                        'markerHeight': 50,
+                        'markerDx': 0,
+                        'markerDy': 0,
+                    }
+                }).addTo(vectorlayer2);
+            }
+            m.addEventListener('click', function (e) {
+                handleClick(m);
+                console.info(e);
+            });
             i++;
         });
 
-        // new maptalks.Marker([71.26, 51.11], {
-        //     symbol: {
-        //         'markerType': 'ellipse',
-        //         'markerFillPatternFile': '../map/images/slg.png',
-        //         'markerWidth': 40,
-        //         'markerHeight': 40,
-        //         'markerDx': 0,
-        //         'markerDy': 20,
-        //     }
-        // }).addTo(vectorlayer2);
-        new maptalks.ui.UIMarker([71.26, 51.11], {
-            'content': `<div style="width: 112px;
-    height: 112px;
-    border: solid 3px #fff;
-    border-radius: 50%;
-    margin: 10px 10px;">
-          <div style="width: 88px;
-    height: 88px;
-    border: solid 2px #fff;
-    border-radius: 50%;
-    margin: 10px;">
-            <div style="width: 64px;
-    height: 64px;
-    border: solid 2px #fff;
-    border-radius: 50%;
-    margin: 10px;">
-              <div style="width: 40px;
-    height: 40px;
-      box-shadow: 0 0 15px #fff;
-    border-radius: 50%;
-    margin: 12px;">
-                <div style="width: 40px;
-    height: 40px;
-    border-radius: 50%;overflow:hidden">
-                  <img src='../map/images/slg.png' style="width:50px;height:50px;margin:-5px 0 0 -5px" />
-
+        function handleClick(marker) {
+            if (lastKazCity) {
+                lastKazCity.remove();
+            }
+            var coords = marker.getCoordinates();
+            var props = marker.getProperties();
+            var text = props['name'];
+            var img = props['img'] || '../map/images/slg.png';
+            lastKazCity = new maptalks.ui.UIMarker(coords, {
+                'content': `
+            <div>
+                <div style="font-family: LiHeiTi;font-size: 18px;color: white;background: #f00;border-width: 0px 6px;border-color: #ff0;border-style: solid;margin-bottom: 4px;padding: 6px;width: 200px;">` + text + `</div>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 70px;margin-left: 50px;">
+                    <path d="M0 0 L175 0 L209 90" style="stroke: #ff0000;stroke-width:2px;fill-opacity:0"></path>
+                </svg>
+                <div style="width: 112px;height: 112px;    border: solid 3px #fff;    border-radius: 50%;margin: -50px 10px 10px 190px;    ">
+                    <div style="width: 88px;    height: 88px;    border: solid 2px #fff;    border-radius: 50%;    margin: 10px;">
+                        <div style="width: 64px;    height: 64px;    border: solid 2px #fff;    border-radius: 50%;    margin: 10px;">
+                            <div style="width: 40px;    height: 40px;      box-shadow: 0 0 15px #fff;    border-radius: 50%;    margin: 12px;">
+                                <div style="width: 40px;    height: 40px;    border-radius: 50%;overflow:hidden">
+                                    <img src="` + img + `" style="width:50px;height:50px;margin:0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>`
-        }).addTo(map).show();
-
-        new maptalks.Marker([66.179648, 48.641949], {
-            properties: {
-                'name': '中国援建项目Aresia'
-            },
-            symbol: [{
-                'markerFile': '../map/images/mapoint.png',
-                'markerDx': 0,
-                'markerDy': 14,
-            }, {
-                'textFaceName': 'LiHeiTi',
-                'textName': '{name}',
-                'textSize': 14,
-                'textDy': 30,
-                'textFill': '#ffff00'
-            }]
-        }).addTo(vectorlayer2);
-
-
+            </div>`,
+                dx: -75,
+                dy: -25
+            }).addTo(map).show();
+        }
     }
 
     var tog = 0;
@@ -718,16 +827,22 @@
         tog++;
     });
 
-    $('#heatBtn').click(function () {
+    $('#route_wrap').click(function () {
+        map.addLayer(vectorlayer);
+        initData();
+    });
+
+    $('#population_wrap').click(function () {
         heatAddtoMap();
     });
 
-    $('#ladderBtn').click(function () {
+    $('#GDPMessage_wrap').click(function () {
         ladderAddtoMap();
     });
 
-    $('#mainCity').click(function () {
+    $('#city_wrap').click(function () {
         resetMap();
+        map.addLayer(vectorlayer);
         markers.forEach(function (marker) {
             var i = 0;
             marker.player = marker.animate({
