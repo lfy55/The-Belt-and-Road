@@ -42,6 +42,8 @@
     ];
 
     var polygonsAll = [];
+
+    var KazGeometry;
     var kazTypes = ['city', 'city', 'city', 'city', 'city', 'prog-ing', 'slg']; //'prog-ed',
     var kazCities = [
         '卡拉干达', '卡拉曼', '赞加达尔', '塔利斯塔', '埃索达', '中国援建项目Aresia', '中国驻哈萨克斯坦大使馆'
@@ -76,13 +78,16 @@
 
     if (WebGLtest()) {
         initMap();
+        var arr = [];
+        map.addEventListener('click', function (e) {
+            arr.push([e.coordinate.x, e.coordinate.y, Math.random()])
+        })
         $('.mapboxgl-control-container').hide();
     } else {
         $("#noWebGL").show();
     }
 
     function initMap() {
-        // mapboxgl.accessToken = 'pk.eyJ1Ijoic2hpeHVhbiIsImEiOiJjaXpoczR4ejEwMWtrMnFtaWtmanl5Yms0In0.pGiOt4qQJHvEScUBK7qgZw';
         mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ2p1ZTExOTkiLCJhIjoiY2l3NzJsMXZ6MDA1MDJvcGVvOXZ5aGtxNiJ9.6Md6VaUCF6RJPQT5d95Lhw';
 
         var features = topojson.feature(world, world.objects.land);
@@ -110,7 +115,6 @@
                     polygonFill: '#111',
                 });
                 if (ydylCountries.indexOf(geo.properties.NAME) > -1) {
-                    ydylCountries.splice(ydylCountries.indexOf(geo.properties.NAME), 1);
                     var item = new maptalks.MultiPolygon(geo.getCoordinates(), {
                         'symbol': {
                             lineColor: '#15887a',
@@ -121,27 +125,27 @@
                     });
                     if (geo.properties.NAME == 'Kazakhstan') {
                         item.addEventListener('click', function () {
-                            map.removeLayer(vectorlayer);
+                            map.removeLayer([vectorlayer, vectorlayer0, clusterLayer]);
+
                             map.animateTo({
                                 pitch: 30,
-                                center: [69.55, 45.19],
+                                center: [80.55, 35.19],
                                 zoom: 5
                             }, {
-                                duration: 800,
+                                duration: 2000,
                                 easing: 'out'
                             }, function (frame) {
                                 if (frame.state.playState === 'finished') {
-                                    initVectorLayer2(item);
+                                    initVectorLayer2();
                                 }
                             });
                         });
-
+                        KazGeometry = item;
                     }
                     arr.push(item);
                 }
 
             });
-            // vecBaseLayer.addGeometry(polygonsAll);
             vectorlayer0.addGeometry(arr);
         });
 
@@ -181,7 +185,7 @@
             });
             allSDMarkers.push(marker);
         });
-        var clusterLayer = new maptalks.ClusterLayer('cluster', allSDMarkers, {
+        clusterLayer = new maptalks.ClusterLayer('cluster', allSDMarkers, {
             'noClusterWithOneMarker': true,
             'maxClusterRadius': 30,
             'maxClusterZoom': 18,
@@ -229,186 +233,10 @@
             zoom: 4.0,
             maxZoom: 8.0,
             minZoom: 4.0,
-            layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, vectorlayer, vectorlayer2],
+            layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, vectorlayer],
             pitch: 20
         });
         toggleBaseLayer('image');
-
-
-
-        // map.setSpatialReference({
-        //     projection: 'EPSG:4326',
-        //     resolutions: (function () {
-        //         const resolutions = [];
-        //         for (let i = 0; i < 19; i++) {
-        //             resolutions[i] = 180 / (Math.pow(2, i) * 128);
-        //         }
-        //         return resolutions;
-        //     })()
-        // });
-
-        // var countryLineOptions = {
-        //     symbol: {
-        //         lineColor: lineColor,
-        //         lineWidth: 0
-        //     },
-        //     properties: {
-        //         altitude: 0
-        //     }
-        // };
-        // var countryPolygonOptions = {
-        //     symbol: {
-        //         lineWidth: 0,
-        //         polygonFill: fillColor,
-        //     },
-        //     properties: {
-        //         altitude: 0
-        //     }
-        // };
-        // var iran1 = new maptalks.LineString(iranCoords, countryLineOptions);
-        // var iran2 = new maptalks.Polygon(iranCoords, countryPolygonOptions);
-        // iran2.setId('iranPolygon');
-        // countriesLD[4] = [iran1, iran2];
-        // var pakistan1 = new maptalks.LineString(pakistanCoords, countryLineOptions);
-        // var pakistan2 = new maptalks.Polygon(pakistanCoords, countryPolygonOptions);
-        // pakistan2.setId('pakistanPolygon');
-        // var afh1 = new maptalks.LineString(afhCoords, countryLineOptions);
-        // var afh2 = new maptalks.Polygon(afhCoords, countryPolygonOptions);
-        // afh2.setId('afhPolygon');
-        // var thailand1 = new maptalks.LineString(thailandCoords, countryLineOptions);
-        // var thailand2 = new maptalks.Polygon(thailandCoords, countryPolygonOptions);
-        // thailand2.setId('thailandPolygon');
-        // var malaysia1 = new maptalks.MultiLineString(MalaysiaCoords, countryLineOptions);
-        // var malaysia2 = new maptalks.MultiPolygon(MalaysiaCoords, countryPolygonOptions);
-        // malaysia2.setId('malaysiaPolygon');
-        // countriesHS[3] = [malaysia1, malaysia2];
-
-        // map.getBaseLayer().addGeometry([afh1, afh2, iran1, iran2, pakistan1, pakistan2,
-        //     thailand1, thailand2, malaysia1, malaysia2
-        // ]);
-
-        // iran2.addEventListener('click', countryClick);
-        // pakistan2.addEventListener('click', countryClick);
-        // afh2.addEventListener('click', countryClick);
-        // thailand2.addEventListener('click', countryClick);
-        // malaysia2.addEventListener('click', countryClick);
-
-        // var _center, _line, _poly;
-
-        // function countryClick(e) {
-        //     console.info('countryClick');
-        //     var id = e.target.getId();
-        //     if (_center && _line && _poly) {
-        //         _line.updateSymbol({
-        //             lineWidth: 0
-        //         });
-        //         _line.setProperties({
-        //             altitude: 0
-        //         });
-        //         _poly.updateSymbol({
-        //             lineWidth: 0,
-        //             polygonFill: fillColor
-        //         });
-        //         _poly.setProperties({
-        //             altitude: 0
-        //         });
-        //         hideDetail();
-        //     }
-        //     var _zoom = 5;
-        //     if (id == 'iranPolygon') {
-        //         _center = [51.25, 35.40];
-        //         _line = iran1;
-        //         _poly = iran2;
-        //     } else if (id == 'pakistanPolygon') {
-        //         _center = [69, 32];
-        //         _line = pakistan1;
-        //         _poly = pakistan2;
-        //     } else if (id == 'afhPolygon') {
-        //         _center = [69, 34];
-        //         _line = afh1;
-        //         _poly = afh2;
-        //     } else if (id == 'thailandPolygon') {
-        //         _center = [100.31, 13.45];
-        //         _line = thailand1;
-        //         _poly = thailand2;
-        //     } else if (id == 'malaysiaPolygon') {
-        //         _center = [100.31, 5.45];
-        //         _line = malaysia1;
-        //         _poly = malaysia2;
-        //     } else if (id == 'russiaPolygon') {
-        //         _center = [60.31, 55.45];
-        //         _zoom = 3;
-        //         _line = russia1;
-        //         _poly = russia2;
-        //     }
-
-        //     map.animateTo({
-        //         pitch: 60,
-        //         center: _center,
-        //         zoom: _zoom
-        //     }, {
-        //         duration: 800,
-        //         easing: 'out'
-        //     });
-        //     _line.updateSymbol({
-        //         lineWidth: 3
-        //     });
-        //     _poly.updateSymbol({
-        //         lineWidth: 3,
-        //         lineColor: 'rgb(  35 ,255, 227 )',
-        //         polygonFill: 'rgba(16,97,87,1.0)'
-        //     });
-        //     $('#btmDiv').hide();
-        //     setTimeout(function () {
-        //         maptalks.animation.Animation.animate({
-        //             properties: {
-        //                 altitude: 500000
-        //             }
-        //         }, {
-        //             'duration': 800
-        //         }, frame => {
-        //             if (frame.state.playState == 'running') {
-        //                 _line.setProperties(frame.styles.properties);
-        //                 _poly.setProperties(frame.styles.properties);
-        //             }
-        //             if (frame.state.playState == 'finished') {
-        //                 showDetail();
-        //             }
-        //         }).play();
-        //     }, 800);
-        //     e.domEvent.stopPropagation();
-        // }
-
-        // map.addEventListener('click', function (e) {
-        //     console.info('mapclick');
-        //     if (_line && _poly) {
-        //         _line.updateSymbol({
-        //             lineWidth: 0
-        //         });
-        //         _line.setProperties({
-        //             altitude: 0
-        //         });
-        //         _poly.updateSymbol({
-        //             lineWidth: 0,
-        //             polygonFill: fillColor
-        //         });
-        //         _poly.setProperties({
-        //             altitude: 0
-        //         });
-        //     }
-        //     map.animateTo({
-        //         pitch: 20,
-        //         center: [66.7903012612708142, 10.976349249268345],
-        //         zoom: 3.8,
-        //     }, {
-        //         duration: 1000,
-        //         easing: 'in'
-        //     });
-        //     hideDetail(function(){
-        //         $('#btmDiv').show();
-        //     });
-        // });
-
     }
 
     function toggleBaseLayer(type) {
@@ -416,12 +244,16 @@
             map.removeLayer(vecBaseLayer);
             map.addLayer(imgBaseLayer);
             imgBaseLayer.bringToBack();
-
+            $('#map_shiliang').removeClass('select');
+            $('#map_yingxiang').addClass('select');
         } else if (type == 'vector') {
             map.addLayer(vecBaseLayer);
             map.removeLayer(imgBaseLayer);
             vecBaseLayer.bringToBack();
+            $('#map_shiliang').addClass('select');
+            $('#map_yingxiang').removeClass('select');
         }
+        $('.mapboxgl-control-container').hide();
     }
 
     function initData() {
@@ -604,66 +436,40 @@
     }
 
     function backFirstPage() {
+        $('#control_wrap').fadeIn();
+        $('#side').fadeOut();
+        $('#sideWindow').fadeOut();
         map.animateTo({
             pitch: 20,
             center: [66.7903012612708142, 20.976349249268345],
             zoom: 4.0
         }, {
-            duration: 800,
+            duration: 1800,
             easing: 'out'
         });
-        map.addLayer(vectorlayer);
+        map.removeLayer(vectorlayer2);
+        $('.maptalks-ui').empty();
+        KazGeometry.updateSymbol({
+            polygonOpacity: 0.2
+        });
+        map.addLayer([vectorlayer, vectorlayer0, clusterLayer]);
     }
 
     function ladderAddtoMap() {
         resetMap();
-        ladderLayer = new maptalks.VectorLayer('ladder', {
-            opacity: 1,
-            enableAltitude: true,
-            drawAltitude: {
-                polygonFill: 'rgba(50,217,200, 0.5)',
-                polygonOpacity: 1,
-                lineWidth: 0,
-            }
-        }).addTo(map);
-        var countryLineOptions = {
-            symbol: {
-                lineColor: lineColor,
-                lineWidth: 2
-            },
-            properties: {
-                altitude: 0
-            }
-        };
-        var countryPolygonOptions = {
-            symbol: {
-                lineWidth: 0,
-                polygonFill: fillColor,
-            },
-            properties: {
-                altitude: 0
-            }
-        };
+        ladderLayer = new maptalks.VectorLayer('ladder').addTo(map);
         var i = 0;
-        worldCollection.features.slice(0, 130).map(function (f) {
-            var ctyFeatures = [];
-            if (typeof (f.geometry.coordinates[0][0][0]) == 'number') {
-                ctyFeatures.push(new maptalks.MultiLineString(f.geometry.coordinates, countryLineOptions));
-            } else {
-                f.geometry.coordinates.forEach(function (gc) {
-                    ctyFeatures.push(new maptalks.MultiLineString(f.geometry.coordinates[gc], countryLineOptions));
-                })
-            }
-            ctyFeatures.push(new maptalks.MultiPolygon(f.geometry.coordinates, countryPolygonOptions));
-            var altitude = (Math.random() * 10) * 50000;
-            ctyFeatures.forEach(function (f) {
-                f.setProperties({
-                    altitude: altitude
-                });
-            });
-            ladderLayer.addGeometry(ctyFeatures);
+        var colors = ['#66bb6a', '#9ccc65', '#d4e157', '#ffee58', '#ffca28', '#ffa726', '#ff7043'];
+        worldCollection.features.map(function (f) {
+            var altitude = Math.floor(Math.random() * 7);
+            ladderLayer.addGeometry(new maptalks.MultiPolygon(f.geometry.coordinates, {
+                symbol: {
+                    lineWidth: 2,
+                    polygonFill: colors[altitude],
+                    polygonOpacity: 0.6
+                }
+            }));
         });
-        map.setPitch(60);
     }
 
     function resetMap() {
@@ -681,8 +487,10 @@
 
     var lastKazCity;
 
-    function initVectorLayer2(item) {
+    function initVectorLayer2() {
         toggleBaseLayer('vector');
+        map.addLayer(vectorlayer2);
+
         $.getJSON("./scripts/world_polygon.json", function (data) {
             polygonsAll = maptalks.GeoJSON.toGeometry(data);
             polygonsAll.forEach(function (geo) {
@@ -696,9 +504,12 @@
                 });
                 vectorlayer2.addGeometry(geo);
             });
+            $('#control_wrap').fadeOut();
+            $('#side').fadeIn();
+            $('#sideWindow').fadeIn();
         });
-        var coors = item.getCoordinates();
-        item.updateSymbol({
+        var coors = KazGeometry.getCoordinates();
+        KazGeometry.updateSymbol({
             polygonOpacity: 0
         });
         var newitem = new maptalks.MultiPolygon(coors, {
@@ -708,7 +519,7 @@
                 polygonOpacity: 0
             },
             'shadowBlur': 50,
-            'shadowColor': '#fff'
+            'shadowColor': '#15887a'
         });
         newitem.addTo(vectorlayer2);
         var i = 0;
@@ -716,7 +527,10 @@
             if (kazTypes[i] == 'city') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
                     properties: {
-                        'name': c
+                        'name': c,
+                        'img': '../map/images/focus_city.png',
+                        'bordercolor': '#02dbef',
+                        'color': 'rgba(2,219,240,0.6)'
                     },
                     symbol: [{
                         'markerFile': '../map/images/city.png',
@@ -726,14 +540,20 @@
                         'textFaceName': 'LiHeiTi',
                         'textName': '{name}',
                         'textSize': 14,
-                        'textDy': -20,
-                        'textFill': '#ffffff'
+                        'textDy': 30,
+                        'textFill': '#02dbef'
                     }]
                 }).addTo(vectorlayer2);
+                setTimeout(function () {
+                    m.flash(400 + i * 10, 500);
+                }, i * 50);
             } else if (kazTypes[i] == 'prog-ing') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
                     properties: {
-                        'name': c
+                        'name': c,
+                        'img': '../map/images/focus_ing.png',
+                        'bordercolor': '#ecef02',
+                        'color': 'rgba(236,239,2,0.6)'
                     },
                     symbol: [{
                         'markerFile': '../map/images/prog_ing.png',
@@ -744,13 +564,19 @@
                         'textName': '{name}',
                         'textSize': 14,
                         'textDy': 30,
-                        'textFill': '#ffff00'
+                        'textFill': '#ecef02'
                     }]
                 }).addTo(vectorlayer2);
+                setTimeout(function () {
+                    m.flash(400 + i * 10, 500);
+                }, i * 50);
             } else if (kazTypes[i] == 'prog-ed') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
                     properties: {
-                        'name': c
+                        'name': c,
+                        'img': '../map/images/focus_ed.png',
+                        'bordercolor': '#00ff18',
+                        'color': 'rgba(0,255,24,0.6)'
                     },
                     symbol: [{
                         'markerFile': '../map/images/prog_ed.png',
@@ -761,35 +587,31 @@
                         'textName': '{name}',
                         'textSize': 14,
                         'textDy': 30,
-                        'textFill': '#00ff00'
+                        'textFill': '#00ff18'
                     }]
                 }).addTo(vectorlayer2);
+                setTimeout(function () {
+                    m.flash(400 + i * 10, 500);
+                }, i * 50);
             } else if (kazTypes[i] == 'slg') {
-                var m = new maptalks.ui.UIMarker(kazCitiesCoords[i], {
-                    'content': `<img src = "../map/images/slg.png" style="width:30px;height:30px;">`,
-                }).addTo(vectorlayer2).show();
-                m.properties = {
-                    'name': c
-                };
-                // var m = new maptalks.Marker([71.26, 51.11], {
-                //     properties: {
-                //         'name': c
-                //     },
-                //     symbol: {
-                //         'markerType': 'ellipse',
-                //         'markerFillPatternFile': '../map/images/slg.png',
-                //         'markerLineColor': '#fff',
-                //         'markerWidth': 30,
-                //         'markerHeight': 30,
-                //         'markerDx': 0,
-                //         'markerDy': 0,
-                //     }
-                // }).addTo(vectorlayer2);
-                handleClick(m);
+                var m = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c,
+                        'img': '../map/images/focus_slg.png',
+                        'bordercolor': '#ff0000',
+                        'color': 'rgba(255,0,0,0.6)'
+                    },
+                    symbol: [{
+                        'markerFile': '../map/images/slg.png',
+                        'markerWidth': 30,
+                        'markerHeight': 30,
+                        'markerDx': 0,
+                        'markerDy': 15,
+                    }]
+                }).addTo(vectorlayer2);
             }
             m.addEventListener('click', function (e) {
-                handleClick(m);
-                console.info(e);
+                handleClick(e.target);
             });
             i++;
         });
@@ -802,18 +624,19 @@
             var props = marker.properties || marker.getProperties();
             var text = props['name'];
             var img = props['img'] || '../map/images/slg.png';
-            // if(){
-
-            // }
+            var color = props['color'];
+            var bordercolor = props['bordercolor'];
             lastKazCity = new maptalks.ui.UIMarker(coords, {
                 'content': `
             <div>
-                <div style="font-family: LiHeiTi;font-size: 18px;color: white;background: #f00;border-width: 0px 6px;border-color: #ff0;border-style: solid;margin-bottom: 4px;padding: 6px;width: 200px;">` + text + `</div>
+                <div style="font-family: LiHeiTi;font-size: 18px;color: white;
+                background: ` + color + `;border-width: 0px 6px;border-color: ` + bordercolor + `;
+                border-style: solid;margin-bottom: 4px;padding: 6px;width: 200px;">` + text + `</div>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 70px;margin-left: 50px;">
                     <path d="M0 0 L175 0 L209 90" style="stroke: #ff0000;stroke-width:2px;fill-opacity:0"></path>
                 </svg>
                 <div style="width: 122px;height: 122px; margin: -50px 9px 10px 193px;">
-                      <img src = "../map/images/focus.png" style="width:120px;height:120px;">
+                      <img src = "` + img + `" style="width:120px;height:120px;">
                 </div>
             </div>`,
                 dx: -78,
@@ -821,20 +644,24 @@
             }).addTo(map).show();
         }
 
-
+        vectorlayer2.addEventListener('click', function () {
+            if (lastKazCity) {
+                lastKazCity.remove();
+            }
+        });
     }
 
-    var tog = 0;
-    $('#toogleBase').click(function () {
-        if (tog % 2 == 0) {
+    $('.control_layer_select_item').click(function () {
+        $('.control_layer_select_item').toggleClass('select');
+        if (this.id == 'map_shiliang') {
             toggleBaseLayer('vector');
         } else {
             toggleBaseLayer('image');
         }
-        tog++;
     });
 
     $('#route_wrap').click(function () {
+        resetMap();
         map.addLayer(vectorlayer);
         initData();
     });
@@ -865,5 +692,9 @@
 
     $('#control_center_wrap').click(function () {
         resetMap();
+    });
+
+    $('#side_back').click(function () {
+        backFirstPage();
     });
 }

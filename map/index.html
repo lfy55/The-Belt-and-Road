@@ -97,6 +97,13 @@
       <button id='toogleBase'>切换地图</button>
     </div>
     <div id="control_wrap">
+      <div id="control_rigth_wrap">
+        <img src="./images/control/scale.png" id="control_right_scale" alt="">
+        <div id="control_right_select_wrap">
+          <div class="control_layer_select_item" id="map_shiliang">矢量图</div>
+          <div class="control_layer_select_item select" id="map_yingxiang">影像图</div>
+        </div>
+      </div>
       <div id="control_center_wrap">
         <img src="./images/control/control_out.png" alt="" class="hasAnimate" id="control_center_out">
         <!-- <img src="./images/control/control_in.png" alt="" id="control_center_in"> -->
@@ -113,6 +120,17 @@
       <div class="control_item_wrap" id="GDPMessage_wrap">
         <div class="control_item_title">GDP信息展示</div>
       </div>
+    </div>
+
+    <div id='side' style="display:none">
+      <div id='side_btm'>
+        <img id='side_home' src='./images/control/p2.png' />
+        <img id='side_option' src='./images/control/p3.png' />
+        <img id='side_back' src='./images/control/p1.png' />
+      </div>
+    </div>
+
+    <div id='sideWindow' style="display:none">
     </div>
     <div id="noWebGL" style="display:none">
       <div id='description'>The globe of economic complexity dynamically maps out the entire world production of goods to create an economic landscape

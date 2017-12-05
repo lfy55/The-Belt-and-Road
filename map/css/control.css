@@ -19,10 +19,12 @@
   height: 465px;
   transform-origin: center;
   animation-fill-mode: forwards;
+  animation: rotate 10s linear infinite;
+  animation-play-state: paused;
 }
 
 #control_center_out.hasAnimate {
-  animation: rotate 10s linear infinite;
+  animation-play-state: running;
 }
 
 @keyframes rotate {
@@ -98,4 +100,72 @@
   color: #00fee4;
   font-size: 21px;
   top: -40px;
+}
+
+#control_rigth_wrap {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#control_right_select_wrap {
+  margin-left: 10px;
+  width: 100px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.control_layer_select_item {
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  color: rgb(52, 83, 145);
+  padding-left: 30px;
+  background: url("../images/control/map_noSelect.png") left center no-repeat;
+  cursor: pointer;
+}
+
+.control_layer_select_item.select {
+  color: rgb(14, 218, 237);
+  background-image: url("../images/control/map_select.png");
+}
+
+#country_sidebar_wrap {
+  width: 500px;
+  height: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgba(25, 68, 74, 0.741);
+  box-shadow: inset 0px 10px 26.73px 0.27px rgba(0, 255, 240, 0.65);
+}
+
+#side {
+  position: fixed;
+  right: 0;
+  height: 1080px;
+  width: 594px;
+  background-image: url("../images/control/side.png");
+}
+
+#side_btm {
+  position: fixed;
+  bottom: 10px;
+  height: 60px;
+}
+
+#side_btm img {
+  margin-left: 100px;
+}
+
+#sideWindow {
+  position: fixed;
+  left: 80px;
+  bottom: 50px;
+  height: 582px;
+  width: 932px;
+  background-image: url("../images/control/window.png");
 }
