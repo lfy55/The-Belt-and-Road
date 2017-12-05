@@ -153,7 +153,7 @@ function init() {
 
     // table
 
-    for (var i = 0; i < table.length; i += 5) {
+    for (var i = 0; i < countries.length; i += 1) {
 
         var element = document.createElement('div');
         element.id = i;
@@ -175,7 +175,7 @@ function init() {
 
         var number = document.createElement('div');
         number.className = 'number';
-        number.textContent = (i / 5) + 1;
+        number.textContent = i + 1;
         card.appendChild(number);
 
         // var symbol = document.createElement('div');
@@ -192,12 +192,22 @@ function init() {
         flag.width = "24";
         card.appendChild(flag);
         var cname = document.createElement('div');
-        cname.className = 'cname2';
-        cname.innerHTML = '哈萨克斯坦';
+        var _cname = countries[i]["cnName"].trim();
+        cname.className = 'cname1';
+        if (_cname.length > 6)
+            cname.className = 'cname3';
+        else if (_cname.length > 4)
+            cname.className = 'cname2';
+        cname.innerHTML = _cname;
         card.appendChild(cname);
         var ename = document.createElement('div');
+        var _ename = countries[i]["eName"];
         ename.className = 'ename';
-        ename.innerHTML = 'Kazakhstan';
+        // if (_ename.length > 30)
+        //     ename.className = 'ename3';
+        if (_ename.length > 15)
+            ename.className = 'ename2';
+        ename.innerHTML = _ename;
         card.appendChild(ename);
         var attr1 = document.createElement('div');
         attr1.className = 'attr-title1';
@@ -209,11 +219,28 @@ function init() {
         card.appendChild(attr2);
         var val1 = document.createElement('div');
         val1.className = 'attr-value1';
-        val1.innerHTML = '1300万';
+        var _pop = countries[i]["population"];
+        if (_pop > 100000000) {
+            val1.innerHTML = Math.floor(_pop / 100000000) + '亿' + Math.floor(_pop % 100000000 / 10000000) + '千万';
+            if (Math.floor(_pop % 100000000 / 10000000) < 0.1)
+                val1.innerHTML = Math.floor(_pop / 100000000) + '亿';
+        } else if (_pop > 10000000) {
+            val1.innerHTML = parseFloat((_pop / 10000000).toFixed(1)) + '千万';
+        } else if (_pop > 10000) {
+            val1.innerHTML = Math.floor(_pop / 10000) + '万';
+        } else {
+            val1.innerHTML = countries[i]["population"];
+        }
+
         card.appendChild(val1);
         var val2 = document.createElement('div');
         val2.className = 'attr-value2';
-        val2.innerHTML = '哈萨克语';
+        var _lan = countries[i]["language"];
+        if (_lan.indexOf('，') > -1)
+            _lan = _lan.split('，')[0];
+        if (_lan.indexOf('、') > -1)
+            _lan = _lan.split('、')[0];
+        val2.innerHTML = _lan;
         card.appendChild(val2);
         var search = document.createElement('img');
         search.className = 'search-icon';
@@ -294,11 +321,11 @@ function init() {
 
         //
 
-        var object = new THREE.Object3D();
-        object.position.x = (table[i + 3] * 140) - 1330;
-        object.position.y = -(table[i + 4] * 180) + 990;
+        // var object = new THREE.Object3D();
+        // object.position.x = (table[i + 3] * 140) - 1330;
+        // object.position.y = -(table[i + 4] * 180) + 990;
 
-        targets.table.push(object);
+        // targets.table.push(object);
 
     }
 
@@ -360,7 +387,7 @@ function init() {
 
         object.position.x = ((i % 5) * 400) - 800;
         object.position.y = (-(Math.floor(i / 5) % 5) * 400) + 800;
-        object.position.z = (Math.floor(i / 25)) * 1000 - 2000;
+        object.position.z = 2000 - (Math.floor(i / 25)) * 1000;
 
         targets.grid.push(object);
 
@@ -415,7 +442,7 @@ function init() {
     var button = document.getElementById('table');
     button.addEventListener('click', function (event) {
         inControll = true;
-        transform(targets.table, 2000);
+        // transform(targets.table, 2000);
     }, false);
 
     var button = document.getElementById('sphere');
@@ -855,29 +882,59 @@ function helix2Layout() {
 }
 
 function tileLayout() {
-    for (var i = 0; i < objects.length; i++) {
-
+    var index1 = 0,
+        index2 = 0,
+        index3 = 0,
+        index4 = 0;
+    for (var i = 0; i < countries.length; i++) {
         var object = new THREE.Object3D();
-        var area = i % 4;
+        var area = countries[i]['continents'];
 
         switch (area) {
-            case 0:
-                object.position.x = (Math.floor(i / 4 % 9) * 140) - 1400;
-                object.position.y = -(Math.floor(i / 36) * 180) - 200;
+            case '非洲':
+                if (countries[i]['population'] < 4000000 || index1 > 35) {
+                    object.position.x = 100000;
+                    object.position.y = 100000;
+                    break;
+                }
+                object.position.x = (Math.floor(index1 % 9) * 140) - 1400;
+                object.position.y = -(Math.floor(index1 / 9) * 180) - 200;
+                index1++;
                 break;
-            case 1:
-                object.position.x = (Math.floor(i / 4 % 9) * 140) + 200;
-                object.position.y = -(Math.floor(i / 36) * 180) - 200;
+            case '北美洲':
+            case '南美洲':
+                if (countries[i]['population'] < 70000 || index2 > 35) {
+                    object.position.x = 100000;
+                    object.position.y = 100000;
+                    break;
+                }
+                object.position.x = (Math.floor(index2 % 9) * 140) + 200;
+                object.position.y = -(Math.floor(index2 / 9) * 180) - 200;
+                index2++;
                 break;
-            case 2:
-                object.position.x = (Math.floor(i / 4 % 9) * 140) - 1400;
-                object.position.y = -(Math.floor(i / 36) * 180) + 700;
+            case '亚洲':
+                if (countries[i]['population'] < 3000000 || index3 > 35) {
+                    object.position.x = 100000;
+                    object.position.y = 100000;
+                    break;
+                }
+                object.position.x = (Math.floor(index3 % 9) * 140) - 1400;
+                object.position.y = -(Math.floor(index3 / 9) * 180) + 700;
+                index3++;
                 break;
-            case 3:
-                object.position.x = (Math.floor(i / 4 % 9) * 140) + 200;
-                object.position.y = -(Math.floor(i / 36) * 180) + 700;
+            case '欧洲':
+                if (countries[i]['population'] < 1000000 || index4 > 35) {
+                    object.position.x = 100000;
+                    object.position.y = 100000;
+                    break;
+                }
+                object.position.x = (Math.floor(index4 % 9) * 140) + 200;
+                object.position.y = -(Math.floor(index4 / 9) * 180) + 700;
+                index4++;
                 break;
             default:
+                object.position.x = 100000;
+                object.position.y = 100000;
                 break;
         }
         object.position.z = 200;
