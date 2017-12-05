@@ -645,7 +645,7 @@
             }
         };
         var i = 0;
-        worldCollection.features.map(function (f) {
+        worldCollection.features.slice(0, 130).map(function (f) {
             var ctyFeatures = [];
             if (typeof (f.geometry.coordinates[0][0][0]) == 'number') {
                 ctyFeatures.push(new maptalks.MultiLineString(f.geometry.coordinates, countryLineOptions));
@@ -681,33 +681,36 @@
 
     var lastKazCity;
 
-    function initVectorLayer2() {
+    function initVectorLayer2(item) {
         toggleBaseLayer('vector');
         $.getJSON("./scripts/world_polygon.json", function (data) {
             polygonsAll = maptalks.GeoJSON.toGeometry(data);
             polygonsAll.forEach(function (geo) {
                 if (geo.properties.NAME == 'Kazakhstan') {
-                    var coors = geo.getCoordinates();
-                    var newitem = new maptalks.MultiPolygon(coors, {
-                        'symbol': {
-                            lineColor: '#15887a',
-                            lineWidth: 4,
-                            polygonOpacity: 0
-                        },
-                        'shadowBlur': 50,
-                        'shadowColor': '#15887a'
-                    });
-                    newitem.addTo(vectorlayer2);
                     return;
                 }
                 geo.setSymbol({
                     lineColor: '#15887a',
                     lineWidth: 2,
-                    polygonFill: '#444',
+                    polygonFill: '#122926',
                 });
                 vectorlayer2.addGeometry(geo);
             });
         });
+        var coors = item.getCoordinates();
+        item.updateSymbol({
+            polygonOpacity: 0
+        });
+        var newitem = new maptalks.MultiPolygon(coors, {
+            'symbol': {
+                lineColor: '#15887a',
+                lineWidth: 4,
+                polygonOpacity: 0
+            },
+            'shadowBlur': 50,
+            'shadowColor': '#fff'
+        });
+        newitem.addTo(vectorlayer2);
         var i = 0;
         kazCities.forEach(function (c) {
             if (kazTypes[i] == 'city') {
@@ -762,20 +765,27 @@
                     }]
                 }).addTo(vectorlayer2);
             } else if (kazTypes[i] == 'slg') {
-                var m = new maptalks.Marker([71.26, 51.11], {
-                    properties: {
-                        'name': c
-                    },
-                    symbol: {
-                        'markerType': 'ellipse',
-                        'markerFillPatternFile': '../map/images/slg.png',
-                        'markerLineColor': '#fff',
-                        'markerWidth': 50,
-                        'markerHeight': 50,
-                        'markerDx': 0,
-                        'markerDy': 0,
-                    }
-                }).addTo(vectorlayer2);
+                var m = new maptalks.ui.UIMarker(kazCitiesCoords[i], {
+                    'content': `<img src = "../map/images/slg.png" style="width:30px;height:30px;">`,
+                }).addTo(vectorlayer2).show();
+                m.properties = {
+                    'name': c
+                };
+                // var m = new maptalks.Marker([71.26, 51.11], {
+                //     properties: {
+                //         'name': c
+                //     },
+                //     symbol: {
+                //         'markerType': 'ellipse',
+                //         'markerFillPatternFile': '../map/images/slg.png',
+                //         'markerLineColor': '#fff',
+                //         'markerWidth': 30,
+                //         'markerHeight': 30,
+                //         'markerDx': 0,
+                //         'markerDy': 0,
+                //     }
+                // }).addTo(vectorlayer2);
+                handleClick(m);
             }
             m.addEventListener('click', function (e) {
                 handleClick(m);
@@ -789,9 +799,12 @@
                 lastKazCity.remove();
             }
             var coords = marker.getCoordinates();
-            var props = marker.getProperties();
+            var props = marker.properties || marker.getProperties();
             var text = props['name'];
             var img = props['img'] || '../map/images/slg.png';
+            // if(){
+
+            // }
             lastKazCity = new maptalks.ui.UIMarker(coords, {
                 'content': `
             <div>
@@ -799,22 +812,16 @@
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 70px;margin-left: 50px;">
                     <path d="M0 0 L175 0 L209 90" style="stroke: #ff0000;stroke-width:2px;fill-opacity:0"></path>
                 </svg>
-                <div style="width: 112px;height: 112px;    border: solid 3px #fff;    border-radius: 50%;margin: -50px 10px 10px 190px;    ">
-                    <div style="width: 88px;    height: 88px;    border: solid 2px #fff;    border-radius: 50%;    margin: 10px;">
-                        <div style="width: 64px;    height: 64px;    border: solid 2px #fff;    border-radius: 50%;    margin: 10px;">
-                            <div style="width: 40px;    height: 40px;      box-shadow: 0 0 15px #fff;    border-radius: 50%;    margin: 12px;">
-                                <div style="width: 40px;    height: 40px;    border-radius: 50%;overflow:hidden">
-                                    <img src="` + img + `" style="width:50px;height:50px;margin:0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div style="width: 122px;height: 122px; margin: -50px 9px 10px 193px;">
+                      <img src = "../map/images/focus.png" style="width:120px;height:120px;">
                 </div>
             </div>`,
-                dx: -75,
-                dy: -25
+                dx: -78,
+                dy: -22
             }).addTo(map).show();
         }
+
+
     }
 
     var tog = 0;
@@ -854,5 +861,9 @@
                 marker.updateSymbol(symbol);
             });
         });
+    });
+
+    $('#control_center_wrap').click(function () {
+        resetMap();
     });
 }
