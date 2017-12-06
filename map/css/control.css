@@ -68,7 +68,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  background: url("../images/control/route_noSelect.png") center center no-repeat;
+  background: url("../images/control/GDP_noSelect.png") center center no-repeat;
   transform-origin: right top;
   transform: scale(0);
 }
