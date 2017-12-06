@@ -751,10 +751,11 @@
         });
         hideSide();
     });
+    
     $('#side_left').click(function () {
         map.panTo([80.55, 48.19], {
             duration: 1000
         });
     });
-
+    
 }
