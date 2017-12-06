@@ -126,10 +126,11 @@
                     if (geo.properties.NAME == 'Kazakhstan') {
                         item.addEventListener('click', function () {
                             map.removeLayer([vectorlayer, vectorlayer0, clusterLayer]);
-
+                            resetMap();
+                            hideUI1();
                             map.animateTo({
                                 pitch: 30,
-                                center: [80.55, 35.19],
+                                center: [80.55, 48.19],
                                 zoom: 5
                             }, {
                                 duration: 2000,
@@ -436,9 +437,8 @@
     }
 
     function backFirstPage() {
-        $('#control_wrap').fadeIn();
-        $('#side').fadeOut();
-        $('#sideWindow').fadeOut();
+        hideUI2();
+        showUI1();
         map.animateTo({
             pitch: 20,
             center: [66.7903012612708142, 20.976349249268345],
@@ -446,20 +446,22 @@
         }, {
             duration: 1800,
             easing: 'out'
-        });
+        }, function () {});
         map.removeLayer(vectorlayer2);
         $('.maptalks-ui').empty();
         KazGeometry.updateSymbol({
             polygonOpacity: 0.2
         });
-        map.addLayer([vectorlayer, vectorlayer0, clusterLayer]);
+        setTimeout(function () {
+            map.addLayer([vectorlayer, vectorlayer0, clusterLayer]);
+        }, 2000);
     }
 
     function ladderAddtoMap() {
         resetMap();
         ladderLayer = new maptalks.VectorLayer('ladder').addTo(map);
         var i = 0;
-        var colors = ['#66bb6a', '#9ccc65', '#d4e157', '#ffee58', '#ffca28', '#ffa726', '#ff7043'];
+        var colors = ['#ffd54f', '#ffca28', '#ffc107', '#ffb300', '#ffa000', '#ff8f00', '#ff6f00'];
         worldCollection.features.map(function (f) {
             var altitude = Math.floor(Math.random() * 7);
             ladderLayer.addGeometry(new maptalks.MultiPolygon(f.geometry.coordinates, {
@@ -488,7 +490,7 @@
     var lastKazCity;
 
     function initVectorLayer2() {
-        toggleBaseLayer('vector');
+        // toggleBaseLayer('vector');
         map.addLayer(vectorlayer2);
 
         $.getJSON("./scripts/world_polygon.json", function (data) {
@@ -504,9 +506,6 @@
                 });
                 vectorlayer2.addGeometry(geo);
             });
-            $('#control_wrap').fadeOut();
-            $('#side').fadeIn();
-            $('#sideWindow').fadeIn();
         });
         var coors = KazGeometry.getCoordinates();
         KazGeometry.updateSymbol({
@@ -523,6 +522,7 @@
         });
         newitem.addTo(vectorlayer2);
         var i = 0;
+        var arr1 = [];
         kazCities.forEach(function (c) {
             if (kazTypes[i] == 'city') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
@@ -532,21 +532,29 @@
                         'bordercolor': '#02dbef',
                         'color': 'rgba(2,219,240,0.6)'
                     },
-                    symbol: [{
+                    symbol: {
                         'markerFile': '../map/images/city.png',
                         'markerDx': 0,
                         'markerDy': 14,
-                    }, {
+                    }
+                }).addTo(vectorlayer2);
+                arr1.push(m);
+                var m2 = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c,
+                        'img': '../map/images/focus_city.png',
+                        'bordercolor': '#02dbef',
+                        'color': 'rgba(2,219,240,0.6)'
+                    },
+                    symbol: {
                         'textFaceName': 'LiHeiTi',
                         'textName': '{name}',
                         'textSize': 14,
                         'textDy': 30,
                         'textFill': '#02dbef'
-                    }]
+                    }
                 }).addTo(vectorlayer2);
-                setTimeout(function () {
-                    m.flash(400 + i * 10, 500);
-                }, i * 50);
+                m.textMarker = m2;
             } else if (kazTypes[i] == 'prog-ing') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
                     properties: {
@@ -555,21 +563,29 @@
                         'bordercolor': '#ecef02',
                         'color': 'rgba(236,239,2,0.6)'
                     },
-                    symbol: [{
+                    symbol: {
                         'markerFile': '../map/images/prog_ing.png',
                         'markerDx': 0,
                         'markerDy': 14,
-                    }, {
+                    }
+                }).addTo(vectorlayer2);
+                arr1.push(m);
+                var m2 = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c,
+                        'img': '../map/images/focus_city.png',
+                        'bordercolor': '#02dbef',
+                        'color': 'rgba(2,219,240,0.6)'
+                    },
+                    symbol: {
                         'textFaceName': 'LiHeiTi',
                         'textName': '{name}',
                         'textSize': 14,
                         'textDy': 30,
                         'textFill': '#ecef02'
-                    }]
+                    }
                 }).addTo(vectorlayer2);
-                setTimeout(function () {
-                    m.flash(400 + i * 10, 500);
-                }, i * 50);
+                m.textMarker = m2;
             } else if (kazTypes[i] == 'prog-ed') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
                     properties: {
@@ -578,21 +594,29 @@
                         'bordercolor': '#00ff18',
                         'color': 'rgba(0,255,24,0.6)'
                     },
-                    symbol: [{
+                    symbol: {
                         'markerFile': '../map/images/prog_ed.png',
                         'markerDx': 0,
                         'markerDy': 14,
-                    }, {
+                    }
+                }).addTo(vectorlayer2);
+                arr1.push(m);
+                var m2 = new maptalks.Marker(kazCitiesCoords[i], {
+                    properties: {
+                        'name': c,
+                        'img': '../map/images/focus_city.png',
+                        'bordercolor': '#02dbef',
+                        'color': 'rgba(2,219,240,0.6)'
+                    },
+                    symbol: {
                         'textFaceName': 'LiHeiTi',
                         'textName': '{name}',
                         'textSize': 14,
                         'textDy': 30,
                         'textFill': '#00ff18'
-                    }]
+                    }
                 }).addTo(vectorlayer2);
-                setTimeout(function () {
-                    m.flash(400 + i * 10, 500);
-                }, i * 50);
+                m.textMarker = m2;
             } else if (kazTypes[i] == 'slg') {
                 var m = new maptalks.Marker(kazCitiesCoords[i], {
                     properties: {
@@ -609,17 +633,26 @@
                         'markerDy': 15,
                     }]
                 }).addTo(vectorlayer2);
+                m.addEventListener('click', function (e) {
+                    handleClick(e.target);
+                });
             }
+            i++;
+        });
+
+        arr1.forEach(function (m) {
             m.addEventListener('click', function (e) {
                 handleClick(e.target);
             });
-            i++;
+            m.flash(400 + Math.random() * 100, 500);
         });
 
         function handleClick(marker) {
             if (lastKazCity) {
                 lastKazCity.remove();
+                vectorlayer2.addGeometry(lastKazCity.textMarker);
             }
+            vectorlayer2.removeGeometry(marker.textMarker);
             var coords = marker.getCoordinates();
             var props = marker.properties || marker.getProperties();
             var text = props['name'];
@@ -642,13 +675,32 @@
                 dx: -78,
                 dy: -22
             }).addTo(map).show();
+            lastKazCity.textMarker = marker.textMarker;
+            map.panTo(coords.add(-20, -12), {
+                duration: 1800
+            });
+
+            $('#videoContainer').empty();
+            if (bordercolor == '#02dbef') {
+                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
+                    <source src="./videos/cesium.mp4" type="video/mp4">
+                </video>`);
+            } else {
+
+            }
+
+            hideSide();
+            showSideWindow();
         }
 
         vectorlayer2.addEventListener('click', function () {
             if (lastKazCity) {
                 lastKazCity.remove();
+                vectorlayer2.addGeometry(lastKazCity.textMarker);
             }
         });
+        showUI2();
+        showSide();
     }
 
     $('.control_layer_select_item').click(function () {
@@ -690,11 +742,19 @@
         });
     });
 
-    $('#control_center_wrap').click(function () {
-        resetMap();
-    });
-
-    $('#side_back').click(function () {
+    $('#side_home').click(function () {
         backFirstPage();
     });
+    $('#side_back').click(function () {
+        map.panTo(map.getCenter().add(-10, 0), {
+            duration: 1000
+        });
+        hideSide();
+    });
+    $('#side_left').click(function () {
+        map.panTo([80.55, 48.19], {
+            duration: 1000
+        });
+    });
+
 }

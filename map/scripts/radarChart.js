@@ -4,7 +4,7 @@ let radarChart = {
     __chart: null,
     __option: {},
     initChart: function (data) {
-        this.__dom = document.getElementById('chart');
+        this.__dom = document.getElementById('radar_chart');
         this.__chart = echarts.init(this.__dom);
         this.__option = {
             tooltip: {

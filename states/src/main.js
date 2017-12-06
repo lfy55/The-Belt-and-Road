@@ -183,12 +183,12 @@ function init() {
         // symbol.textContent = table[i];
         var geosymbol = document.createElement('img');
         geosymbol.className = 'geosymbol';
-        geosymbol.src = './assets/geos/1.png';
+        geosymbol.src = './assets/geos/' + (i % 8 + 1) + '.png';
         geosymbol.width = "90";
         card.appendChild(geosymbol);
         var flag = document.createElement('img');
         flag.className = 'flag';
-        flag.src = './assets/flags/1.png';
+        flag.src = './assets/flags/' + countries[i]["flag"];
         flag.width = "24";
         card.appendChild(flag);
         var cname = document.createElement('div');
