@@ -19,7 +19,8 @@ let controlCenter = $("#control_center_wrap"),
   controlCenterOut = $("#control_center_out"),
   controlItems = $(".control_item_wrap"),
   route = $("#route_wrap"),
-  side = $("#side"),
+  side = $("#side_wrap"),
+  sideWindow = $("#sideWindow"),
   population = $("#population_wrap"),
   city = $("#city_wrap"),
   GDPMessage = $("#GDPMessage_wrap"),
@@ -70,6 +71,28 @@ function itemControl(start, end, callback) {
   })
 }
 
+function showSide() {
+  side.css('right', '0px')
+  side.animateCss('fadeInRight')
+}
+
+function hideSide() {
+  side.css('right', '-594px')
+  side.animateCss('fadeOutRight')
+  $("#side_left").css('width', "44px")
+}
+
+function showSideWindow() {
+  sideWindow.css('visibility', 'visible')
+  sideWindow.animateCss('fadeInLeft')
+}
+
+function hideSideWindow() {
+  sideWindow.animateCss('fadeOutLeft', function () {
+    sideWindow.css('visibility', 'hidden')
+  })
+}
+
 // 隐藏第一页面的UI
 function hideUI1() {
   // 首先将四周项目收起再将大圆收起
@@ -93,22 +116,23 @@ function hideUI1() {
   }
 }
 
-function showSide() {
-  side.animateCss('fadeInRight')
-  controlCenter.css('visibility', 'visible')
-}
-
-function hideSide() {
-  side.animateCss('fadeOutRight')
-  controlCenter.css('visibility', 'hidden')
-}
-
 // 显示第一页面的UI
 function showUI1() {
   controlCenter.css('visibility', 'visible')
   controlCenter.animateCss('fadeInUp')
   $("#control_rigth_wrap").css('visibility', 'visible')
   $("#control_rigth_wrap").animateCss('fadeInRight')
+}
+
+function showUI2() {
+  side.animateCss('fadeInRight')
+  side.css('visibility', 'visible')
+}
+
+function hideUI2() {
+  side.animateCss('fadeOutRight', function () {
+    side.css('visibility', 'hidden')
+  })
 }
 
 // 切换到矢量图
@@ -132,4 +156,9 @@ map_yingxiang.on('click', function () {
 radarChart.initChart({
   data1: [20, 10, 9, 16, 18],
   data2: [13, 7, 21, 15, 19]
+})
+
+$("#side_left").on('click', function () {
+  showSide()
+  $("#side_left").css('width', "0px")
 })

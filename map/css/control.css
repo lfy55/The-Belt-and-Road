@@ -143,12 +143,33 @@
   box-shadow: inset 0px 10px 26.73px 0.27px rgba(0, 255, 240, 0.65);
 }
 
-#side {
+#side_wrap {
+  right: -594px;
   position: fixed;
+  height: 1080px;
+  width: 638px;
+  visibility: hidden;
+}
+
+#side_left {
+  position: absolute;
+  width: 44px;
+  height: 1080px;
+  left: 0;
+  background: url("../images/control/side_left.png") center center no-repeat;
+  cursor: pointer;
+}
+
+#side_left.hide {
+  width: 0;
+}
+
+#side {
+  position: absolute;
+  top: 0;
   right: 0;
   height: 1080px;
   width: 594px;
-  visibility: hidden;
   background-image: url("../images/control/side.png");
 }
 
@@ -160,6 +181,7 @@
 
 #side_btm img {
   margin-left: 100px;
+  cursor: pointer;
 }
 
 #sideWindow {
@@ -168,6 +190,7 @@
   bottom: 50px;
   height: 582px;
   width: 932px;
+  visibility: hidden;
   background-image: url("../images/control/window.png");
 }
 
@@ -182,7 +205,7 @@
 #linebar_title {
   position: absolute;
   left: 61px;
-  top: 194px;
+  top: 173px;
   font-size: 24px;
   font-family: "LiHeiTi";
   color: rgb(1, 145, 134);
@@ -199,7 +222,7 @@
 #radar_title {
   position: absolute;
   left: 61px;
-  top: 560px;
+  top: 549px;
   font-size: 24px;
   font-family: "LiHeiTi";
   color: rgb(1, 145, 134);
