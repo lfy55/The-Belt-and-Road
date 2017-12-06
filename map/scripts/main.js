@@ -437,6 +437,7 @@
     }
 
     function backFirstPage() {
+        hideUI2();
         showUI1();
         map.animateTo({
             pitch: 20,
@@ -445,13 +446,15 @@
         }, {
             duration: 1800,
             easing: 'out'
-        });
+        }, function () {});
         map.removeLayer(vectorlayer2);
         $('.maptalks-ui').empty();
         KazGeometry.updateSymbol({
             polygonOpacity: 0.2
         });
-        map.addLayer([vectorlayer, vectorlayer0, clusterLayer]);
+        setTimeout(function () {
+            map.addLayer([vectorlayer, vectorlayer0, clusterLayer]);
+        }, 2000);
     }
 
     function ladderAddtoMap() {
@@ -673,9 +676,11 @@
                 dy: -22
             }).addTo(map).show();
             lastKazCity.textMarker = marker.textMarker;
-            map.panTo(coords.add([5, 5]), {
+            map.panTo(coords.add(-20, -12), {
                 duration: 1800
             });
+            hideSide();
+            showSideWindow();
         }
 
         vectorlayer2.addEventListener('click', function () {
@@ -684,6 +689,8 @@
                 vectorlayer2.addGeometry(lastKazCity.textMarker);
             }
         });
+        showUI2();
+        showSide();
     }
 
     $('.control_layer_select_item').click(function () {
@@ -725,7 +732,19 @@
         });
     });
 
-    $('#side_back').click(function () {
+    $('#side_home').click(function () {
         backFirstPage();
     });
+    $('#side_back').click(function () {
+        map.panTo(map.getCenter().add(-10, 0), {
+            duration: 1000
+        });
+        hideSide();
+    });
+     $('#side_left').click(function () {
+        map.panTo(map.getCenter().add(10, 0), {
+            duration: 1000
+        });
+    });
+    
 }
