@@ -72,11 +72,15 @@ function itemControl(start, end, callback) {
 }
 
 function showSide() {
+  $("#side_left").css('width', "0px")
   side.css('right', '0px')
   side.animateCss('fadeInRight')
 }
 
 function hideSide() {
+  if (side.css('right') === '-594px') {
+    return
+  }
   side.css('right', '-594px')
   side.animateCss('fadeOutRight')
   $("#side_left").css('width', "44px")
@@ -157,8 +161,13 @@ radarChart.initChart({
   data1: [20, 10, 9, 16, 18],
   data2: [13, 7, 21, 15, 19]
 })
+// 绘制折现柱状图
+lineChart.initChart({
+  dataLine: [30, 21, 25, 18, 16, 2, 26, 35],
+  dataBar: [12, 16, 31, 15, 12, 37, 17, 15]
+})
+
 
 $("#side_left").on('click', function () {
   showSide()
-  $("#side_left").css('width', "0px")
 })

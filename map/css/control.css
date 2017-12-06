@@ -148,7 +148,7 @@
   position: fixed;
   height: 1080px;
   width: 638px;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 #side_left {
