@@ -11,11 +11,15 @@ $.fn.extend({
   }
 });
 
-const RADIUS = 450, PI = Math.PI, SIN_30 = Math.sin(PI / 6), COS_30 = Math.cos(PI / 6)
+const RADIUS = 450,
+  PI = Math.PI,
+  SIN_30 = Math.sin(PI / 6),
+  COS_30 = Math.cos(PI / 6)
 let controlCenter = $("#control_center_wrap"),
   controlCenterOut = $("#control_center_out"),
   controlItems = $(".control_item_wrap"),
   route = $("#route_wrap"),
+  side = $("#side"),
   population = $("#population_wrap"),
   city = $("#city_wrap"),
   GDPMessage = $("#GDPMessage_wrap"),
@@ -43,7 +47,11 @@ controlItems.on('click', function (e) {
 // 控制屏幕下方圆盘上四个态势选项的函数
 // 0,1表示出现   1,0表示隐藏
 function itemControl(start, end, callback) {
-  $({ value: start }).animate({ value: end }, {
+  $({
+    value: start
+  }).animate({
+    value: end
+  }, {
     step: function (now) {
       controlItems.css('transform', `scale(${now * 0.75})`)
       route.css('left', `-${RADIUS * COS_30 * now}px`)
@@ -85,6 +93,16 @@ function hideUI1() {
   }
 }
 
+function showSide() {
+  side.animateCss('fadeInRight')
+  controlCenter.css('visibility', 'visible')
+}
+
+function hideSide() {
+  side.animateCss('fadeOutRight')
+  controlCenter.css('visibility', 'hidden')
+}
+
 // 显示第一页面的UI
 function showUI1() {
   controlCenter.css('visibility', 'visible')
@@ -108,4 +126,10 @@ map_yingxiang.on('click', function () {
     map_yingxiang.addClass('select')
     // 地图控制
   }
+})
+
+// 绘制雷达图
+radarChart.initChart({
+  data1: [20, 10, 9, 16, 18],
+  data2: [13, 7, 21, 15, 19]
 })

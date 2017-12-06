@@ -148,6 +148,7 @@
   right: 0;
   height: 1080px;
   width: 594px;
+  visibility: hidden;
   background-image: url("../images/control/side.png");
 }
 
@@ -168,4 +169,43 @@
   height: 582px;
   width: 932px;
   background-image: url("../images/control/window.png");
+}
+
+#linebar_wrap {
+  position: absolute;
+  left: 41px;
+  top: 164px;
+  width: 523px;
+  height: 336px;
+}
+
+#linebar_title {
+  position: absolute;
+  left: 61px;
+  top: 194px;
+  font-size: 24px;
+  font-family: "LiHeiTi";
+  color: rgb(1, 145, 134);
+}
+
+#radar_wrap {
+  position: absolute;
+  left: 41px;
+  width: 523px;
+  height: 445px;
+  top: 540px;
+}
+
+#radar_title {
+  position: absolute;
+  left: 61px;
+  top: 560px;
+  font-size: 24px;
+  font-family: "LiHeiTi";
+  color: rgb(1, 145, 134);
+}
+
+.chart_content {
+  width: 100%;
+  height: 100%;
 }

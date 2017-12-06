@@ -9,6 +9,7 @@
   <link rel="stylesheet" type="text/css" href="./lib/mapbox-gl.css">
   <link type="text/css" rel="stylesheet" href="../map/lib/maptalks.css">
   <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="./css/animate.css">
   <link rel="stylesheet" href="./css/control.css">
   <!-- <link href="css/mapDetail.css" rel="stylesheet" type="text/css"> -->
   <link href="css/new.css" rel="stylesheet" type="text/css">
@@ -122,7 +123,15 @@
       </div>
     </div>
 
-    <div id='side' style="display:none">
+    <div id='side'>
+      <div id="linebar_wrap">
+        <div class="chart_content"></div>
+      </div>
+      <div id="linebar_title">GDP增长率</div>
+      <div id="radar_wrap">
+        <div class="chart_content" id="radar_chart"></div>
+      </div>
+      <div id="radar_title">资源比例图</div>
       <div id='side_btm'>
         <img id='side_home' src='./images/control/p2.png' />
         <img id='side_option' src='./images/control/p3.png' />
@@ -153,11 +162,15 @@
   </div>
 
   <script src="scripts/noWebGL.js"></script>
+  <script src="./lib/echarts.js"></script>
+
+  <script src="./scripts/world_polygon.js"></script>
 
   <script type="text/javascript" src="../map/lib/topojson.v1.min.js"></script>
   <script type="text/javascript" src="../map/lib/world.js"></script>
   <script type="text/javascript" src="../map/scripts/world.js"></script>
   <script type="text/javascript" src="../map/scripts/allcities.js"></script>
+  <script src="./scripts/radarChart.js"></script>
   <script src="scripts/control.js"></script>
   <script src="scripts/main.js"></script>
 </body>
