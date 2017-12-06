@@ -11,11 +11,16 @@ $.fn.extend({
   }
 });
 
-const RADIUS = 450, PI = Math.PI, SIN_30 = Math.sin(PI / 6), COS_30 = Math.cos(PI / 6)
+const RADIUS = 450,
+  PI = Math.PI,
+  SIN_30 = Math.sin(PI / 6),
+  COS_30 = Math.cos(PI / 6)
 let controlCenter = $("#control_center_wrap"),
   controlCenterOut = $("#control_center_out"),
   controlItems = $(".control_item_wrap"),
   route = $("#route_wrap"),
+  side = $("#side_wrap"),
+  sideWindow = $("#sideWindow"),
   population = $("#population_wrap"),
   city = $("#city_wrap"),
   GDPMessage = $("#GDPMessage_wrap"),
@@ -43,7 +48,11 @@ controlItems.on('click', function (e) {
 // 控制屏幕下方圆盘上四个态势选项的函数
 // 0,1表示出现   1,0表示隐藏
 function itemControl(start, end, callback) {
-  $({ value: start }).animate({ value: end }, {
+  $({
+    value: start
+  }).animate({
+    value: end
+  }, {
     step: function (now) {
       controlItems.css('transform', `scale(${now * 0.75})`)
       route.css('left', `-${RADIUS * COS_30 * now}px`)
@@ -59,6 +68,32 @@ function itemControl(start, end, callback) {
     done: function () {
       if (callback) callback()
     }
+  })
+}
+
+function showSide() {
+  $("#side_left").css('width', "0px")
+  side.css('right', '0px')
+  side.animateCss('fadeInRight')
+}
+
+function hideSide() {
+  if (side.css('right') === '-594px') {
+    return
+  }
+  side.css('right', '-594px')
+  side.animateCss('fadeOutRight')
+  $("#side_left").css('width', "44px")
+}
+
+function showSideWindow() {
+  sideWindow.css('visibility', 'visible')
+  sideWindow.animateCss('fadeInLeft')
+}
+
+function hideSideWindow() {
+  sideWindow.animateCss('fadeOutLeft', function () {
+    sideWindow.css('visibility', 'hidden')
   })
 }
 
@@ -93,6 +128,17 @@ function showUI1() {
   $("#control_rigth_wrap").animateCss('fadeInRight')
 }
 
+function showUI2() {
+  side.animateCss('fadeInRight')
+  side.css('visibility', 'visible')
+}
+
+function hideUI2() {
+  side.animateCss('fadeOutRight', function () {
+    side.css('visibility', 'hidden')
+  })
+}
+
 // 切换到矢量图
 map_shiliang.on('click', function () {
   if (!map_shiliang.hasClass('select')) {
@@ -108,4 +154,20 @@ map_yingxiang.on('click', function () {
     map_yingxiang.addClass('select')
     // 地图控制
   }
+})
+
+// 绘制雷达图
+radarChart.initChart({
+  data1: [20, 10, 9, 16, 18],
+  data2: [13, 7, 21, 15, 19]
+})
+// 绘制折现柱状图
+lineChart.initChart({
+  dataLine: [30, 21, 25, 18, 16, 2, 26, 35],
+  dataBar: [12, 16, 31, 15, 12, 37, 17, 15]
+})
+
+
+$("#side_left").on('click', function () {
+  showSide()
 })

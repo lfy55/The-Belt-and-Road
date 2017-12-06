@@ -67,8 +67,6 @@
     var countryEntities = [];
     if (WebGLtest()) {
         initMap();
-        // setTimeout(showHighChart1, 5000);
-        // setTimeout(hideHighChart1, 8000);
     } else {
         $("#noWebGL").show();
     }
@@ -93,113 +91,130 @@
                 requestVertexNormals: true
             })
         });
-        viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(60, -35, 11800000.0),
-            orientation: {
-                pitch: Cesium.Math.toRadians(-60)
-            }
-        });
         scene = viewer.scene;
         var first = true;
         scene.camera.moveEnd.addEventListener(function () {
             if (first) {
-                initData();
+                init();
             }
             first = false;
         });
-
-        var promise = Cesium.GeoJsonDataSource.load('./scripts/world.json');
-        promise.then(function (dataSource) {
-            viewer.dataSources.add(dataSource);
-            countryEntities = dataSource.entities.values;
-            for (var i = 0; i < countryEntities.length; i++) {
-                var entity = countryEntities[i];
-                entity.polygon.material = Cesium.Color.fromRgba(0x2036907e);
-                entity.polygon.outline = true;
-                entity.polygon.outlineColor = Cesium.Color.fromBytes(30, 224, 199, 255);
-                entity.polygon.exheight = 0;
-            }
-        }).otherwise(function (error) {
-            window.alert(error);
-        });
-
-        var _slcFeature = [];
-        var handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
-        handler.setInputAction(function (movement) {
-            var pickedFeature = scene.pick(movement.position);
-            if (pickedFeature != undefined) {
-                hidepath();
-                if (_slcFeature.length > 0) {
-                    _slcFeature.forEach(function (ee) {
-                        hideCountry(ee);
-                    });
-                    _slcFeature = [];
-                }
-                _slcFeature = findCountry(pickedFeature.id.name);
-                _slcFeature.forEach(function (ee) {
-                    showCountry(ee);
-                })
-            } else {
-                showpath();
-                if (_slcFeature.length > 0) {
-                    _slcFeature.forEach(function (ee) {
-                        hideCountry(ee);
-                    });
-                    _slcFeature = [];
-                }
-            }
-
-            function showCountry(feature) {
-                var polygon = feature.polygon;
-                polygon.extrudedHeight = new Cesium.CallbackProperty(function () {
-                    polygon.material = Cesium.Color.fromCssColorString('#006363');
-
-                    polygon.outlineWidth = 5;
-                    polygon.exheight += 10000;
-                    if (polygon.exheight > 500000) {
-                        polygon.exheight = 500000;
-                    }
-                    return polygon.exheight;
-                }, false);
-                // viewer.camera.flyTo({
-                //     destination: Cesium.Cartesian3.fromDegrees(60, -35, 11800000.0),
-                //     orientation: {
-                //         pitch: Cesium.Math.toRadians(-60)
-                //     }
-                // });
-            }
-
-            function hideCountry(feature) {
-                var polygon = feature.polygon;
-                polygon.extrudedHeight = new Cesium.CallbackProperty(function () {
-                    polygon.exheight -= 10000;
-                    if (polygon.exheight < 0) {
-                        polygon.exheight = 0;
-                        polygon.material = Cesium.Color.fromRgba(0x2036907e);
-                        polygon.outlineWidth = 1;
-                    }
-                    return polygon.exheight;
-                }, false);
-                viewer.camera.flyTo({
-                    destination: Cesium.Cartesian3.fromDegrees(60, -35, 11800000.0),
-                    orientation: {
-                        pitch: Cesium.Math.toRadians(-60)
-                    }
-                });
-            }
-        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
     }
 
-    function findCountry(name) {
-        var fent = [];
-        for (var i = 0; i < countryEntities.length; i++) {
-            var entity = countryEntities[i];
-            if (entity.name == name) {
-                fent.push(entity);
+    function init() {
+
+        //Set the random number seed for consistent results.
+        Cesium.Math.setRandomNumberSeed(3);
+
+        //Set bounds of our simulation time
+        var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+        var stop = Cesium.JulianDate.addSeconds(start, 360, new Cesium.JulianDate());
+
+        //Make sure viewer is at the desired time.
+        viewer.clock.startTime = start.clone();
+        viewer.clock.stopTime = stop.clone();
+        viewer.clock.currentTime = start.clone();
+        viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; //Loop at the end
+        viewer.clock.multiplier = 10;
+
+        //Set timeline to simulation bounds
+        // viewer.timeline.zoomTo(start, stop);
+
+        //Generate a random circular pattern with varying heights.
+        function computeCirclularFlight(lon, lat, radius) {
+            var property = new Cesium.SampledPositionProperty();
+            for (var i = 0; i <= 360; i += 45) {
+                var radians = Cesium.Math.toRadians(i);
+                var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+                var position = Cesium.Cartesian3.fromDegrees(29.9077 + (0.05 * 1.5 * Math.cos(radians)),
+                    36.2246 + (0.05 * Math.sin(radians)), Cesium.Math.nextRandomNumber() * 500 + 1750);
+                property.addSample(time, position);
+
             }
+            return property;
         }
-        return fent;
+
+        //Compute the entity position property.
+        var position = computeCirclularFlight(-112.110693, 36.0994841, 0.03);
+
+        //Actually create the entity
+        var entity = viewer.entities.add({
+
+            //Set the entity availability to the same interval as the simulation time.
+            availability: new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
+                start: start,
+                stop: stop
+            })]),
+
+            //Use our computed positions
+            position: position,
+
+            //Automatically compute orientation based on position movement.
+            orientation: new Cesium.VelocityOrientationProperty(position),
+
+            //Load the Cesium plane model to represent the entity
+            model: {
+                uri: './SampleData/Cesium_Air.gltf',
+                minimumPixelSize: 64
+            },
+
+            //Show the path as a pink line sampled in 1 second increments.
+            path: {
+                resolution: 1,
+                leadTime: 0,
+                trailTime: 2000,
+                material: new Cesium.PolylineGlowMaterialProperty({
+                    glowPower: 0.1,
+                    color: Cesium.Color.DEEPSKYBLUE
+                }),
+                width: 10
+            }
+        });
+
+        // //Add button to view the path from the top down
+        // Sandcastle.addDefaultToolbarButton('View Top Down', function () {
+        //     viewer.trackedEntity = undefined;
+        //     viewer.zoomTo(viewer.entities, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90)));
+        // });
+
+        // //Add button to view the path from the side
+        // Sandcastle.addToolbarButton('View Side', function () {
+        //     viewer.trackedEntity = undefined;
+        //     viewer.zoomTo(viewer.entities, new Cesium.HeadingPitchRange(Cesium.Math.toRadians(-90), Cesium.Math.toRadians(-15), 7500));
+        // });
+
+        // //Add button to track the entity as it moves
+        // Sandcastle.addToolbarButton('View Aircraft', function () {
+        viewer.trackedEntity = entity;
+        // });
+
+        // //Add a combo box for selecting each interpolation mode.
+        // Sandcastle.addToolbarMenu([{
+        //     text: 'Interpolation: Linear Approximation',
+        //     onselect: function () {
+        //         entity.position.setInterpolationOptions({
+        //             interpolationDegree: 1,
+        //             interpolationAlgorithm: Cesium.LinearApproximation
+        //         });
+        //     }
+        // }, {
+        //     text: 'Interpolation: Lagrange Polynomial Approximation',
+        //     onselect: function () {
+        //         entity.position.setInterpolationOptions({
+        //             interpolationDegree: 5,
+        //             interpolationAlgorithm: Cesium.LagrangePolynomialApproximation
+        //         });
+        //     }
+        // }, {
+        //     text: 'Interpolation: Hermite Polynomial Approximation',
+        //     onselect: function () {
+        entity.position.setInterpolationOptions({
+            interpolationDegree: 2,
+            interpolationAlgorithm: Cesium.HermitePolynomialApproximation
+        });
+        //     }
+        // }], 'interpolationMenu');
+
     }
 
     function initData() {
@@ -211,94 +226,20 @@
         viewer.clock.startTime = start.clone();
         viewer.clock.stopTime = stop.clone();
         viewer.clock.currentTime = start.clone();
-        viewer.clock.clockRange = Cesium.ClockRange.CLAMPED; //Loop at the end
-        viewer.clock.multiplier = 20;
-
-        pathEntities.push(viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[0][0], citiesCoordsLD[0][1], 5000),
-            billboard: {
-                image: './images/slibar.png'
-            }
-        }));
-        pathEntities.push(viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[0][0], citiesCoordsHS[0][1]),
-            billboard: {
-                image: './images/slibar.png'
-            }
-        }));
-        var ldp1 = 1,
-            ldp2 = 1;
-        viewer.clock.onTick.addEventListener(function (t) {
-            var tsLD = positionLD.getValue(t.currentTime);
-            if (tsLD) {
-                var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsLD);
-                var long = cartographicPosition.longitude / Math.PI * 180;
-                if (ldp1 < citiesCoordsLD.length && Math.abs(citiesCoordsLD[ldp1][0] - long) <= 1.0) {
-                    pathEntities.push(viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1], 5000),
-                        billboard: {
-                            image: './images/slibar.png'
-                        }
-                    }));
-                    ldp1++;
-                }
-            } else if (ldp1 == citiesCoordsLD.length - 1) {
-                pathEntities.push(viewer.entities.add({
-                    position: Cesium.Cartesian3.fromDegrees(citiesCoordsLD[ldp1][0], citiesCoordsLD[ldp1][1]),
-                    billboard: {
-                        image: './images/slibar.png'
-                    }
-                }));
-                ldp1++;
-            }
-            var tsHS = positionHS.getValue(t.currentTime);
-
-            if (tsHS) {
-                var cartographicPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(tsHS);
-                var lat = cartographicPosition.latitude / Math.PI * 180;
-                if (ldp2 < citiesCoordsHS.length && Math.abs(citiesCoordsHS[ldp2][1] - lat) <= 0.5) {
-                    pathEntities.push(viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
-                        billboard: {
-                            image: './images/slibar.png'
-                        }
-                    }));
-                    ldp2++;
-                }
-            } else if (ldp2 == citiesCoordsHS.length - 1) {
-                pathEntities.push(viewer.entities.add({
-                    position: Cesium.Cartesian3.fromDegrees(citiesCoordsHS[ldp2][0], citiesCoordsHS[ldp2][1]),
-                    billboard: {
-                        image: './images/slibar.png'
-                    }
-                }));
-                ldp2++;
-            }
-        });
+        viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; //Loop at the end
+        viewer.clock.multiplier = 2;
 
         //Generate a random circular pattern with varying heights.
         function computeCirclularFlightLD() {
-            var property = new Cesium.SampledPositionProperty();
-            for (var i = 0; i < path1.length; i++) {
-                var position = Cesium.Cartesian3.fromDegrees(path1[i][0], path1[i][1], 5000);
-                if (i > 475 && i <= 675) {
-                    var time = Cesium.JulianDate.addSeconds(start, 475 + (i - 475) * 5, new Cesium.JulianDate());
-                } else if (i <= 475) {
-                    var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
-                } else if (i > 675) {
-                    var time = Cesium.JulianDate.addSeconds(start, i + 800, new Cesium.JulianDate());
-                }
-                property.addSample(time, position);
-            }
-            return property;
-        }
 
-        function computeCirclularFlightHS() {
             var property = new Cesium.SampledPositionProperty();
-            for (var i = 0; i < path2.length; i++) {
-                var position = Cesium.Cartesian3.fromDegrees(path2[i][0], path2[i][1]);
+            for (var i = 0; i <= 360; i += 5) {
+                var radians = Cesium.Math.toRadians(i);
                 var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+                var position = Cesium.Cartesian3.fromDegrees(29.9077 + (0.5 * 1.5 * Math.cos(radians)),
+                    36.4246 + (0.5 * Math.sin(radians)), Cesium.Math.nextRandomNumber() * 500 + 1750);
                 property.addSample(time, position);
+
             }
             return property;
         }
@@ -323,12 +264,13 @@
 
             model: {
                 uri: './SampleData/Cesium_Air.gltf',
-                minimumPixelSize: 64
+                minimumPixelSize: 64,
+                // scale:1.0
             },
 
             //Show the path as a pink line sampled in 1 second increments.
             path: {
-                resolution: 5,
+                resolution: 1,
                 leadTime: 0,
                 trailTime: 2000,
                 material: new Cesium.PolylineGlowMaterialProperty({
@@ -342,214 +284,7 @@
             interpolationDegree: 3,
             interpolationAlgorithm: Cesium.HermitePolynomialApproximation
         });
-        var positionHS = computeCirclularFlightHS();
-        var entityHS = viewer.entities.add({
-
-            //Set the entity availability to the same interval as the simulation time.
-            availability: new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
-                start: start,
-                stop: stop
-            })]),
-
-            //Use our computed positions
-            position: positionHS,
-
-            //Automatically compute orientation based on position movement.
-            orientation: new Cesium.VelocityOrientationProperty(positionHS),
-
-            model: {
-                uri: './SampleData/Cesium_Air.gltf',
-                minimumPixelSize: 64
-            },
-
-            //Show the path as a pink line sampled in 1 second increments.
-            path: {
-                resolution: 5,
-                leadTime: 0,
-                trailTime: 2000,
-                material: new Cesium.PolylineGlowMaterialProperty({
-                    glowPower: 0.1,
-                    color: Cesium.Color.DEEPSKYBLUE
-                }),
-                width: 10
-            }
-        });
-        entityHS.position.setInterpolationOptions({
-            interpolationDegree: 3,
-            interpolationAlgorithm: Cesium.HermitePolynomialApproximation
-        });
-
-        pathEntities.push(entityLD);
-        pathEntities.push(entityHS);
-        // viewer.zoomTo(entity, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90)));
-
-        setTimeout(function () {
-            viewer.trackedEntity = entityLD;
-        }, 25000);
-        setTimeout(function () {
-            viewer.trackedEntity = undefined;
-            viewer.camera.flyTo({
-                destination: Cesium.Cartesian3.fromDegrees(60, -35, 11800000.0),
-                orientation: {
-                    pitch: Cesium.Math.toRadians(-60)
-                }
-            });
-        }, 75000);
+        viewer.trackedEntity = entityLD;
     }
 
-    var ctp = {
-        'iran': [
-            [51.25, 33.40],
-            [53.25, 33.40],
-            [55.25, 33.40],
-        ],
-        'afh': [
-            [64.31, 34.34],
-            [66.31, 34.34],
-            [68.31, 34.34],
-        ],
-        'pak': [
-            [67.4, 29.7],
-            [69.4, 29.7],
-            [71.4, 29.7],
-        ],
-        'kaz': [
-            [65.12, 48.48],
-            [67.12, 48.48],
-            [69.12, 48.48]
-        ]
-    };
-
-    var chartColors = ['#00cc00', '#11f0d4', '#1240ab']
-
-    var lastcharts = [];
-
-    function showChart(id) {
-        for (var i = 0; i < lastcharts.length; i++) {
-            viewer.entities.remove(lastcharts[i]);
-        }
-        lastcharts = [];
-        if (!id) return;
-        for (var i = 0; i < 3; i++) {
-            var height = Math.random() % 0.5;
-            var longitude = ctp[id][i][0];
-            var latitude = ctp[id][i][1];
-            var color = Cesium.Color.fromCssColorString(chartColors[i]);
-
-            //WebGL Globe only contains lines, so that's the only graphics we create.
-            var entity = new Cesium.Entity({
-                position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 500000 + height * 3000000),
-                cylinder: {
-                    length: 2 * (500000 + height * 3000000),
-                    topRadius: 60000.0,
-                    bottomRadius: 60000.0,
-                    material: new Cesium.ColorMaterialProperty(color),
-                    outline: false,
-                }
-            });
-            viewer.entities.add(entity);
-            lastcharts.push(entity);
-        }
-    }
-
-    window.showHighChart1  = function showHighChart1() {
-        var i = 0;
-        hideHighChart1();
-        chartCoords.forEach(function (chartCoord) {
-            chartEntities.push(viewer.entities.add({
-                rectangle: {
-                    coordinates: Cesium.Rectangle.fromDegrees(chartCoord[0] - 1.0, chartCoord[1] - 1.0,
-                        chartCoord[0] + 1.0, chartCoord[1] + 1.0),
-                    extrudedHeight: chartDatas[i] * 200000.0,
-                    outline: false,
-                    material: Cesium.Color.fromRandom({
-                        alpha: 1.0
-                    })
-                }
-            }));
-            i++;
-        });
-    }
-
-    window.hideHighChart1  = function hideHighChart1() {
-        chartEntities.forEach(function (e) {
-            viewer.entities.remove(e);
-        })
-        chartEntities = [];
-    }
-
-    window.showHighChart2  = function showHighChart2() {
-        var ents = [];
-        var i = 1;
-        ['Canada', 'Iraq', 'Saudi Arabia', 'Iran', 'Venezuela'].forEach(function (cty) {
-            var arr = findCountry(cty);
-            arr.forEach(function (a) {
-                ents.push(a);
-                a.colorindex = i;          
-            });
-            i++;
-        });
-        ents.forEach(function (entity) {
-            entity.polygon.material = new Cesium.ImageMaterialProperty({
-                image: './images/hot' + entity.colorindex + '.png',
-                transparent: true
-            });
-        });
-    }
-
-    window.hideHighChart2  = function hideHighChart2() {
-        var ents = [];
-        var i = 1;
-        ['Canada', 'Iraq', 'Saudi Arabia', 'Iran', 'Venezuela'].forEach(function (cty) {
-            var arr = findCountry(cty);
-            arr.forEach(function (a) {
-                ents.push(a);
-                a.colorindex = i;
-            });
-            i++;
-        });
-        ents.forEach(function (entity) {
-            entity.polygon.material = Cesium.Color.fromRgba(0x2036907e);
-        });
-    }
-
-    window.showHighChart3  = function showHighChart3() {
-        var i = 0;
-        hideHighChart3();
-        chartCoords2.forEach(function (chartCoord) {
-            chartEntities2.push(viewer.entities.add({
-                rectangle: {
-                    coordinates: Cesium.Rectangle.fromDegrees(chartCoord[0] - 1.0, chartCoord[1] - 1.0,
-                        chartCoord[0] + 1.0, chartCoord[1] + 1.0),
-                    extrudedHeight: chartDatas2[i] * 200000.0,
-                    outline: false,
-                    material: Cesium.Color.fromRandom({
-                        alpha: 1.0
-                    })
-                }
-            }));
-            i++;
-        });
-    }
-
-    window.hideHighChart3  = function hideHighChart3() {
-        chartEntities2.forEach(function (e) {
-            viewer.entities.remove(e);
-        })
-        chartEntities2 = [];
-    }
-
-    function hidepath() {
-        for (var i = 0; i < pathEntities.length; i++) {
-            pathEntities[i].show = false;
-        }
-    }
-
-    function showpath() {
-        setTimeout(function () {
-            for (var i = 0; i < pathEntities.length; i++) {
-                pathEntities[i].show = true;
-            }
-        }, 1500);
-    }
 }
