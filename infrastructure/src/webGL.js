@@ -3216,7 +3216,7 @@ window.initWebGL = function () {
 			}
 
 			// handle if this is video
-			if (false && e.video && !IDR.isSmallScreenMobile && !IDR.isIE11) {
+			if (e.video && !IDR.isSmallScreenMobile && !IDR.isIE11) {
 				//console.log("video texture");
 				if (viewScreen3.material.uniforms) {
 					viewScreen3.material.uniforms["opacity"].value = 0;

@@ -4,6 +4,16 @@ window.init = function(){
 	var queryParams = $.getQueryParameters();
 	//console.log(queryParams)
 
+	// Add in any videos we need to pre-set for content sections
+	for(i=0;i < IDR.events.length;i++){
+		var e =IDR.events[i];
+		console.log(e);
+		if(e.video){
+			$("#video_holder").append(
+		    '<video id="video_'+e.id+'"width="1024" height="512" preload="auto" loop ><source src="'+e.video+'" type="video/mp4"></source></video>');
+		}
+	}
+
 	//addRandomXs();
     
     initWebGL(); 
