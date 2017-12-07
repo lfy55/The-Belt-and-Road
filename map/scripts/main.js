@@ -453,14 +453,17 @@
         var addData = [];
         allHeatData.forEach(function (data) {
             addData.push(data);
-            for (var i = 0; i < 1500; i++) {
-                addData.push([data[0] + 0.01 * i * Math.random(), data[1], Math.random()]);
+            for (var i = 0; i < 1200; i++) {
+                addData.push([data[0], data[1], Math.random()]);
             }
-            for (var i = 0; i < 1500; i++) {
-                addData.push([data[0], data[1] - 0.01 * i * Math.random(), Math.random()]);
+            for (var i = 0; i < 1200; i++) {
+                addData.push([data[0], data[1], Math.random()]);
             }
         });
         heatLayer = new maptalks.HeatLayer('heat', addData).addTo(map);
+        heatLayer.config({
+            'blur': 12,
+        });
     }
 
     function backFirstPage() {
