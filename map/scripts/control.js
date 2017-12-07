@@ -89,13 +89,14 @@ function hideSide() {
 
 function showSideWindow() {
   sideWindow.css('visibility', 'visible')
-  sideWindow.animateCss('fadeInLeft')
+  // sideWindow.animateCss('fadeInLeft')
 }
 
 function hideSideWindow() {
-  sideWindow.animateCss('fadeOutLeft', function () {
-    sideWindow.css('visibility', 'hidden')
-  })
+  // sideWindow.animateCss('fadeOutLeft', function () {
+  //   sideWindow.css('visibility', 'hidden')
+  // })
+  sideWindow.css('visibility', 'hidden')
 }
 
 // 隐藏第一页面的UI

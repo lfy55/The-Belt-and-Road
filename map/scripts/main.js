@@ -194,8 +194,8 @@
             setInterval(function () {
                 mm.animate({
                     'symbol': {
-                        'markerWidth': 40,
-                        'markerHeight': 40
+                        'markerWidth': 20,
+                        'markerHeight': 20
                     }
                 }, {
                     'duration': 1800
@@ -223,15 +223,15 @@
                     property: 'count',
                     type: 'interval',
                     stops: [
-                        [0, 'rgb(135, 196, 240)'],
+                        [0, 'rgb(255, 255, 255)'],
                         [9, '#1bbc9b'],
-                        [99, 'rgb(216, 115, 149)']
+                        [99, 'rgb(255, 12, 12)']
                     ]
                 },
                 'markerFillOpacity': 0.7,
                 'markerLineOpacity': 1,
                 'markerLineWidth': 3,
-                'markerLineColor': '#fff',
+                'markerLineColor': '#f00',
                 'markerWidth': {
                     property: 'count',
                     type: 'interval',
@@ -259,7 +259,7 @@
         map = new maptalks.Map('mapContainer', {
             center: [66.7903012612708142, 20.976349249268345],
             zoom: 4.0,
-            maxZoom: 8.0,
+            maxZoom: 18.0,
             minZoom: 4.0,
             layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, vectorlayer],
             pitch: 20
@@ -703,27 +703,61 @@
                 dy: -22
             }).addTo(map).show();
             lastKazCity.textMarker = marker.textMarker;
-            map.panTo(coords.add(-20, -12), {
-                duration: 1800
-            });
+            // map.panTo(coords.add(-20, -12), {
+            //     duration: 1800
+            // });
 
-            $('#videoContainer').empty();
-            if (bordercolor == '#02dbef') {
-                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
-                    <source src="./videos/cesium.mp4" type="video/mp4">
-                </video>`);
-            } else if (bordercolor == '#ecef02') {
-                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
-                    <source src="./videos/model.mp4" type="video/mp4">
-                </video>`);
-            } else if (bordercolor == '#ff0000') {
-                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
-                    <source src="./videos/spqd.mp4" type="video/mp4">
-                </video>`);
-            }
+            // map.animateTo({
+            //     pitch: 30,
+            //     center: coords,
+            //     zoom: 16
+            // }, {
+            //     duration: 10000,
+            //     easing: 'out'
+            // });
+            map.panTo(coords, {
+                duration: 500
+            });
+            setTimeout(function () {
+                var iii = setInterval(function () {
+                    if (map.getZoom() == 18) {
+                        clearInterval(iii);
+                        return;
+                    }
+                    map.zoomIn();
+                }, 600);
+            }, 500);
 
             hideSide();
-            showSideWindow();
+            setTimeout(function () {
+                showSideWindow();
+                $('#videoContainer').empty();
+                if (bordercolor == '#02dbef') {
+                    $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay>
+                            <source src="./videos/cesium.mp4" type="video/mp4">
+                        </video>`);
+                } else if (bordercolor == '#ecef02') {
+                    $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay>
+                            <source src="./videos/model.mp4" type="video/mp4">
+                        </video>`);
+                } else if (bordercolor == '#ff0000') {
+                    $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay>
+                            <source src="./videos/spqd.mp4" type="video/mp4">
+                        </video>`);
+                }
+                var vid = document.getElementsByTagName("video")[0];
+                vid.onended = function () {
+                    hideSideWindow();
+                    map.animateTo({
+                        pitch: 30,
+                        center: coords,
+                        zoom: 5
+                    }, {
+                        duration: 10000,
+                        easing: 'out'
+                    });
+                };
+            }, 10000);
         }
 
         vectorlayer2.addEventListener('click', function () {
