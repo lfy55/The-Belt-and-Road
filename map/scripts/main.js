@@ -679,6 +679,22 @@
             map.panTo(coords.add(-20, -12), {
                 duration: 1800
             });
+
+            $('#videoContainer').empty();
+            if (bordercolor == '#02dbef') {
+                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
+                    <source src="./videos/cesium.mp4" type="video/mp4">
+                </video>`);
+            } else if (bordercolor == '#ecef02') {
+                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
+                    <source src="./videos/model.mp4" type="video/mp4">
+                </video>`);
+            } else if (bordercolor == '#ff0000') {
+                $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay loop>
+                    <source src="./videos/spqd.mp4" type="video/mp4">
+                </video>`);
+            }
+
             hideSide();
             showSideWindow();
         }
@@ -741,10 +757,11 @@
         });
         hideSide();
     });
-     $('#side_left').click(function () {
-        map.panTo(map.getCenter().add(10, 0), {
+
+    $('#side_left').click(function () {
+        map.panTo([80.55, 48.19], {
             duration: 1000
         });
     });
-    
+
 }

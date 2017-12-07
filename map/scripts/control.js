@@ -73,6 +73,7 @@ function itemControl(start, end, callback) {
 
 function showSide() {
   $("#side_left").css('width', "0px")
+  hideSideWindow();
   side.css('right', '0px')
   side.animateCss('fadeInRight')
 }

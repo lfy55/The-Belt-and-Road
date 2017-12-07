@@ -68,7 +68,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  background: url("../images/control/route_noSelect.png") center center no-repeat;
+  background: url("../images/control/GDP_noSelect.png") center center no-repeat;
   transform-origin: right top;
   transform: scale(0);
 }
@@ -148,7 +148,7 @@
   position: fixed;
   height: 1080px;
   width: 638px;
-  /* visibility: hidden; */
+  visibility: hidden;
 }
 
 #side_left {
@@ -162,6 +162,15 @@
 
 #side_left.hide {
   width: 0;
+}
+
+#side_top {
+  position: absolute;
+  left: 43px;
+  top: 38px;
+  width: 520px;
+  height: 88px;
+  background: url("../images/control/sidetop.png") center center no-repeat;
 }
 
 #side {
@@ -231,4 +240,12 @@
 .chart_content {
   width: 100%;
   height: 100%;
+}
+
+#videoContainer {
+  width: 863px;
+  height: 505px;
+  margin-left: 36px;
+  margin-top: 53px;
+  background: black;
 }
