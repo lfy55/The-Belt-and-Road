@@ -174,17 +174,44 @@
             var marker = new maptalks.Marker(k, {
                 'symbol': {
                     'markerType': 'ellipse',
-                    'markerFill': 'rgb(135,196,240)',
-                    'markerFillOpacity': 1,
-                    'markerLineColor': '#34495e',
-                    'markerLineWidth': 1,
-                    'markerWidth': 10,
-                    'markerHeight': 10,
-                    'markerDx': 0,
-                    'markerDy': 0,
+                    'markerFill': {
+                        'type': 'radial',
+                        'colorStops': [
+                            [0.00, 'rgba(245,12,12,0.2)'],
+                            [0.50, 'rgba(245,12,12,1)'],
+                            [1.00, 'rgba(255,255,255,1)']
+                        ]
+                    },
+                    'markerLineWidth': 0,
+                    'markerWidth': 20,
+                    'markerHeight': 20
                 }
             });
+            // marker.flash(200, 500);
             allSDMarkers.push(marker);
+        });
+        allSDMarkers.forEach(function (mm) {
+            setInterval(function () {
+                mm.animate({
+                    'symbol': {
+                        'markerWidth': 40,
+                        'markerHeight': 40
+                    }
+                }, {
+                    'duration': 1800
+                }, function (frame) {
+                    if (frame.state.playState == 'finished') {
+                        mm.animate({
+                            'symbol': {
+                                'markerWidth': 0,
+                                'markerHeight': 0
+                            }
+                        }, {
+                            'duration': 1800
+                        });
+                    }
+                });
+            }, 4000);
         });
         clusterLayer = new maptalks.ClusterLayer('cluster', allSDMarkers, {
             'noClusterWithOneMarker': true,
