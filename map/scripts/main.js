@@ -55,7 +55,7 @@
         [71.30847, 44.893521],
         [77.857907, 44.420788],
         [66.179648, 48.641949],
-        [71.26, 51.11]
+        [71.464757, 51.14244]
     ];
 
     var symbol = [{
@@ -453,11 +453,11 @@
         var addData = [];
         allHeatData.forEach(function (data) {
             addData.push(data);
-            for (var i = 0; i < 4; i++) {
-                addData.push([data[0] + 0.001 * i, data[1], Math.random()]);
+            for (var i = 0; i < 1500; i++) {
+                addData.push([data[0] + 0.01 * i * Math.random(), data[1], Math.random()]);
             }
-            for (var i = 0; i < 4; i++) {
-                addData.push([data[0], data[1] - 0.001 * i, Math.random()]);
+            for (var i = 0; i < 1500; i++) {
+                addData.push([data[0], data[1] - 0.01 * i * Math.random(), Math.random()]);
             }
         });
         heatLayer = new maptalks.HeatLayer('heat', addData).addTo(map);
