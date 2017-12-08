@@ -405,10 +405,29 @@
       clc = clc + inteLD[i];
       anim1(i, clc);
     }
+
     clc = 0;
     for (var i = 0; i < inteHS.length - 1; i++) {
       clc = clc + inteHS[i];
       anim2(i, clc);
+    }
+
+    function heatAddtoMap() {
+      resetMap();
+      var addData = [];
+      allHeatData.forEach(function (data) {
+        addData.push(data);
+        for (var i = 0; i < 1200; i++) {
+          addData.push([data[0], data[1], Math.random()]);
+        }
+        for (var i = 0; i < 1200; i++) {
+          addData.push([data[0], data[1], Math.random()]);
+        }
+      });
+      heatLayer = new maptalks.HeatLayer('heat', addData).addTo(map);
+      heatLayer.config({
+        'blur': 12,
+      });
     }
 
     function anim1(rj, clc) {
