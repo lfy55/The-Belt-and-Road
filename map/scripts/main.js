@@ -52,10 +52,20 @@
     [65.053389, 52.385164],
     [48.606205, 48.118782],
     [56.360838, 47.750121],
+<<<<<<< HEAD
     [71.30847, 44.893521],
     [77.857907, 44.420788],
     [66.179648, 48.641949],
     [71.26, 51.11]
+=======
+    [
+      73.5679117807407,
+      45.754579312746785
+    ],
+    [77.857907, 44.420788],
+    [66.179648, 48.641949],
+    [71.464757, 51.14244]
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
   ];
 
   var symbol = [{
@@ -78,10 +88,17 @@
 
   if (WebGLtest()) {
     initMap();
+<<<<<<< HEAD
     var arr = [];
     map.addEventListener('click', function (e) {
       arr.push([e.coordinate.x, e.coordinate.y, Math.random()])
     })
+=======
+    // var arr = [];
+    // map.addEventListener('click', function (e) {
+    //   arr.push([e.coordinate.x, e.coordinate.y, Math.random()])
+    // })
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
     $('.mapboxgl-control-container').hide();
   } else {
     $("#noWebGL").show();
@@ -174,6 +191,7 @@
       var marker = new maptalks.Marker(k, {
         'symbol': {
           'markerType': 'ellipse',
+<<<<<<< HEAD
           'markerFill': 'rgb(135,196,240)',
           'markerFillOpacity': 1,
           'markerLineColor': '#34495e',
@@ -186,6 +204,47 @@
       });
       allSDMarkers.push(marker);
     });
+=======
+          'markerFill': {
+            'type': 'radial',
+            'colorStops': [
+              [0.00, 'rgba(245,12,12,0.2)'],
+              [0.50, 'rgba(245,12,12,1)'],
+              [1.00, 'rgba(255,255,255,1)']
+            ]
+          },
+          'markerLineWidth': 0,
+          'markerWidth': 20,
+          'markerHeight': 20
+        }
+      });
+      // marker.flash(200, 500);
+      allSDMarkers.push(marker);
+    });
+    allSDMarkers.forEach(function (mm) {
+      setInterval(function () {
+        mm.animate({
+          'symbol': {
+            'markerWidth': 20,
+            'markerHeight': 20
+          }
+        }, {
+          'duration': 1800
+        }, function (frame) {
+          if (frame.state.playState == 'finished') {
+            mm.animate({
+              'symbol': {
+                'markerWidth': 0,
+                'markerHeight': 0
+              }
+            }, {
+              'duration': 1800
+            });
+          }
+        });
+      }, 4000);
+    });
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
     clusterLayer = new maptalks.ClusterLayer('cluster', allSDMarkers, {
       'noClusterWithOneMarker': true,
       'maxClusterRadius': 30,
@@ -196,15 +255,25 @@
           property: 'count',
           type: 'interval',
           stops: [
+<<<<<<< HEAD
             [0, 'rgb(135, 196, 240)'],
             [9, '#1bbc9b'],
             [99, 'rgb(216, 115, 149)']
+=======
+            [0, 'rgb(255, 255, 255)'],
+            [9, '#1bbc9b'],
+            [99, 'rgb(255, 12, 12)']
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
           ]
         },
         'markerFillOpacity': 0.7,
         'markerLineOpacity': 1,
         'markerLineWidth': 3,
+<<<<<<< HEAD
         'markerLineColor': '#fff',
+=======
+        'markerLineColor': '#f00',
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
         'markerWidth': {
           property: 'count',
           type: 'interval',
@@ -232,7 +301,11 @@
     map = new maptalks.Map('mapContainer', {
       center: [66.7903012612708142, 20.976349249268345],
       zoom: 4.0,
+<<<<<<< HEAD
       maxZoom: 8.0,
+=======
+      maxZoom: 18.0,
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
       minZoom: 4.0,
       layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, vectorlayer],
       pitch: 20
@@ -375,6 +448,7 @@
       clc = clc + inteLD[i];
       anim1(i, clc);
     }
+
     clc = 0;
     for (var i = 0; i < inteHS.length - 1; i++) {
       clc = clc + inteHS[i];
@@ -426,6 +500,7 @@
     var addData = [];
     allHeatData.forEach(function (data) {
       addData.push(data);
+<<<<<<< HEAD
       for (var i = 0; i < 4; i++) {
         addData.push([data[0] + 0.001 * i, data[1], Math.random()]);
       }
@@ -434,6 +509,19 @@
       }
     });
     heatLayer = new maptalks.HeatLayer('heat', addData).addTo(map);
+=======
+      for (var i = 0; i < 1200; i++) {
+        addData.push([data[0], data[1], Math.random()]);
+      }
+      for (var i = 0; i < 1200; i++) {
+        addData.push([data[0], data[1], Math.random()]);
+      }
+    });
+    heatLayer = new maptalks.HeatLayer('heat', addData).addTo(map);
+    heatLayer.config({
+      'blur': 12,
+    });
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
   }
 
   function backFirstPage() {
@@ -463,11 +551,15 @@
     var i = 0;
     var colors = ['#ffd54f', '#ffca28', '#ffc107', '#ffb300', '#ffa000', '#ff8f00', '#ff6f00'];
     worldCollection.features.map(function (f) {
+<<<<<<< HEAD
 
       var altitude = Math.floor(Math.random() * 7);
       if (f.properties.name == 'China') {
         altitude = 6;
       }
+=======
+      var altitude = Math.floor(Math.random() * 7);
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
       ladderLayer.addGeometry(new maptalks.MultiPolygon(f.geometry.coordinates, {
         symbol: {
           lineWidth: 2,
@@ -482,6 +574,7 @@
     if (vectorlayer) map.removeLayer(vectorlayer);
     if (heatLayer) map.removeLayer(heatLayer);
     if (ladderLayer) map.removeLayer(ladderLayer);
+<<<<<<< HEAD
 
     markers.forEach(function (marker) {
       if (marker.player) {
@@ -497,6 +590,23 @@
     // toggleBaseLayer('vector');
     map.addLayer(vectorlayer2);
 
+=======
+
+    markers.forEach(function (marker) {
+      if (marker.player) {
+        marker.player.finish();
+      }
+    });
+    map.setPitch(20);
+  }
+
+  var lastKazCity;
+
+  function initVectorLayer2() {
+    // toggleBaseLayer('vector');
+    map.addLayer(vectorlayer2);
+
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
     $.getJSON("./scripts/world_polygon.json", function (data) {
       polygonsAll = maptalks.GeoJSON.toGeometry(data);
       polygonsAll.forEach(function (geo) {
@@ -680,6 +790,7 @@
         dy: -22
       }).addTo(map).show();
       lastKazCity.textMarker = marker.textMarker;
+<<<<<<< HEAD
       map.panTo(coords.add(-20, -12), {
         duration: 1800
       });
@@ -701,6 +812,63 @@
 
       hideSide();
       showSideWindow();
+=======
+      // map.panTo(coords.add(-20, -12), {
+      //     duration: 1800
+      // });
+
+      // map.animateTo({
+      //     pitch: 30,
+      //     center: coords,
+      //     zoom: 16
+      // }, {
+      //     duration: 10000,
+      //     easing: 'out'
+      // });
+      map.panTo(coords, {
+        duration: 500
+      });
+      setTimeout(function () {
+        var iii = setInterval(function () {
+          if (map.getZoom() == 18) {
+            clearInterval(iii);
+            return;
+          }
+          map.zoomIn();
+        }, 600);
+      }, 500);
+
+      hideSide();
+      setTimeout(function () {
+        showSideWindow();
+        $('#videoContainer').empty();
+        if (bordercolor == '#02dbef') {
+          $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay>
+                            <source src="./videos/cesium.mp4" type="video/mp4">
+                        </video>`);
+        } else if (bordercolor == '#ecef02') {
+          $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay>
+                            <source src="./videos/model.mp4" type="video/mp4">
+                        </video>`);
+        } else if (bordercolor == '#ff0000') {
+          $('#videoContainer').append(`<video style="width: 100%;height: 100%;" autoplay>
+                            <source src="./videos/spqd.mp4" type="video/mp4">
+                        </video>`);
+        }
+        var vid = document.getElementsByTagName("video")[0];
+        vid.onended = function () {
+          hideSideWindow();
+          map.animateTo({
+            pitch: 30,
+            center: coords,
+            zoom: 5
+          }, {
+            duration: 10000,
+            easing: 'out'
+          });
+        };
+      }, 10000);
+>>>>>>> 5187f5123d6e82f6ec8a1a507c7a6a50562b0cc3
     }
 
     vectorlayer2.addEventListener('click', function () {

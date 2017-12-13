@@ -195,12 +195,16 @@
 
 #sideWindow {
   position: fixed;
-  left: 80px;
+  /*left: 80px;
   bottom: 50px;
   height: 582px;
-  width: 932px;
+  width: 932px;*/
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
   visibility: hidden;
-  background-image: url("../images/control/window.png");
+  /*background-image: url("../images/control/window.png");*/
 }
 
 #linebar_wrap {
@@ -243,9 +247,14 @@
 }
 
 #videoContainer {
-  width: 863px;
+  /*width: 863px;
   height: 505px;
   margin-left: 36px;
-  margin-top: 53px;
+  margin-top: 53px;*/
   background: black;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
 }
