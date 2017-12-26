@@ -174,7 +174,7 @@
   margin-top: 20px;
   width: 100%;
   font-size: 18px;
-  text-indent: 25px;
+  /* text-indent: 25px; */
   height: calc(100% - 220px);
 }
 

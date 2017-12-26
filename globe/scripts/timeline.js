@@ -236,7 +236,7 @@ function initTimeline() {
 
       //更新折线图
       let lineChartDataLength = nowYear - 2002 + 1;
-      let lineChartDataShow = lineData.splice(0, lineChartDataLength)
+      let lineChartDataShow = lineData.slice(0, lineChartDataLength)
 
       lineChart.upDateChart({
         dataY: lineChartDataShow

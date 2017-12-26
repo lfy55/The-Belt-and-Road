@@ -23,10 +23,10 @@
 
 #contrast_wrap {
   position: fixed;
-  left: 579px;
-  top: 287px;
-  width: 997px;
-  height: 503px;
+  left: 210px;
+  top: 90px;
+  width: 1500px;
+  height: 900px;
   background: #113e3e;
   border-radius: 10px;
   visibility: hidden;
@@ -166,7 +166,7 @@ img.contrast_legendImg {
 #contrast_chart_wrap {
   width: calc(100% - 100px);
   margin-left: 50px;
-  height: 170px;
+  height: 550px;
 }
 
 #contrast_chart {
