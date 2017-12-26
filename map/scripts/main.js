@@ -127,18 +127,19 @@
               map.removeLayer([vectorlayer, vectorlayer0, clusterLayer]);
               resetMap();
               hideUI1();
-              map.animateTo({
-                pitch: 30,
-                center: [80.55, 48.19],
-                zoom: 5
-              }, {
-                duration: 2000,
-                easing: 'out'
-              }, function (frame) {
-                if (frame.state.playState === 'finished') {
-                  initVectorLayer2();
-                }
+              map.panTo(new maptalks.Coordinate([80.55, 48.19]), {
+                duration: 1000
               });
+              setTimeout(function () {
+                var iii = setInterval(function () {
+                  if (map.getZoom() == 5) {
+                    clearInterval(iii);
+                    initVectorLayer2();
+                    return;
+                  }
+                  map.zoomIn();
+                }, 600);
+              }, 1000);
             });
             KazGeometry = item;
           }
@@ -162,10 +163,21 @@
         'style': 'mapbox://styles/wangjue1199/cjanogmb0esol2qmfage0f1wl'
       }
     });
-    vectorlayer0 = new maptalks.VectorLayer('vector0');
-    vectorlayer = new maptalks.VectorLayer('vector1');
-    vectorlayer2 = new maptalks.VectorLayer('vector2');
-
+    vectorlayer0 = new maptalks.VectorLayer('vector0', {
+      forceRenderOnMoving: true,
+      forceRenderOnRotating: true,
+      forceRenderOnZooming: true
+    });
+    vectorlayer = new maptalks.VectorLayer('vector1', {
+      forceRenderOnMoving: true,
+      forceRenderOnRotating: true,
+      forceRenderOnZooming: true
+    });
+    vectorlayer2 = new maptalks.VectorLayer('vector2', {
+      forceRenderOnMoving: true,
+      forceRenderOnRotating: true,
+      forceRenderOnZooming: true
+    });
     // vecBaseLayer.addGeometry(polygons);
 
     var allSDMarkers = [];
