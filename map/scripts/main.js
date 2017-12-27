@@ -1,6 +1,6 @@
 ﻿window.onload = function () {
   var map;
-  var imgBaseLayer, vecBaseLayer, clusterLayer;
+  var imgBaseLayer, vecBaseLayer, clusterLayer, clusterLayer2;
   var vectorlayer0, vectorlayer, vectorlayer2;
   var heatLayer, ladderLayer;
   var markers = [];
@@ -124,7 +124,7 @@
           });
           if (geo.properties.NAME == 'Kazakhstan') {
             item.addEventListener('click', function () {
-              map.removeLayer([vectorlayer, vectorlayer0, clusterLayer]);
+              map.removeLayer([vectorlayer, vectorlayer0, clusterLayer, clusterLayer2]);
               resetMap();
               hideUI1();
               map.panTo(new maptalks.Coordinate([80.55, 48.19]), {
@@ -179,100 +179,134 @@
       forceRenderOnZooming: true
     });
     // vecBaseLayer.addGeometry(polygons);
-
     var allSDMarkers = [];
+
     Object.values(allSDs).forEach(function (k) {
-      var marker = new maptalks.Marker(k, {
-        'symbol': {
-          'markerType': 'ellipse',
-          'markerFill': {
-            'type': 'radial',
-            'colorStops': [
-              [0.00, 'rgba(245,12,12,0.2)'],
-              [0.50, 'rgba(245,12,12,1)'],
-              [1.00, 'rgba(255,255,255,1)']
-            ]
-          },
-          'markerLineWidth': 0,
-          'markerWidth': 20,
-          'markerHeight': 20
-        }
-      });
-      // marker.flash(200, 500);
+      var marker = new maptalks.Marker(k);
+      marker.setProperties({
+        mag: Math.random()
+      })
       allSDMarkers.push(marker);
     });
-    allSDMarkers.forEach(function (mm) {
-      setInterval(function () {
-        mm.animate({
-          'symbol': {
-            'markerWidth': 20,
-            'markerHeight': 20
-          }
-        }, {
-          'duration': 1800
-        }, function (frame) {
-          if (frame.state.playState == 'finished') {
-            mm.animate({
-              'symbol': {
-                'markerWidth': 0,
-                'markerHeight': 0
-              }
-            }, {
-              'duration': 1800
-            });
-          }
-        });
-      }, 4000);
+    var geometries = maptalks.GeoJSON.toGeometry(earthquakes);
+    geometries.forEach(function (c) {
+      c.setSymbol({
+        'markerType': 'ellipse',
+        'markerFill': 'rgba(245,12,12,1)',
+        'markerLineWidth': 0,
+        'markerWidth': 4,
+        'markerHeight': 4
+      });
     });
-    clusterLayer = new maptalks.ClusterLayer('cluster', allSDMarkers, {
+    clusterLayer = new maptalks.ClusterLayer('cluster', geometries, {
       'noClusterWithOneMarker': true,
-      'maxClusterRadius': 30,
+      'maxClusterRadius': 100,
       'maxClusterZoom': 18,
+      'textSymbol': {
+        'textFaceName': '"microsoft yahei"',
+        'textSize': 2,
+        'textDx': 0,
+        'textDy': 0
+      },
       'symbol': {
         'markerType': 'ellipse',
         'markerFill': {
           property: 'count',
           type: 'interval',
           stops: [
-            [0, 'rgb(255, 255, 255)'],
-            [9, '#1bbc9b'],
-            [99, 'rgb(255, 12, 12)']
+            [1, 'rgb(255, 255, 255)'],
+            [3, '#1bbc9b'],
+            [33, 'rgb(255, 12, 12)']
           ]
         },
         'markerFillOpacity': 0.7,
         'markerLineOpacity': 1,
-        'markerLineWidth': 3,
+        'markerLineWidth': 1,
         'markerLineColor': '#f00',
         'markerWidth': {
           property: 'count',
           type: 'interval',
           stops: [
-            [0, 30],
-            [9, 45],
-            [99, 60]
+            [0, 15],
+            [5, 25],
+            [20, 40]
           ]
         },
         'markerHeight': {
           property: 'count',
           type: 'interval',
           stops: [
-            [0, 30],
-            [9, 45],
-            [99, 60]
+            [0, 15],
+            [5, 25],
+            [20, 40]
           ]
         }
       },
       'drawClusterText': true,
       'geometryEvents': true,
-      'single': true
+      'single': false
     });
+
+    function getGradient(colors) {
+      return {
+        type: 'radial',
+        colorStops: [
+          [0.70, 'rgba(' + colors.join() + ', 0.5)'],
+          [0.30, 'rgba(' + colors.join() + ', 1)'],
+          [0.20, 'rgba(' + colors.join() + ', 1)'],
+          [0.00, 'rgba(' + colors.join() + ', 0)']
+        ]
+      };
+    }
+    clusterLayer2 = new maptalks.AnimateMarkerLayer(
+        'animatemarker',
+        allSDMarkers, {
+          'animation': 'scale,fade',
+          'randomAnimation': true,
+          'geometryEvents': false
+        }
+      )
+      .setStyle([{
+          filter: ['<=', 'mag', 0.4],
+          symbol: {
+            'markerType': 'ellipse',
+            'markerLineWidth': 0,
+            'markerFill': getGradient([135, 196, 240]),
+            'markerFillOpacity': 0.8,
+            'markerWidth': 40,
+            'markerHeight': 40
+          }
+        },
+        {
+          filter: ['<=', 'mag', 0.8],
+          symbol: {
+            'markerType': 'ellipse',
+            'markerLineWidth': 0,
+            'markerFill': getGradient([255, 255, 0]),
+            'markerFillOpacity': 0.8,
+            'markerWidth': 40,
+            'markerHeight': 40
+          }
+        },
+        {
+          filter: ['>', 'mag', 0.8],
+          symbol: {
+            'markerType': 'ellipse',
+            'markerLineWidth': 0,
+            'markerFill': getGradient([216, 115, 149]),
+            'markerFillOpacity': 0.8,
+            'markerWidth': 40,
+            'markerHeight': 40
+          }
+        }
+      ]);
 
     map = new maptalks.Map('mapContainer', {
       center: [66.7903012612708142, 20.976349249268345],
       zoom: 4.0,
       maxZoom: 18.0,
       minZoom: 4.0,
-      layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, vectorlayer],
+      layers: [imgBaseLayer, vecBaseLayer, vectorlayer0, clusterLayer, clusterLayer2, vectorlayer],
       pitch: 20
     });
     toggleBaseLayer('image');
@@ -495,7 +529,7 @@
       polygonOpacity: 0.2
     });
     setTimeout(function () {
-      map.addLayer([vectorlayer, vectorlayer0, clusterLayer]);
+      map.addLayer([vectorlayer, vectorlayer0, clusterLayer, clusterLayer2]);
     }, 2000);
   }
 
